@@ -1,16 +1,23 @@
 {
   "files": {
-    "main.css": "/CookBook-Creator/static/css/main.f855e6bc.css",
-    "main.js": "/CookBook-Creator/static/js/main.2d197b6f.js",
+    "main.css": "/CookBook-Creator/static/css/main.39963cbb.css",
+    "main.js": "/CookBook-Creator/static/js/main.ee81c4f1.js",
     "static/js/453.5febc4df.chunk.js": "/CookBook-Creator/static/js/453.5febc4df.chunk.js",
-    "static/media/logo.svg": "/CookBook-Creator/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "static/media/fa-solid-900.ttf": "/CookBook-Creator/static/media/fa-solid-900.45a265d0f07b31cde85f.ttf",
+    "static/media/fa-brands-400.ttf": "/CookBook-Creator/static/media/fa-brands-400.6205fd00fb1b573e9f0f.ttf",
+    "static/media/fa-solid-900.woff2": "/CookBook-Creator/static/media/fa-solid-900.fb8184add5a3101ad0a3.woff2",
+    "static/media/fa-brands-400.woff2": "/CookBook-Creator/static/media/fa-brands-400.8d3cabfc66809162fb4d.woff2",
+    "static/media/fa-regular-400.ttf": "/CookBook-Creator/static/media/fa-regular-400.adc51aab4d771ab65f81.ttf",
+    "static/media/fa-regular-400.woff2": "/CookBook-Creator/static/media/fa-regular-400.e931bc0d14f5bbb1da22.woff2",
+    "static/media/fa-v4compatibility.ttf": "/CookBook-Creator/static/media/fa-v4compatibility.2eb7b3ef25042305f3ff.ttf",
+    "static/media/fa-v4compatibility.woff2": "/CookBook-Creator/static/media/fa-v4compatibility.b3049b13a93f07e026fc.woff2",
     "index.html": "/CookBook-Creator/index.html",
-    "main.f855e6bc.css.map": "/CookBook-Creator/static/css/main.f855e6bc.css.map",
-    "main.2d197b6f.js.map": "/CookBook-Creator/static/js/main.2d197b6f.js.map",
+    "main.39963cbb.css.map": "/CookBook-Creator/static/css/main.39963cbb.css.map",
+    "main.ee81c4f1.js.map": "/CookBook-Creator/static/js/main.ee81c4f1.js.map",
     "453.5febc4df.chunk.js.map": "/CookBook-Creator/static/js/453.5febc4df.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.2d197b6f.js"
+    "static/css/main.39963cbb.css",
+    "static/js/main.ee81c4f1.js"
   ]
 }
