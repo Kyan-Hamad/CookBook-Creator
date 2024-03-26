@@ -1,6 +1,7 @@
 import React from "react";
 import "./DashBoard.css";
 import Footer from "./../Components/Footer/Footer";
+// import { FilePicker } from "../Components/file-picker";
 
 const Dashboard = () => {
   return (
@@ -32,6 +33,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {/* <FilePicker /> */}
     </div>
     <Footer />
   </div>
