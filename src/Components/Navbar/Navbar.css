@@ -9,22 +9,62 @@ nav {
   font-size: 1.2em;
 }
 
+#cookbook-maker-logo {
+  background-image: linear-gradient(60deg, #ff5858, #f09819);
+  font-size: 1.2em;
+}
+
 #login,
 #register,
 #CookBook-Maker-logo, 
+#create,
+#logout,
+#profile,
+#dashboard,
 .logo-symbol {
-  color: #6289ed;
   font-size: 1.2em;
   cursor: pointer;
 }
 
 #login,
-#register {
+#register,
+#create,
+#logout,
+#profile,
+#dashboard {
   padding: 12%;
 }
 
+#login {
+  color: #ff5858;
+}
+
+#register {
+  color: #f09819;
+}
+
+#create {
+  color: #ff5858;
+}
+
+#dashboard {
+  color: #ff725b;
+}
+
+#profile {
+  color: #f09819;
+}
+
+#logout {
+  color: #f09819;
+}
+
 #login:hover,
-#register:hover {
+#register:hover,
+#logout:hover,
+#profile:hover,
+#dashboard:hover,
+#create:hover {
   background-color: #f5f0f6;
   border-radius: 10px;
 }

@@ -14,7 +14,7 @@ const HomePage = () => {
           <p className="home-text black-text">
             Create Your Own Personalized Cookbook with Ease!
           </p>
-          <Link to="/register">
+          <Link to="/login">
             <button className="home-btn">Get Started</button>
           </Link>
         </div>
@@ -26,11 +26,11 @@ const HomePage = () => {
           <div className="card text-center">
             <div className="card-body">
               <h5 className="card-title">Theme Selection</h5>
-              <div class="gif1-container-text">
+              <div className="gif1-container-text">
               <img
-                src= "gif1.gif"
+                src={require("./gif1.gif")} 
                 alt="cartoon of a book"
-                class="gif1"
+                className="gif1"
               />
               </div>
               <p className="card-text black-text">
@@ -42,7 +42,7 @@ const HomePage = () => {
             <div className="card-body">
               <h5 className="card-title">Custom Cover</h5>
               <img
-                src="img/card2.png"
+                src={require("./gif1.gif")} 
                 alt="cartoon of a book cover"
                 width="200px"
               />
@@ -56,7 +56,7 @@ const HomePage = () => {
             <div className="card-body">
               <h5 className="card-title">Recipe Pages</h5>
               <img
-                src="img/card3.png"
+                src={require("./gif1.gif")} 
                 alt="cartoon of a recipe book"
                 width="200px"
               />
@@ -76,7 +76,7 @@ const HomePage = () => {
         </h2>
 
         <div className="gif1-container-text">
-          <img src="gif1.gif" alt="gif of a book opening" className="gif1" />
+          <img src={require("./gif1.gif")}  alt="gif of a book opening" className="gif1" />
           <div className="gif1-text">
             <p className="gif-title gradient-text-2">
               Create Your Cookbook in Minutes
@@ -101,7 +101,7 @@ const HomePage = () => {
             </p>
           </div>
           <img
-            src="gif2.gif"
+            src={require("./gif1.gif")} 
             alt="gif of a cookbook being shared"
             className="gif2"
           />

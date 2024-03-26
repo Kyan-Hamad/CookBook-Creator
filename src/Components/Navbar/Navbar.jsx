@@ -52,7 +52,7 @@ export default function Navbar() {
                   className="nav-link"
                   onClick={() => handleNavigation("/CreationPage")}
                 >
-                  <span id="login">Create</span>
+                  <span id="create">Create</span>
                 </p>
               </li>
               <li className="nav-item">
@@ -61,7 +61,7 @@ export default function Navbar() {
                   className="nav-link"
                   onClick={() => handleNavigation("/")}
                 >
-                  <span id="login">Dashboard</span>
+                  <span id="dashboard">Dashboard</span>
                 </p>
               </li>
               <li className="nav-item">
@@ -69,13 +69,13 @@ export default function Navbar() {
                   className="nav-link"
                   onClick={() => handleNavigation("/profile")}
                 >
-                  <span id="login">Profile</span>
+                  <span id="profile">Profile</span>
                 </p>
               </li>
               <li className="nav-item">
 
                 <p className="nav-link" onClick={handleLogout}>
-                  <span id="register">Logout</span>
+                  <span id="logout">Logout</span>
                 </p>
               </li>
             </ul>

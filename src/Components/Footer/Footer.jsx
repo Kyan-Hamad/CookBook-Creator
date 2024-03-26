@@ -15,7 +15,7 @@ export default function Footer() {
     <footer>
         All Rights Reserved &copy; 2024 CookBook Maker.
         <p id="footer-logo" onClick={scrollToTop}>
-            <code class="logo-symbol">🥘</code>
+            <code className="logo-symbol">🥘</code>
             </p>
             </footer>
             </>
