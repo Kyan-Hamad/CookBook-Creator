@@ -12,7 +12,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    logout({ logoutParams: { returnTo: "https://kyan-hamad.github.io" } });
+    logout({ returnTo: window.location.origin });
   };
 
   const handleLogin = () => {
