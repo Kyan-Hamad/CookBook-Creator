@@ -1,0 +1,44 @@
+nav {
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.logo-symbol {
+  color: #6289ed;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+#login,
+#register,
+#CookBook-Maker-logo, 
+.logo-symbol {
+  color: #6289ed;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+#login,
+#register {
+  padding: 12%;
+}
+
+#login:hover,
+#register:hover {
+  background-color: #f5f0f6;
+  border-radius: 10px;
+}
+
+.gradient-text {
+  background-clip: text;
+  background-image: linear-gradient(#0c66e4, #6289ed, #8d9bf2);
+  color: transparent;
+}
+
+@media screen and (max-width: 991px) {
+
+  #login,
+  #register {
+    padding: 2%;
+  }
+}

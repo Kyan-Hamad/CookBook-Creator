@@ -1,0 +1,34 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 2%;
+    margin-bottom: 10%;
+}
+
+.workflow-cards {
+    display: flex;
+    flex: wrap;
+    gap: 50px;
+
+}
+
+.recently-viewed, .your-workflow {
+    margin-top: 7%;
+}
+
+.sidebar {
+    margin-top: 2%;
+    font-size: 1.2em;
+    margin-right: 5%;
+}
+
+.list-item {
+    margin-top: 2%;
+    cursor: pointer;
+}
+
+.list-item:hover {
+  background-color: #f5f0f6;
+  border-radius: 10px;
+}

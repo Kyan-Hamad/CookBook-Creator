@@ -1,0 +1,34 @@
+.user-container, .links {
+    align-items: center;
+    margin: auto;
+    text-align: center;
+    margin-top: 5%;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+}
+
+.link-btn {
+    margin-top: 2%;
+    background-color: #6289ed;
+    color: white;
+    align-items: center;
+    border: 0 solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    display: inline-flex;
+    justify-content: center;
+    line-height: 24px;
+    overflow-wrap: break-word;
+    padding: 10px;
+    text-decoration: none;
+    width: auto;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}

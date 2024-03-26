@@ -1,25 +1,50 @@
-import logo from './logo.svg';
 import './App.css';
+import Navbar from './Components/Navbar/Navbar';
+import HomePage from './WebPages/HomePage';
+import Login from "./WebPages/Login";
+import Register from "./WebPages/Register";
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { useAuth0 } from "@auth0/auth0-react";
+import Loading from './Components/Loading/Loading';
+import DashBoard from './WebPages/DashBoard';
+import Profile from './WebPages/Profile';
 
 function App() {
+  const { isAuthenticated, isLoading } = useAuth0();
+
+  console.log("Authentication State: ", isAuthenticated);
+
+  if (isLoading) {
+    return (
+      <Loading/>
+    )
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+    <div>
+      <BrowserRouter>
+        <Navbar />
+        {/* Routes represent page routes "/" represents the default page route that we would refer to as the home page */}
+        
+        <Routes>
+          <Route
+            path="/"
+            element={isAuthenticated ? <DashBoard /> : <HomePage />}
+          />
+          <Route
+            path="/profile"
+            element={isAuthenticated ? <Profile /> : <HomePage />}
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+      
+
+        </Routes>
+      </BrowserRouter>
     </div>
-  );
+  </>
+);
 }
 
 export default App;

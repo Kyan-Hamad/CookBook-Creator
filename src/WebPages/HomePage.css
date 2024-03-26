@@ -1,0 +1,34 @@
+.homepage {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  h1 { 
+    color: #4CAF50 !important; /* Green */
+  }
+  
+  p {
+    color: #333;
+  }
+  
+  .features {
+    margin-top: 50px;
+  }
+  
+  .features h2 {
+    color: #4CAF50; /* Green */
+  }
+  
+  .features ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .features li {
+    margin-bottom: 10px;
+  }
+  
+ 
+
+  
+  
