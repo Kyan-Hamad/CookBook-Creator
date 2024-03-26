@@ -1,6 +1,6 @@
 // import React, { useCallback } from "react";
-// import CheckIcon from "../check";
-// import ClearIcon from "../clear";
+// import CheckIcon from "../../check";
+// import ClearIcon from "../../clear";
 // import styles from "./files-list.module.css";
 
 // const FilesListItem = ({ name, id, onClear, uploadComplete }) => {
