@@ -15,7 +15,7 @@ root.render(
     <Auth0Provider
       domain={domain}
       clientId={clientId}
-      redirectUri={"https://kyan-hamad.github.io/"}>
+      redirectUri={"https://kyan-hamad.github.io/CookBook-Creator"}>
     <App />
     </Auth0Provider>
   </React.StrictMode>
