@@ -12,7 +12,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    logout({ returnTo: window.location.origin });
+    logout({ logoutParams: { returnTo: "https://kyan-hamad.github.io/CookBook-Creator/" } });
   };
 
   const handleLogin = () => {
