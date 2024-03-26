@@ -13,9 +13,9 @@ export default function Footer() {
     return (
     <>
     <footer>
-        All Rights Reserved &copy; 2024 KanbanFlow.
+        All Rights Reserved &copy; 2024 CookBook Maker.
         <p id="footer-logo" onClick={scrollToTop}>
-            <code class="logo-symbol">&lt;/&gt;</code>
+            <code class="logo-symbol">🥘</code>
             </p>
             </footer>
             </>

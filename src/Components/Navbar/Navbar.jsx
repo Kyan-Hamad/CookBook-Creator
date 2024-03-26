@@ -26,13 +26,10 @@ export default function Navbar() {
   return (
     <>
       {isAuthenticated ? (
-        // this is the authenticated navbar!!
+        // this is the authenticated navbar
         <nav className="navbar navbar-expand-lg navbar-light">
           <p className="navbar-brand" onClick={() => handleNavigation("/")}>
             <code className="logo-symbol"> 🥘 </code>
-            {/* <span id="kanbanflow-logo" className="gradient-text">
-              KanbanFlow
-            </span> */}
           </p>
           <button
             className="navbar-toggler"
