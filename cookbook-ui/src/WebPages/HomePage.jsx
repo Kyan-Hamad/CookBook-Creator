@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Footer from "../Components/Footer/Footer";
 import "./HomePage.css";
 
+
 const HomePage = () => {
   return (
     <>
@@ -19,7 +20,6 @@ const HomePage = () => {
           </Link>
         </div>
       </div>
-
       <div className="gradient-container">
         <h2>Discover the Features</h2>
         <div className="gradient-container-cards">
