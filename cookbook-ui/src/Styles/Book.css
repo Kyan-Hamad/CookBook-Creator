@@ -1,0 +1,24 @@
+.book {
+    display: inline-block;
+    margin: 10px;
+  }
+  
+  .book-button {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .book-button img {
+    width: 150px; /* Adjust the size of the book cover image */
+    height: 200px; /* Adjust the size of the book cover image */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .book-button img:hover {
+    transform: translateY(-2px);
+  }
+  

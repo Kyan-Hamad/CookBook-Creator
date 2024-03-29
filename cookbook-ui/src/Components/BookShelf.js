@@ -3,7 +3,7 @@ import axios from 'axios';
 import Book from './Book';
 import { Link } from 'react-router-dom'; // Import Link component
 import '../Styles/BookShelf.css';
-import Upload from '../upload/Upload';
+
 
 const BookShelf = () => {
   const [books, setBooks] = useState([]);
@@ -24,7 +24,6 @@ const BookShelf = () => {
 
   return (
     <div className="book-shelf">
-      <Upload />
       {books.length === 0 ? <p>No books available</p> :
         books.map((book) => (
           <Link key={book._id} to={`/books/${book.title}`}>
