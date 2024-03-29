@@ -1,12 +1,10 @@
-const IncomingForm = require('formidable').IncomingForm
+import { IncomingForm } from 'formidable'
 
-module.exports = function upload(req, res) {
+export default function upload(req, res) {
   var form = new IncomingForm()
 
   form.on('file', (field, file) => {
-    // Do something with the file
-    // e.g. save it to the database
-    // you can access it using file.path
+
   })
   form.on('end', () => {
     res.json()

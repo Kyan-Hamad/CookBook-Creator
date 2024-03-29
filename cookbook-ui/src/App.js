@@ -8,6 +8,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Loading from './Components/Loading/Loading';
 import DashBoard from './WebPages/DashBoard';
 import Profile from './WebPages/Profile';
+import NewBookForm from '../src/Components/NewBookForm';
+import BookDetails from '../src/Components/BookDetails'; 
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -30,16 +32,15 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={isAuthenticated ? <DashBoard /> : <HomePage />}
-          />
+            element={isAuthenticated ? <DashBoard /> : <HomePage />} />
           <Route
             path="/profile"
             element={isAuthenticated ? <Profile /> : <HomePage />}
           />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-      
-
+          <Route path="/new-book" element={<NewBookForm />} />
+        <Route path="/books/:title" element={<BookDetails />} /> 
         </Routes>
       </BrowserRouter>
     </div>

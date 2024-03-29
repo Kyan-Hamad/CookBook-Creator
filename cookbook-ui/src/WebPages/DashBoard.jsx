@@ -1,43 +1,26 @@
-import React from "react";
-import "./DashBoard.css";
-import Footer from "./../Components/Footer/Footer";
-// import { FilePicker } from "../Components/file-picker";
+// Dashboard.js
+
+import React, { useState } from 'react';
+import NewBookButton from '../Components/NewBookButton';
+import BookShelf from '../Components/BookShelf';
+import NewBookForm from '../Components/NewBookForm';
+import '../Styles/Dashboard.css';
 
 const Dashboard = () => {
+  const [showForm, setShowForm] = useState(false);
+
+  const toggleForm = () => {
+    setShowForm(!showForm);
+  };
+
   return (
-  <div>
-    <div className="dashboard">
-      <div className="sidebar">
-        <h2>CookBook Maker</h2>
-        <ul>
-          <li className="active">Dashboard</li>
-          <li>Recipes</li>
-          <li>Themes</li>
-          <li>Settings</li>
-        </ul>
-      </div>
-      <div className="main-content">
-        <h2>Dashboard</h2>
-        <div className="cards">
-          <div className="card">
-            <h3>Total Recipes</h3>
-            <p>100</p>
-          </div>
-          <div className="card">
-            <h3>Favorite Recipes</h3>
-            <p>25</p>
-          </div>
-          <div className="card">
-            <h3>Shared Cookbooks</h3>
-            <p>10</p>
-          </div>
-        </div>
-      </div>
-      {/* <FilePicker /> */}
+    <div className="dashboard-container">
+      <h1>Book Shelf</h1>
+      <BookShelf />
+      {showForm && <NewBookForm />}
+      <NewBookButton onClick={toggleForm} />
     </div>
-    <Footer />
-  </div>
   );
-};
+}
 
 export default Dashboard;

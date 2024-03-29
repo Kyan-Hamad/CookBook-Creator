@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Footer from "../Components/Footer/Footer";
 import "./HomePage.css";
-import Upload from "../upload/Upload"
+
 
 const HomePage = () => {
   return (
@@ -20,11 +20,6 @@ const HomePage = () => {
           </Link>
         </div>
       </div>
-<div className="App">
-  <div className="Card">
-    <Upload/>
-  </div>
-</div>
       <div className="gradient-container">
         <h2>Discover the Features</h2>
         <div className="gradient-container-cards">

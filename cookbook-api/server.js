@@ -1,7 +1,8 @@
-const express = require('express')
-const upload = require('./upload')
-const cors = require('cors')
+import express from 'express'
+import cors from 'cors'
+import upload from './upload.js';
 
+// Server for uploading files
 const server = express()
 
 var corsOptions = {
