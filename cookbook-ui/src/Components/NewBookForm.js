@@ -5,17 +5,22 @@ import '../Styles/NewBookForm.css';
 
 const NewBookForm = () => {
     const [title, setTitle] = useState('');
+    const [TableOfContents, setTableOfContents] = useState('');
     const navigate = useNavigate();
   
     const handleTitleChange = (e) => {
       setTitle(e.target.value);
+    };
+
+    const handleTableOfContentsChange = (e) => {
+      setTableOfContents(e.target.value);
     };
   
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
         // Make a POST request to create a new book
-        await axios.post('http://localhost:5000/api/books', { title });
+        await axios.post('http://localhost:5000/api/books', { title, tableOfContents: TableOfContents });
         // Redirect to the dashboard after creating the book
         navigate('/');
       } catch (error) {
@@ -34,6 +39,14 @@ const NewBookForm = () => {
               id="title"
               value={title}
               onChange={handleTitleChange}
+              required
+            />
+            <label htmlFor='Table of Contents'>Table of Contents:</label>
+            <input
+              type='text'
+              id='Table of Contents'
+              value={TableOfContents}
+              onChange={handleTableOfContentsChange}
               required
             />
           </div>
