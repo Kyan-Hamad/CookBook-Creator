@@ -87,7 +87,6 @@ export default function Navbar() {
           <p className="navbar-brand" onClick={() => handleNavigation("/")}>
             <code className="logo-symbol"> 🥘 CookBook Maker</code>
             <span id="cookbook-maker-logo" className="gradient-text">
-              CookBook Maker
             </span>
           </p>
           <button
