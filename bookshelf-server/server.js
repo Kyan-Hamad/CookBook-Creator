@@ -67,6 +67,24 @@ app.get('/api/books/:title', async (req, res) => {
     }
 });
 
+// Route to handle updating a book's table of contents
+app.put('/api/books/:title', async (req, res) => {
+    try {
+        const { newContent } = req.body;
+        const book = await Book.findOne({ title: req.params.title });
+        if (book) {
+            book.tableOfContents += '\n' + newContent; // Append new content
+            await book.save();
+            res.status(200).json(book);
+        } else {
+            res.status(404).json({ message: 'Book not found' });
+        }
+    } catch (err) {
+        console.error('Error updating book:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
     // Set static folder

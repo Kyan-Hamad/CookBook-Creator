@@ -47,7 +47,6 @@ const NewBookForm = () => {
               id='Table of Contents'
               value={TableOfContents}
               onChange={handleTableOfContentsChange}
-              required
             />
           </div>
           <button type="submit">Create Book</button>

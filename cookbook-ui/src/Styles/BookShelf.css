@@ -1,10 +1,12 @@
-/* BookShelf.css */
-
 .book-shelf {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
+  position: relative;
+  height: 800px;
+  width: 60%;
+  margin-top: 20px;
+  padding: 20px;
+  background-image: url('https://kyan-hamad.github.io/RPG-Game/BlankBookShelf.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}

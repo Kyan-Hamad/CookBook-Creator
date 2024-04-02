@@ -14,11 +14,13 @@ const Dashboard = () => {
   };
 
   return (
+    <div className='dashboard'>
     <div className="dashboard-container">
       <h1>Book Shelf</h1>
       <BookShelf />
       {showForm && <NewBookForm />}
       <NewBookButton onClick={toggleForm} />
+    </div>
     </div>
   );
 }
