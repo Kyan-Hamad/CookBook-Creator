@@ -19,7 +19,8 @@ mongoose.connect('mongodb+srv://cookbook:jTyTfD8uLHxpvqD@cluster0.8ekwc6d.mongod
 
 // Define Book schema
 const bookSchema = new mongoose.Schema({
-    title: String
+    title: String,
+    tableOfContents: String
 });
 
 const Book = mongoose.model('Book', bookSchema);
@@ -30,8 +31,8 @@ app.use(bodyParser.json());
 // Route to handle creating a new book
 app.post('/api/books', async (req, res) => {
     try {
-        const { title } = req.body;
-        const newBook = new Book({ title });
+        const { title, tableOfContents } = req.body;
+        const newBook = new Book({ title, tableOfContents });
         await newBook.save();
         res.status(201).json({ message: 'Book created successfully', book: newBook });
     } catch (err) {
@@ -47,6 +48,39 @@ app.get('/api/books', async (req, res) => {
         res.status(200).json(books);
     } catch (err) {
         console.error('Error fetching books:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Route to handle fetching a book by title
+app.get('/api/books/:title', async (req, res) => {
+    try {
+        const book = await Book.findOne({ title: req.params.title });
+        if (book) {
+            res.status(200).json(book);
+        } else {
+            res.status(404).json({ message: 'Book not found' });
+        }
+    } catch (err) {
+        console.error('Error fetching book:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Route to handle updating a book's table of contents
+app.put('/api/books/:title', async (req, res) => {
+    try {
+        const { newContent } = req.body;
+        const book = await Book.findOne({ title: req.params.title });
+        if (book) {
+            book.tableOfContents += '\n' + newContent; // Append new content
+            await book.save();
+            res.status(200).json(book);
+        } else {
+            res.status(404).json({ message: 'Book not found' });
+        }
+    } catch (err) {
+        console.error('Error updating book:', err);
         res.status(500).json({ message: 'Internal server error' });
     }
 });

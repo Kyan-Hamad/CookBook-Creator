@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import NewBookButton from '../Components/NewBookButton';
 import BookShelf from '../Components/BookShelf';
-import NewBookForm from '../Components/NewBookForm';
 import '../Styles/Dashboard.css';
 
 const Dashboard = () => {
@@ -14,11 +13,12 @@ const Dashboard = () => {
   };
 
   return (
+    <div className='dashboard'>
     <div className="dashboard-container">
-      <h1>Book Shelf</h1>
+      <h2>Book Shelf</h2>
       <BookShelf />
-      {showForm && <NewBookForm />}
       <NewBookButton onClick={toggleForm} />
+    </div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 .dashboard {
     text-align: center;
+    
   }
   
   .bookshelf {
@@ -12,13 +13,6 @@
     margin: 10px;
   }
   
-  .book-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
   
   .new-book-form {
     margin-top: 20px;

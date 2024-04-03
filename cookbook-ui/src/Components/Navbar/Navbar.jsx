@@ -29,7 +29,7 @@ export default function Navbar() {
         // this is the authenticated navbar
         <nav className="navbar navbar-expand-lg navbar-light">
           <p className="navbar-brand" onClick={() => handleNavigation("/")}>
-            <code className="logo-symbol"> 🥘 </code>
+            <code className="logo-symbol"> 🥘 CookBook Maker</code>
           </p>
           <button
             className="navbar-toggler"
@@ -47,14 +47,6 @@ export default function Navbar() {
             id="navbarNav"
           >
             <ul className="navbar-nav">
-              <li className="nav-item">
-                <p
-                  className="nav-link"
-                  onClick={() => handleNavigation("/CreationPage")}
-                >
-                  <span id="create">Create</span>
-                </p>
-              </li>
               <li className="nav-item">
 
                 <p
@@ -85,9 +77,8 @@ export default function Navbar() {
         // this is the unauthenticated navbar!!!
         <nav className="navbar navbar-expand-lg navbar-light">
           <p className="navbar-brand" onClick={() => handleNavigation("/")}>
-            <code className="logo-symbol"> 🥘</code>
+            <code className="logo-symbol"> 🥘 CookBook Maker</code>
             <span id="cookbook-maker-logo" className="gradient-text">
-              CookBook Maker
             </span>
           </p>
           <button

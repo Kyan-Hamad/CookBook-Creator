@@ -1,12 +1,11 @@
-nav {
+.nav {
   margin-left: 2%;
   margin-right: 2%;
 }
 
 .logo-symbol {
-  color: #6289ed;
+  color: #fd6d51;
   font-weight: bold;
-  font-size: 1.2em;
 }
 
 #cookbook-maker-logo {
