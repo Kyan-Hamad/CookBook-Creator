@@ -1,11 +1,12 @@
 .book {
+  width: 150px; /* Adjust the width of the book */
+  height: 200px; /* Adjust the height of the book */
   position: relative;
-  display: inline-block;
-  margin: 10px 20px;
-  top: 50%; /* Adjust this value to position the book on the shelf */
+  margin-bottom: 20px; /* Adjust the bottom margin of the book */
+  background-color: #fff; /* Background color for the book */
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
-
-
 
 .book-button {
   border: none;
@@ -13,33 +14,23 @@
   background-image:url(https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png);
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding: 0;
   cursor: pointer;
   width: 150px; /* Adjust the size of the book cover image */
   height: 200px; /* Adjust the size of the book cover image */
-  perspective: 1000px; /* Needed to apply 3D effects */
-  transform-style: preserve-3d; /* Needed to apply 3D effects */
-  transition: transform 1s;
-  transform-origin: center; /* Set the rotation point to the center of the left edge */
 }
 
 
-.book-button img {
-  position: absolute;
+.book img {
   width: 100%;
   height: 100%;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  backface-visibility: hidden; /* Hide the back of the image */
+  object-fit: cover; /* Maintain aspect ratio for book cover */
+  border-radius: 8px;
 }
 
-.book-button::before {
-  display: none; /* Hide the previous back cover */
-}
-
-.book-button .details-preview {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
+@media screen and (max-width: 768px) {
+  .book {
+    width: 100%; /* Make the book full width on smaller screens */
+    height: auto; /* Allow the book height to adjust based on content */
+    max-width: 200px; /* Limit the maximum width of the book on smaller screens */
+  }
 }
