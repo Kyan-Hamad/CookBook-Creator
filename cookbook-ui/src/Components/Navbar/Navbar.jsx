@@ -48,14 +48,6 @@ export default function Navbar() {
           >
             <ul className="navbar-nav">
               <li className="nav-item">
-                <p
-                  className="nav-link"
-                  onClick={() => handleNavigation("/CreationPage")}
-                >
-                  <span id="create">Create</span>
-                </p>
-              </li>
-              <li className="nav-item">
 
                 <p
                   className="nav-link"

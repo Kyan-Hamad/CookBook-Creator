@@ -10,6 +10,9 @@
 .book-button {
   border: none;
   background-color: transparent;
+  background-image:url(https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   padding: 0;
   cursor: pointer;
   width: 150px; /* Adjust the size of the book cover image */
@@ -17,7 +20,7 @@
   perspective: 1000px; /* Needed to apply 3D effects */
   transform-style: preserve-3d; /* Needed to apply 3D effects */
   transition: transform 1s;
-  transform-origin: right center; /* Set the rotation point to the center of the left edge */
+  transform-origin: center; /* Set the rotation point to the center of the left edge */
 }
 
 
@@ -39,9 +42,4 @@
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  transform: rotateY(180deg); /* Rotate the iframe to make it visible from the front */
-}
-
-.book-button:hover {
-  transform: rotateY(-180deg); /* Rotate the book on hover */
 }
