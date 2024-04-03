@@ -23,7 +23,7 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://kyan-hamad.github.io/",
+  "homepage": "https://kyan-hamad.github.io/CookBook-Creator/",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
