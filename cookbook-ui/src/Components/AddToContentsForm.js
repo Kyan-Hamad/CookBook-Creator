@@ -4,7 +4,7 @@ import '../Styles/AddToContentsForm.css';
 
 const AddToContentsForm = ({ title, setTableOfContents, setShowForm }) => {
     const [newContent, setNewContent] = useState('');
-    const [isLink, setIsLink] = useState(false); // State to track if the content should be a link
+    const [isLink, setIsLink] = useState(false);
 
     const handleContentChange = (e) => {
         setNewContent(e.target.value);
@@ -17,8 +17,11 @@ const AddToContentsForm = ({ title, setTableOfContents, setShowForm }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const contentToAdd = isLink ? `<a href="${newContent}">${newContent}</a>` : newContent;
-            const response = await axios.put(`http://localhost:5000/api/books/${title}`, { newContent: contentToAdd });
+            let contentToAdd = newContent;
+            if (isLink) {
+                contentToAdd = `<a href="${newContent}">${newContent}</a>`;
+            }
+            const response = await axios.put(`http://localhost:5000/api/books/${title}`, { newContent: contentToAdd, isLink });
             setTableOfContents(response.data.tableOfContents);
             setShowForm(false);
         } catch (error) {

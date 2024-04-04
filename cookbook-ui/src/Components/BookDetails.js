@@ -1,5 +1,6 @@
+// In BookDetails.js
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
 import AddToContentsForm from './AddToContentsForm';
 import '../Styles/BookDetails.css';
@@ -8,6 +9,7 @@ const BookDetails = () => {
     const { title } = useParams();
     const [tableOfContents, setTableOfContents] = useState('');
     const [showForm, setShowForm] = useState(false);
+    const navigate = useNavigate(); // Use useNavigate hook to navigate
 
     useEffect(() => {
         const fetchBookDetails = async () => {
@@ -29,7 +31,7 @@ const BookDetails = () => {
     const handleContentClick = (content) => {
         if (content.startsWith('<a href=')) {
             const url = content.split('"')[1]; // Extract the URL
-            window.location.href = url; // Navigate to the URL
+            navigate(`/books/${title}/${url}`); // Navigate to the appropriate route within the book details page
         }
     };
 
