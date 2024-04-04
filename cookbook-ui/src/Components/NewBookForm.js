@@ -40,13 +40,15 @@ const NewBookForm = () => {
               value={title}
               onChange={handleTitleChange}
               required
+              placeholder='Book Title'
             />
             <label htmlFor='Table of Contents'>Table of Contents:</label>
             <input
               type='text'
-              id='Table of Contents'
+              id='TableofContents'
               value={TableOfContents}
               onChange={handleTableOfContentsChange}
+              placeholder='Table of Contents'
             />
           </div>
           <button type="submit">Create Book</button>

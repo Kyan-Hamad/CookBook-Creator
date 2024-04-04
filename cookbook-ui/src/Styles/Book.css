@@ -1,36 +1,64 @@
 .book {
-  width: 150px; /* Adjust the width of the book */
-  height: 200px; /* Adjust the height of the book */
+  width: 150px; 
+  height: 180px;
   position: relative;
-  margin-bottom: 20px; /* Adjust the bottom margin of the book */
-  background-color: #fff; /* Background color for the book */
+  margin-bottom: 20px; 
+  background-color: transparent; 
   border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.book-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .book-button {
   border: none;
   background-color: transparent;
-  background-image:url(https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png);
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  cursor: pointer;
-  width: 150px; /* Adjust the size of the book cover image */
-  height: 200px; /* Adjust the size of the book cover image */
+  width: 150px; 
+  height: 200px;
+  background-size: 100%;
+  position: relative;
 }
 
-
-.book img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Maintain aspect ratio for book cover */
+.book-image {
+  width: 150px;
+  height: 195px;
+  background-size: cover;
   border-radius: 8px;
+}
+
+.book-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  color: #000;
+  font-weight: 600;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+
+.book-button:hover {
+  background-color: #f2dab9;
+  border-radius: 8px;
+}
+
+.book-button:hover .book-image{
+  opacity: 0.3;
+  cursor: pointer;
+}
+
+.book-button:hover .book-title {
+  opacity: 1;
 }
 
 @media screen and (max-width: 768px) {
   .book {
-    width: 100%; /* Make the book full width on smaller screens */
-    height: auto; /* Allow the book height to adjust based on content */
-    max-width: 200px; /* Limit the maximum width of the book on smaller screens */
+    width: 100%; 
+    height: auto; 
+    max-width: 200px; 
   }
 }

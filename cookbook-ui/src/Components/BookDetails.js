@@ -1,7 +1,9 @@
+// BookDetails.js
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import AddToContentsForm from './AddToContentsForm';
+import '../Styles/BookDetails.css';
 
 const BookDetails = () => {
   const { title } = useParams();
@@ -26,11 +28,11 @@ const BookDetails = () => {
   }
 
   return (
-    <div>
+    <div className='Book-Page'>
       <h2>{title}</h2>
       <h5>Table of Contents:</h5>
       {tableOfContents.split('\n').map((content, index) => <p key={index}>{content}</p>)}
-      <button onClick={handleShowForm}>Add to Table of Contents</button>
+      <button onClick={handleShowForm}>Edit TOC</button>
       {showForm && <AddToContentsForm title={title} setTableOfContents={setTableOfContents} setShowForm={setShowForm} />}
     </div>
   );
