@@ -70,10 +70,15 @@ app.get('/api/books/:title', async (req, res) => {
 // Route to handle updating a book's table of contents
 app.put('/api/books/:title', async (req, res) => {
     try {
-        const { newContent } = req.body;
+        const { newContent, isLink } = req.body;
+        let updatedContent = newContent;
+        if (isLink) {
+            // If content should be a link, format it as an HTML anchor tag
+            updatedContent = `<a href="${newContent}">${newContent}</a>`;
+        }
         const book = await Book.findOne({ title: req.params.title });
         if (book) {
-            book.tableOfContents += '\n' + newContent; // Append new content
+            book.tableOfContents += '\n' + updatedContent; // Append new content
             await book.save();
             res.status(200).json(book);
         } else {

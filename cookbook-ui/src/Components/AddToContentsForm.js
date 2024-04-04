@@ -4,15 +4,21 @@ import '../Styles/AddToContentsForm.css';
 
 const AddToContentsForm = ({ title, setTableOfContents, setShowForm }) => {
     const [newContent, setNewContent] = useState('');
+    const [isLink, setIsLink] = useState(false); // State to track if the content should be a link
 
     const handleContentChange = (e) => {
         setNewContent(e.target.value);
     };
 
+    const handleCheckboxChange = (e) => {
+        setIsLink(e.target.checked);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://localhost:5000/api/books/${title}`, { newContent: newContent });
+            const contentToAdd = isLink ? `<a href="${newContent}">${newContent}</a>` : newContent;
+            const response = await axios.put(`http://localhost:5000/api/books/${title}`, { newContent: contentToAdd });
             setTableOfContents(response.data.tableOfContents);
             setShowForm(false);
         } catch (error) {
@@ -34,17 +40,25 @@ const AddToContentsForm = ({ title, setTableOfContents, setShowForm }) => {
     }, [setShowForm]);
 
     return (
-            <form onSubmit={handleSubmit}>
-                <label htmlFor='newContent'>Add Content:</label>
+        <form onSubmit={handleSubmit}>
+            <label htmlFor='newContent'>Add Content:</label>
+            <input
+                type='text'
+                id='newContent'
+                value={newContent}
+                onChange={handleContentChange}
+                required
+            />
+            <label>
+                Make Link:
                 <input
-                    type='text'
-                    id='newContent'
-                    value={newContent}
-                    onChange={handleContentChange}
-                    required
+                    type="checkbox"
+                    checked={isLink}
+                    onChange={handleCheckboxChange}
                 />
-                <button type="submit" className="add-button">Add Content</button>
-            </form>
+            </label>
+            <button type="submit" className="add-button">Add Content</button>
+        </form>
     );
 };
 
