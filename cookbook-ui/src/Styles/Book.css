@@ -39,6 +39,7 @@
   font-weight: 600;
   font-family: 'Roboto', sans-serif;
   text-align: center;
+  transition: .3s;
 }
 
 .book-button:hover {
