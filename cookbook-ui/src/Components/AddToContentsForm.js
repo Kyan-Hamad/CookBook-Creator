@@ -22,7 +22,7 @@ const AddToContentsForm = ({ title, setTableOfContents, setShowForm }) => {
                 contentToAdd = `<a href="${newContent}">${newContent}</a>`;
             }
             const response = await axios.put(`http://localhost:5000/api/books/${title}`, { newContent: contentToAdd, isLink });
-            setTableOfContents(response.data.tableOfContents);
+            setTableOfContents(response.data.tableOfContents.split('\n'));
             setShowForm(false);
         } catch (error) {
             console.error('Error adding content:', error);
