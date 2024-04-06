@@ -1,15 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const cors = require('cors'); // Import cors package
+const cors = require('cors');
 const path = require('path');
 
 const app = express();
 
-// Allow requests from all origins
 app.use(cors());
 
-// Connect to MongoDB
 mongoose.connect('mongodb+srv://cookbook:jTyTfD8uLHxpvqD@cluster0.8ekwc6d.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -17,7 +15,6 @@ mongoose.connect('mongodb+srv://cookbook:jTyTfD8uLHxpvqD@cluster0.8ekwc6d.mongod
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('Error connecting to MongoDB:', err));
 
-// Define Book schema
 const bookSchema = new mongoose.Schema({
     title: String,
     tableOfContents: String
@@ -25,10 +22,8 @@ const bookSchema = new mongoose.Schema({
 
 const Book = mongoose.model('Book', bookSchema);
 
-// Middleware to parse JSON bodies
 app.use(bodyParser.json());
 
-// Route to handle creating a new book
 app.post('/api/books', async (req, res) => {
     try {
         const { title, tableOfContents } = req.body;
@@ -41,7 +36,6 @@ app.post('/api/books', async (req, res) => {
     }
 });
 
-// Route to handle fetching all books
 app.get('/api/books', async (req, res) => {
     try {
         const books = await Book.find();
@@ -52,7 +46,6 @@ app.get('/api/books', async (req, res) => {
     }
 });
 
-// Route to handle fetching a book by title
 app.get('/api/books/:title', async (req, res) => {
     try {
         const book = await Book.findOne({ title: req.params.title });
@@ -67,13 +60,13 @@ app.get('/api/books/:title', async (req, res) => {
     }
 });
 
-// Route to handle updating a book's table of contents
 app.put('/api/books/:title', async (req, res) => {
     try {
-        const { newContent } = req.body;
+        const { tableOfContents } = req.body;
         const book = await Book.findOne({ title: req.params.title });
         if (book) {
-            book.tableOfContents += '\n' + newContent; // Append new content
+            // Update the table of contents based on the provided data
+            book.tableOfContents = tableOfContents;
             await book.save();
             res.status(200).json(book);
         } else {
@@ -85,18 +78,14 @@ app.put('/api/books/:title', async (req, res) => {
     }
 });
 
-// Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-    // Set static folder
     app.use(express.static('bookshelf-app/build'));
 
-    // Serve index.html for all other routes
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'bookshelf-app', 'build', 'index.html'));
     });
 }
 
-// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

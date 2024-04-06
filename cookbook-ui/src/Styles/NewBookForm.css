@@ -10,9 +10,22 @@
   }
   
   .new-book-form h2 {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    text-align: center;
   }
   
+#title::placeholder {
+    color: #a3a3a3;
+  }
+
+#TableofContents::placeholder {
+    color: #a3a3a3;
+  }
+
+#TableofContents {
+    visibility: hidden;
+  }
+
   .form-group {
     margin-bottom: 20px;
   }
