@@ -65,7 +65,6 @@ app.put('/api/books/:title', async (req, res) => {
         const { tableOfContents } = req.body;
         const book = await Book.findOne({ title: req.params.title });
         if (book) {
-            // Update the table of contents based on the provided data
             book.tableOfContents = tableOfContents;
             await book.save();
             res.status(200).json(book);

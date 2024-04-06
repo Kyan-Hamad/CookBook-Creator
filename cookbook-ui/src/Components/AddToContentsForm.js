@@ -21,9 +21,9 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
             if (isLink) {
                 contentToAdd = `<a href="${newContent}">${newContent}</a>`;
             }
-            const updatedTableOfContents = [...tableOfContents, contentToAdd]; // Append new content
+            const updatedTableOfContents = [...tableOfContents, contentToAdd]; 
             await axios.put(`http://localhost:5000/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
-            setTableOfContents(updatedTableOfContents); // Update local state with the updated table of contents
+            setTableOfContents(updatedTableOfContents); 
             setShowForm(false);
         } catch (error) {
             console.error('Error adding content:', error);
