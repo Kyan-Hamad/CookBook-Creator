@@ -62,15 +62,11 @@ app.get('/api/books/:title', async (req, res) => {
 
 app.put('/api/books/:title', async (req, res) => {
     try {
-        const { newContent, isLink } = req.body;
-        let updatedContent = newContent;
-        if (isLink) {
-            // If content should be a link, format it as an HTML anchor tag
-            updatedContent = `<a href="${newContent}">${newContent}</a>`;
-        }
+        const { tableOfContents } = req.body;
         const book = await Book.findOne({ title: req.params.title });
         if (book) {
-            book.tableOfContents += '\n' + updatedContent; // Append new content
+            // Update the table of contents based on the provided data
+            book.tableOfContents = tableOfContents;
             await book.save();
             res.status(200).json(book);
         } else {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/AddToContentsForm.css';
 
-const AddToContentsForm = ({ title, setTableOfContents, setShowForm }) => {
+const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShowForm }) => {
     const [newContent, setNewContent] = useState('');
     const [isLink, setIsLink] = useState(false);
 
@@ -21,8 +21,9 @@ const AddToContentsForm = ({ title, setTableOfContents, setShowForm }) => {
             if (isLink) {
                 contentToAdd = `<a href="${newContent}">${newContent}</a>`;
             }
-            const response = await axios.put(`http://localhost:5000/api/books/${title}`, { newContent: contentToAdd, isLink });
-            setTableOfContents(response.data.tableOfContents.split('\n'));
+            const updatedTableOfContents = [...tableOfContents, contentToAdd]; // Append new content
+            await axios.put(`http://localhost:5000/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
+            setTableOfContents(updatedTableOfContents); // Update local state with the updated table of contents
             setShowForm(false);
         } catch (error) {
             console.error('Error adding content:', error);

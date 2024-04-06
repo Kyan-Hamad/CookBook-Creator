@@ -29,14 +29,14 @@ const BookDetails = () => {
     };
 
     const handleContentClick = (content) => {
-        if (content.startsWith('<a href=')) {
+        if (content && content.startsWith && content.startsWith('<a href=')) {
             const url = content.split('"')[1];
             navigate(`/books/${title}/${url}`);
         }
     };
 
     const renderContent = (content, index) => {
-        if (content.startsWith('<a href=')) {
+        if (content && content.startsWith && content.startsWith('<a href=')) {
             const text = content.match(/>([^<]*)<\/a>/)[1];
             return <span>{text}</span>;
         } else {
@@ -44,7 +44,7 @@ const BookDetails = () => {
         }
     };
 
-    const onDragEnd = (result) => {
+    const onDragEnd = async (result) => {
         if (!result.destination) return;
 
         const items = Array.from(tableOfContents);
@@ -52,6 +52,13 @@ const BookDetails = () => {
         items.splice(result.destination.index, 0, reorderedItem);
 
         setTableOfContents(items);
+
+        try {
+            const response = await axios.put(`http://localhost:5000/api/books/${title}`, { tableOfContents: items.join('\n') });
+            console.log('Table of contents updated:', response.data);
+        } catch (error) {
+            console.error('Error updating table of contents:', error);
+        }
     };
 
     return (
@@ -84,7 +91,7 @@ const BookDetails = () => {
                 )}
             </DragDropContext>
             <button onClick={handleShowForm}>Edit TOC</button>
-            {showForm && <AddToContentsForm title={title} setTableOfContents={setTableOfContents} setShowForm={setShowForm} />}
+            {showForm && <AddToContentsForm title={title} tableOfContents={tableOfContents} setTableOfContents={setTableOfContents} setShowForm={setShowForm} />}
         </div>
     );
 };
