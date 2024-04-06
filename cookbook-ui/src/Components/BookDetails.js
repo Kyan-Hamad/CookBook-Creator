@@ -37,10 +37,11 @@ const BookDetails = () => {
 
     const renderContent = (content, index) => {
         if (content && content.startsWith && content.startsWith('<a href=')) {
+            const url = content.split('"')[1];
             const text = content.match(/>([^<]*)<\/a>/)[1];
-            return <span>{text}</span>;
+            return <span className="link" onClick={() => navigate(`/books/${title}/${url}`)}>{text}</span>;
         } else {
-            return <span>{content}</span>;
+            return <h3 className="header-3">{content}</h3>;
         }
     };
 
