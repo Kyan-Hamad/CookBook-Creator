@@ -1,3 +1,4 @@
+// AddToContentsForm.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/AddToContentsForm.css';
@@ -20,16 +21,22 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
             let contentToAdd = newContent;
             if (isLink) {
                 contentToAdd = `<a href="${newContent}">${newContent}</a>`;
+                // Get the actual bookId and bookTitle from the backend before creating the page
+                const bookResponse = await axios.get(`http://localhost:5000/api/books/${title}`);
+                const { _id: bookId, title: bookTitle } = bookResponse.data; // Assuming _id is the ObjectId of the book
+                // Create a new page associated with the book
+                await axios.post('http://localhost:5000/api/pages', { bookId, bookTitle, pageId: newContent });
             }
-            const updatedTableOfContents = [...tableOfContents, contentToAdd]; 
+            const updatedTableOfContents = [...tableOfContents, contentToAdd];
             await axios.put(`http://localhost:5000/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
-            setTableOfContents(updatedTableOfContents); 
+            setTableOfContents(updatedTableOfContents);
+            setNewContent(''); // Reset the form
             setShowForm(false);
         } catch (error) {
             console.error('Error adding content:', error);
         }
-    };
-
+    };    
+    
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === 'Escape') {

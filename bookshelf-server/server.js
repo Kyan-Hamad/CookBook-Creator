@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -20,7 +21,14 @@ const bookSchema = new mongoose.Schema({
     tableOfContents: String
 });
 
+const pageSchema = new mongoose.Schema({
+    bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
+    bookTitle: String, // Add bookTitle field to store the book title
+    pageId: String
+});
+
 const Book = mongoose.model('Book', bookSchema);
+const Page = mongoose.model('Page', pageSchema);
 
 app.use(bodyParser.json());
 
@@ -76,6 +84,44 @@ app.put('/api/books/:title', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+app.post('/api/pages', async (req, res) => {
+    try {
+        const { bookId, bookTitle, pageId } = req.body; // Extract bookId, bookTitle, and pageId from request body
+        const newPage = new Page({ bookId, bookTitle, pageId });
+        await newPage.save();
+        res.status(201).json({ message: 'Page created successfully', page: newPage });
+    } catch (err) {
+        console.error('Error creating page:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+app.delete('/api/pages/:pageId', async (req, res) => {
+    try {
+        const { pageId } = req.params;
+        // Find the page by its ID
+        const deletedPage = await Page.findByIdAndDelete(pageId);
+        if (!deletedPage) {
+            return res.status(404).json({ message: 'Page not found' });
+        }
+        // Find the associated book by its ID
+        const book = await Book.findById(deletedPage.bookId);
+        if (!book) {
+            return res.status(404).json({ message: 'Book not found' });
+        }
+        // Remove the pageId from the tableOfContents array
+        const updatedTableOfContents = book.tableOfContents.filter(content => content !== deletedPage.pageId);
+        // Update the book's tableOfContents
+        book.tableOfContents = updatedTableOfContents.join('\n');
+        await book.save();
+        res.status(200).json({ message: 'Page deleted successfully', deletedPage });
+    } catch (err) {
+        console.error('Error deleting page:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('bookshelf-app/build'));

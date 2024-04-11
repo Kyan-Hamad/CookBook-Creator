@@ -14,38 +14,34 @@ import BookDetails from '../src/Components/BookDetails';
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
 
-  console.log("Authentication State: ", isAuthenticated);
-
+  // Handle loading state
   if (isLoading) {
-    return (
-      <Loading/>
-    )
+    return <Loading />;
   }
 
   return (
     <>
-    <div>
-      <BrowserRouter>
-        <Navbar />
-        {/* Routes represent page routes "/" represents the default page route that we would refer to as the home page */}
-        
-        <Routes>
-          <Route
-            path="/"
-            element={isAuthenticated ? <DashBoard /> : <HomePage />} />
-          <Route
-            path="/profile"
-            element={isAuthenticated ? <Profile /> : <HomePage />}
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/new-book" element={<NewBookForm />} />
-          <Route path="/books/:title" element={<BookDetails />} /> {/* Add this route */}
-        </Routes>
-      </BrowserRouter>
-    </div>
-  </>
-);
+      <div>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route
+              path="/"
+              element={isAuthenticated ? <DashBoard /> : <HomePage />} // Render Dashboard if authenticated, otherwise HomePage
+            />
+            <Route
+              path="/profile"
+              element={isAuthenticated ? <Profile /> : <HomePage />} // Render Profile if authenticated, otherwise HomePage
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/new-book" element={<NewBookForm />} />
+            <Route path="/books/:title" element={<BookDetails />} /> {/* Add this route */}
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </>
+  );
 }
 
 export default App;

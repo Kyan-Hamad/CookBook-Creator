@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import AddToContentsForm from './AddToContentsForm';
 import '../Styles/BookDetails.css';
+import AddToContentsForm from './AddToContentsForm';
 
 const BookDetails = () => {
     const { title } = useParams();
@@ -15,7 +15,9 @@ const BookDetails = () => {
         const fetchBookDetails = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/books/${title}`);
-                setTableOfContents(response.data.tableOfContents.split('\n'));
+                if (response.data && response.data.tableOfContents) {
+                    setTableOfContents(response.data.tableOfContents.split('\n'));
+                }
             } catch (error) {
                 console.error('Error fetching book details:', error);
             }
@@ -24,9 +26,19 @@ const BookDetails = () => {
         fetchBookDetails();
     }, [title]);
 
-    const handleShowForm = () => {
-        setShowForm(true);
-    };
+    useEffect(() => {
+        const fetchPages = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/api/pages/${title}`);
+                const pages = response.data.map(page => page.content);
+                setTableOfContents(pages);
+            } catch (error) {
+                console.error('Error fetching pages:', error);
+            }
+        };
+
+        fetchPages();
+    }, [title]);
 
     const handleContentClick = (content) => {
         if (content && content.startsWith && content.startsWith('<a href=')) {
@@ -39,11 +51,16 @@ const BookDetails = () => {
         if (content && content.startsWith && content.startsWith('<a href=')) {
             const url = content.split('"')[1];
             const text = content.match(/>([^<]*)<\/a>/)[1];
-            return <span className="link" onClick={() => navigate(`/books/${title}/${url}`)}>{text}</span>;
+            return (
+                <span className="link" onClick={() => navigate(`/books/${title}/${url}`)}>
+                    <span>{text}</span>
+                </span>
+            );
         } else {
-            return <h3 className="header-3">{content}</h3>;
+            return <span className="header-3">{content}</span>;
         }
     };
+    
 
     const onDragEnd = async (result) => {
         if (!result.destination) return;
@@ -73,17 +90,21 @@ const BookDetails = () => {
                             <div {...provided.droppableProps} ref={provided.innerRef}>
                                 {tableOfContents.map((content, index) => (
                                     <Draggable key={index} draggableId={`content-${index}`} index={index}>
-                                        {(provided) => (
-                                            <p
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
+                                    {(provided) => (
+                                        <div
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            className="drag-handle"
+                                        >
+                                            <span
                                                 {...provided.dragHandleProps}
                                                 onClick={() => handleContentClick(content)}
                                             >
                                                 {renderContent(content, index)}
-                                            </p>
-                                        )}
-                                    </Draggable>
+                                            </span>
+                                        </div>
+                                    )}
+                                </Draggable>
                                 ))}
                                 {provided.placeholder}
                             </div>
@@ -91,7 +112,9 @@ const BookDetails = () => {
                     </Droppable>
                 )}
             </DragDropContext>
-            <button onClick={handleShowForm}>Edit TOC</button>
+            <div className="add-button-container">
+                <button className="add-button" onClick={() => setShowForm(true)}>Add Content</button>
+            </div>
             {showForm && <AddToContentsForm title={title} tableOfContents={tableOfContents} setTableOfContents={setTableOfContents} setShowForm={setShowForm} />}
         </div>
     );
