@@ -4,11 +4,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import '../Styles/BookDetails.css';
 import AddToContentsForm from './AddToContentsForm';
+import EditPageForm from './EditPageForm';
 
 const BookDetails = () => {
     const { title } = useParams();
     const [tableOfContents, setTableOfContents] = useState([]);
     const [showForm, setShowForm] = useState(false);
+    const [pageId, setPageId] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,25 +27,14 @@ const BookDetails = () => {
 
         fetchBookDetails();
     }, [title]);
-
-    useEffect(() => {
-        const fetchPages = async () => {
-            try {
-                const response = await axios.get(`http://localhost:5000/api/pages/${title}`);
-                const pages = response.data.map(page => page.content);
-                setTableOfContents(pages);
-            } catch (error) {
-                console.error('Error fetching pages:', error);
-            }
-        };
-
-        fetchPages();
-    }, [title]);
     
     const handleContentClick = (content) => {
         if (content && content.startsWith && content.startsWith('<a href=')) {
             const url = content.split('"')[1];
             navigate(`/books/${title}/${url}`);
+        } else {
+            setPageId(content);
+            setShowForm(true);
         }
     };
 
@@ -60,7 +51,6 @@ const BookDetails = () => {
             return <span className="header-3">{content}</span>;
         }
     };
-    
 
     const onDragEnd = async (result) => {
         if (!result.destination) return;
@@ -90,21 +80,21 @@ const BookDetails = () => {
                             <div {...provided.droppableProps} ref={provided.innerRef}>
                                 {tableOfContents.map((content, index) => (
                                     <Draggable key={index} draggableId={`content-${index}`} index={index}>
-                                    {(provided) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            className="drag-handle"
-                                        >
-                                            <span
-                                                {...provided.dragHandleProps}
-                                                onClick={() => handleContentClick(content)}
+                                        {(provided) => (
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                className="drag-handle"
                                             >
-                                                {renderContent(content, index)}
-                                            </span>
-                                        </div>
-                                    )}
-                                </Draggable>
+                                                <span
+                                                    {...provided.dragHandleProps}
+                                                    onClick={() => handleContentClick(content)}
+                                                >
+                                                    {renderContent(content, index)}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </Draggable>
                                 ))}
                                 {provided.placeholder}
                             </div>
@@ -115,7 +105,8 @@ const BookDetails = () => {
             <div className="add-button-container">
                 <button className="add-button" onClick={() => setShowForm(true)}>Add Content</button>
             </div>
-            {showForm && <AddToContentsForm title={title} tableOfContents={tableOfContents} setTableOfContents={setTableOfContents} setShowForm={setShowForm} />}
+            {showForm && !pageId && <AddToContentsForm title={title} tableOfContents={tableOfContents} setTableOfContents={setTableOfContents} setShowForm={setShowForm} />}
+            {showForm && pageId && <EditPageForm onSave={() => setShowForm(false)} pageId={pageId} />}
         </div>
     );
 };

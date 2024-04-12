@@ -34,7 +34,6 @@ const pageSchema = new mongoose.Schema({
     steps: String
 });
 
-
 const Book = mongoose.model('Book', bookSchema);
 const Page = mongoose.model('Page', pageSchema);
 
@@ -48,6 +47,21 @@ app.post('/api/books', async (req, res) => {
         res.status(201).json({ message: 'Book created successfully', book: newBook });
     } catch (err) {
         console.error('Error creating book:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+app.post('/api/pages', async (req, res) => {
+    try {
+        const { bookId, bookTitle, pageId, recipeStory, ingredients, steps } = req.body;
+        let page = await Page.findOneAndUpdate(
+            { pageId },
+            { bookId, bookTitle, pageId, recipeStory, ingredients, steps },
+            { upsert: true, new: true }
+        );
+        res.status(201).json({ message: 'Page created/updated successfully', page });
+    } catch (err) {
+        console.error('Error creating/updating page:', err);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
@@ -93,15 +107,18 @@ app.put('/api/books/:title', async (req, res) => {
     }
 });
 
-app.post('/api/pages', async (req, res) => {
+app.put('/api/pages/:pageId', async (req, res) => {
     try {
-        const { bookId, bookTitle, pageId, recipeStory, ingredients, steps } = req.body;
-        const newPage = new Page({ bookId, bookTitle, pageId, recipeStory, ingredients, steps });
-        await newPage.save();
-        const createdPage = await Page.findById(newPage._id).populate('bookId', 'title');
-        res.status(201).json({ message: 'Page created successfully', page: createdPage });
+        const { recipeStory, ingredients, steps } = req.body;
+        const { pageId } = req.params;
+        let page = await Page.findOneAndUpdate(
+            { pageId },
+            { recipeStory, ingredients, steps },
+            { new: true }
+        );
+        res.status(200).json({ message: 'Page updated successfully', page });
     } catch (err) {
-        console.error('Error creating page:', err);
+        console.error('Error updating page:', err);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
@@ -146,7 +163,6 @@ app.delete('/api/pages/:pageId', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
-
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('bookshelf-app/build'));

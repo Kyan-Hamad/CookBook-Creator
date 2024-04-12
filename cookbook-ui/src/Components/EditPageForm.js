@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../Styles/EditPageForm.css';
 
-const EditPageForm = ({ onSave }) => {
+const EditPageForm = ({ onSave, pageId }) => {
     const [recipeStory, setRecipeStory] = useState('');
     const [ingredients, setIngredients] = useState([{ name: '', quantity: '', unit: '' }]);
     const [steps, setSteps] = useState('');
@@ -20,17 +20,14 @@ const EditPageForm = ({ onSave }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:5000/api/pages`, {
+            const response = await axios.put(`http://localhost:5000/api/pages/${pageId}`, {
                 recipeStory,
                 ingredients,
                 steps
             });
-            onSave(response.data.page); // Pass the created page data to the onSave callback
-            setRecipeStory('');
-            setIngredients([{ name: '', quantity: '', unit: '' }]);
-            setSteps('');
+            onSave(response.data.page);
         } catch (error) {
-            console.error('Error creating page:', error);
+            console.error('Error updating page:', error);
         }
     };
 

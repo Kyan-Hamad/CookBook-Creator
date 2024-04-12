@@ -5,7 +5,7 @@ import EditPageForm from './EditPageForm';
 import '../Styles/PageDetails.css';
 
 const PageDetails = () => {
-    const { pageId } = useParams(); // Correctly retrieve pageId from URL parameters
+    const { pageId } = useParams();
     const [pageContent, setPageContent] = useState({});
     const [showForm, setShowForm] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -13,12 +13,12 @@ const PageDetails = () => {
     useEffect(() => {
         const fetchPageContent = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/pages/${pageId}`); // Use correct endpoint URL
+                const response = await axios.get(`http://localhost:5000/api/pages/${pageId}`);
                 setPageContent(response.data);
-                setLoading(false); // Set loading to false after fetching data
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching page content:', error);
-                setLoading(false); // Set loading to false on error as well
+                setLoading(false);
             }
         };
     
@@ -26,21 +26,25 @@ const PageDetails = () => {
     }, [pageId]);    
 
     const handleSavePage = (newPageContent) => {
-        setPageContent(newPageContent);
-        setShowForm(false); // Hide the form after saving
+        setPageContent(prevPageContent => ({
+            ...prevPageContent,
+            ...newPageContent
+        }));
+        setShowForm(false);
     };
+    
 
     return (
         <div>
             <h2>{pageContent.bookTitle}</h2>
-            {loading ? ( // Display loading indicator if data is being fetched
+            {loading ? (
                 <p>Loading...</p>
             ) : (
                 <>
                     {showForm ? (
                         <EditPageForm 
-                            initialContent={pageContent} 
                             onSave={handleSavePage} 
+                            pageId={pageId} 
                         />
                     ) : (
                         <div>
