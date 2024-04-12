@@ -1,0 +1,59 @@
+.EditPageForm {
+    margin-bottom: 20px;
+}
+
+.EditPageForm h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.EditPageForm form {
+    display: flex;
+    flex-direction: column;
+}
+
+.EditPageForm label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.EditPageForm textarea, .EditPageForm input, .EditPageForm select {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.EditPageForm button {
+    background-color: #ff6600;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.EditPageForm button:hover {
+    background-color: #d35501;
+}
+
+.EditPageForm .ingredient-inputs {
+    display: flex;
+    align-items: center;
+}
+
+.EditPageForm .ingredient-inputs input[type="text"] {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.EditPageForm .ingredient-inputs input[type="number"] {
+    width: 100px;
+    margin-right: 10px;
+}
+
+.EditPageForm .ingredient-inputs select {
+    width: 100px;
+}

@@ -10,6 +10,7 @@ import DashBoard from './WebPages/DashBoard';
 import Profile from './WebPages/Profile';
 import NewBookForm from '../src/Components/NewBookForm';
 import BookDetails from '../src/Components/BookDetails'; 
+import PageDetails from '../src/Components/PageDetails'; // Import PageDetails component
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -36,7 +37,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/new-book" element={<NewBookForm />} />
-            <Route path="/books/:title" element={<BookDetails />} /> {/* Add this route */}
+            <Route path="/books/:title" element={<BookDetails />} /> {/* Route for BookDetails */}
+            <Route path="/books/:title/:pageId" element={<PageDetails />} /> {/* Route for PageDetails with page ID */}
           </Routes>
         </BrowserRouter>
       </div>

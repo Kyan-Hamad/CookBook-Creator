@@ -1,10 +1,8 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-
 const app = express();
 
 app.use(cors());
@@ -23,9 +21,19 @@ const bookSchema = new mongoose.Schema({
 
 const pageSchema = new mongoose.Schema({
     bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
-    bookTitle: String, // Add bookTitle field to store the book title
-    pageId: String
+    bookTitle: String,
+    pageId: String,
+    recipeStory: String,
+    ingredients: [
+        {
+            name: String,
+            quantity: Number,
+            unit: String
+        }
+    ],
+    steps: String
 });
+
 
 const Book = mongoose.model('Book', bookSchema);
 const Page = mongoose.model('Page', pageSchema);
@@ -87,12 +95,33 @@ app.put('/api/books/:title', async (req, res) => {
 
 app.post('/api/pages', async (req, res) => {
     try {
-        const { bookId, bookTitle, pageId } = req.body; // Extract bookId, bookTitle, and pageId from request body
-        const newPage = new Page({ bookId, bookTitle, pageId });
+        const { bookId, bookTitle, pageId, recipeStory, ingredients, steps } = req.body;
+        const newPage = new Page({ bookId, bookTitle, pageId, recipeStory, ingredients, steps });
         await newPage.save();
-        res.status(201).json({ message: 'Page created successfully', page: newPage });
+        const createdPage = await Page.findById(newPage._id).populate('bookId', 'title');
+        res.status(201).json({ message: 'Page created successfully', page: createdPage });
     } catch (err) {
         console.error('Error creating page:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+
+app.get('/api/pages/:pageId', async (req, res) => {
+    try {
+        const { pageId } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(pageId)) {
+            return res.status(400).json({ message: 'Invalid pageId' });
+        }
+        
+        const page = await Page.findById(pageId);
+        if (page) {
+            res.status(200).json(page);
+        } else {
+            res.status(404).json({ message: 'Page not found' });
+        }
+    } catch (err) {
+        console.error('Error fetching page:', err);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
@@ -100,19 +129,15 @@ app.post('/api/pages', async (req, res) => {
 app.delete('/api/pages/:pageId', async (req, res) => {
     try {
         const { pageId } = req.params;
-        // Find the page by its ID
         const deletedPage = await Page.findByIdAndDelete(pageId);
         if (!deletedPage) {
             return res.status(404).json({ message: 'Page not found' });
         }
-        // Find the associated book by its ID
         const book = await Book.findById(deletedPage.bookId);
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
-        // Remove the pageId from the tableOfContents array
         const updatedTableOfContents = book.tableOfContents.filter(content => content !== deletedPage.pageId);
-        // Update the book's tableOfContents
         book.tableOfContents = updatedTableOfContents.join('\n');
         await book.save();
         res.status(200).json({ message: 'Page deleted successfully', deletedPage });

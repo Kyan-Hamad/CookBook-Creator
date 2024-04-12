@@ -39,7 +39,7 @@ const BookDetails = () => {
 
         fetchPages();
     }, [title]);
-
+    
     const handleContentClick = (content) => {
         if (content && content.startsWith && content.startsWith('<a href=')) {
             const url = content.split('"')[1];
