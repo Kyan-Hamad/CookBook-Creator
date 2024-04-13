@@ -33,7 +33,7 @@ const pageSchema = new mongoose.Schema({
             unit: String
         }
     ],
-    steps: String
+    steps: [String]
 });
 
 const Book = mongoose.model('Book', bookSchema);
@@ -78,7 +78,7 @@ app.get('/api/books', async (req, res) => { //Get all books from mongodb
     }
 });
 
-app.get('/api/books/:title', async (req, res) => { //
+app.get('/api/books/:title', async (req, res) => { //Get a specific book from mongodb
     try {
         const book = await Book.findOne({ title: req.params.title });
         if (book) {
@@ -92,24 +92,7 @@ app.get('/api/books/:title', async (req, res) => { //
     }
 });
 
-app.put('/api/books/:title', async (req, res) => {
-    try {
-        const { tableOfContents } = req.body;
-        const book = await Book.findOne({ title: req.params.title });
-        if (book) {
-            book.tableOfContents = tableOfContents;
-            await book.save();
-            res.status(200).json(book);
-        } else {
-            res.status(404).json({ message: 'Book not found' });
-        }
-    } catch (err) {
-        console.error('Error updating book:', err);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
-
-app.put('/api/pages/:pageId', async (req, res) => {
+app.put('/api/pages/:pageId', async (req, res) => { // Update a specific page in mongodb
     try {
         const { recipeStory, ingredients, steps } = req.body;
         const { pageId } = req.params;
@@ -126,8 +109,25 @@ app.put('/api/pages/:pageId', async (req, res) => {
 });
 
 
-// Update the GET endpoint for retrieving page details by pageId
-app.get('/api/pages/:pageId', async (req, res) => {
+app.put('/api/pages/:pageId', async (req, res) => { //Update a specific page in mongodb
+    try {
+        const { recipeStory, ingredients, steps } = req.body;
+        const { pageId } = req.params;
+        let page = await Page.findOneAndUpdate(
+            { pageId },
+            { recipeStory, ingredients, steps },
+            { new: true }
+        );
+        res.status(200).json({ message: 'Page updated successfully', page });
+    } catch (err) {
+        console.error('Error updating page:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+
+
+app.get('/api/pages/:pageId', async (req, res) => { //Get a specific page from mongodb
     try {
         const { pageId } = req.params;
         const page = await Page.findOne({ pageId: pageId });
@@ -144,7 +144,7 @@ app.get('/api/pages/:pageId', async (req, res) => {
     }
 });
 
-app.delete('/api/pages/:pageId', async (req, res) => {
+app.delete('/api/pages/:pageId', async (req, res) => {//Delete a specific page from mongodb
     try {
         const { pageId } = req.params;
         const deletedPage = await Page.findByIdAndDelete(pageId);
@@ -165,7 +165,7 @@ app.delete('/api/pages/:pageId', async (req, res) => {
     }
 });
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') { 
     app.use(express.static('bookshelf-app/build'));
 
     app.get('*', (req, res) => {

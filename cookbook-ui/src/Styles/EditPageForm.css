@@ -1,59 +1,80 @@
-.EditPageForm {
-    margin-bottom: 20px;
-}
-
-.EditPageForm h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.EditPageForm form {
-    display: flex;
-    flex-direction: column;
-}
-
-.EditPageForm label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.EditPageForm textarea, .EditPageForm input, .EditPageForm select {
-    margin-bottom: 10px;
-    padding: 8px;
+.edit-page-form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.EditPageForm button {
-    background-color: #ff6600;
+    border-radius: 5px;
+  }
+  
+  .edit-page-form h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .edit-page-form label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .edit-page-form textarea,
+  .edit-page-form input[type="text"],
+  .edit-page-form input[type="number"],
+  .edit-page-form select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .edit-page-form button {
+    background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 5px;
     padding: 10px 20px;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
-    margin-top: 20px;
-}
-
-.EditPageForm button:hover {
-    background-color: #d35501;
-}
-
-.EditPageForm .ingredient-inputs {
+    margin-right: 10px;
+  }
+  
+  .edit-page-form button[type="button"] {
+    background-color: #28a745;
+  }
+  
+  .edit-page-form .ingredient-inputs {
     display: flex;
     align-items: center;
-}
-
-.EditPageForm .ingredient-inputs input[type="text"] {
+  }
+  
+  .edit-page-form .ingredient-inputs input[type="text"],
+  .edit-page-form .ingredient-inputs input[type="number"],
+  .edit-page-form .ingredient-inputs select {
+    margin-right: 10px;
     flex: 1;
-    margin-right: 10px;
-}
-
-.EditPageForm .ingredient-inputs input[type="number"] {
-    width: 100px;
-    margin-right: 10px;
-}
-
-.EditPageForm .ingredient-inputs select {
-    width: 100px;
-}
+  }
+  
+  .edit-page-form .add-ingredient-button {
+    background-color: #ffc107;
+  }
+  
+  .edit-page-form .step-inputs {
+    margin-bottom: 10px;
+  }
+  
+  .edit-page-form .step {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .edit-page-form .add-step-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+  }

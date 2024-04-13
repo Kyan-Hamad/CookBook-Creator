@@ -18,8 +18,6 @@
     }
 }
 
-
-
 .Book-Page h2 {
     font-size: 28px;
     font-weight: bold;
@@ -36,17 +34,17 @@
 
 .Book-Page p {
     font-size: 16px;
-    margin: 0; /* Remove any margin */
-    padding: 0; /* Remove any padding */
+    margin: 0;
+    padding: 0;
 }
 
 .Book-Page .link {
-    text-decoration: underline; /* Add underline to links */
-    cursor: pointer; /* Change cursor to pointer on hover */
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .Book-Page .link:hover {
-    color: #007bff; /* Change link color on hover */
+    color: #007bff;
 }
 
 .Book-Page button {

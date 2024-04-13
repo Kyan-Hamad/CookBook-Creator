@@ -10,7 +10,6 @@ const PageDetails = () => {
     const [showForm, setShowForm] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    // Add event listener to close form when ESC key is pressed
     useEffect(() => {
         const closeForm = (event) => {
             if (event.keyCode === 27) {
@@ -25,7 +24,7 @@ const PageDetails = () => {
     useEffect(() => {
         const fetchPageContent = async () => {
             try {
-                if (!pageId) return; // Check if pageId is undefined
+                if (!pageId) return; 
                 const response = await axios.get(`http://localhost:5000/api/pages/${pageId}`);
                 setPageContent(response.data);
                 setLoading(false);
@@ -35,9 +34,9 @@ const PageDetails = () => {
             }
         };
     
-        fetchPageContent(); // Fetch page content when component mounts
+        fetchPageContent(); 
     
-    }, [pageId]); // Execute effect when pageId changes or on initial mount
+    }, [pageId]); 
     
     const handleSavePage = (newPageContent) => {
         setPageContent(prevPageContent => ({
@@ -49,7 +48,7 @@ const PageDetails = () => {
     
 
     return (
-        <div>
+        <div className="page-details">
             <h2>{pageContent.bookTitle}</h2>
             {loading ? (
                 <p>Loading...</p>
@@ -62,19 +61,34 @@ const PageDetails = () => {
                         />
                     ) : (
                         <div>
-                            <p>Recipe Story: {pageContent.recipeStory}</p>
-                            <p>Ingredients:</p>
-                            <ul>
+                            <p className="recipe-name">{pageId}</p>
+                            <div className="divider"></div>
+                            <p className="recipe-story">{pageContent.recipeStory}</p>
+                            <div className="divider"></div> 
+                            <p className='ingredient-title'>Ingredients:</p>
+                            <ul className="ingredient-list">
                                 {pageContent.ingredients && pageContent.ingredients.map((ingredient, index) => (
-                                    <li key={index}>
-                                        {ingredient.name} - {ingredient.quantity} {ingredient.unit}
+                                    <li key={index} className="ingredient-item">
+                                        <code>&bull;</code> {ingredient.quantity} {ingredient.unit} {ingredient.name} 
                                     </li>
                                 ))}
                             </ul>
-                            <p>Steps: {pageContent.steps}</p>
+                            <div className="divider"></div>
+                            <p className="steps" >Steps:</p>
+                            {Array.isArray(pageContent.steps) ? (
+                                <ol className="step-list" >
+                                    {pageContent.steps.map((step, index) => (
+                                        <li key={index} className="step-item">
+                                            {step}
+                                        </li>
+                                    ))}
+                                </ol>
+                            ) : (
+                                <p>No steps available.</p>
+                            )}
                         </div>
                     )}
-                    {!showForm && <button onClick={() => setShowForm(true)}>Edit Page</button>}
+                    {!showForm && <button onClick={() => setShowForm(true)} className="edit-button">Edit Page</button>}
                 </>
             )}
         </div>
