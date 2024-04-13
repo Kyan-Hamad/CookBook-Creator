@@ -76,13 +76,13 @@ const PageDetails = () => {
                             <div className="divider"></div>
                             <p className="steps" >Steps:</p>
                             {Array.isArray(pageContent.steps) ? (
-                                <ol className="step-list" >
-                                    {pageContent.steps.map((step, index) => (
-                                        <li key={index} className="step-item">
-                                            {step}
-                                        </li>
-                                    ))}
-                                </ol>
+                                <ol className="step-list">
+                                {pageContent.steps.map((step, index) => (
+                                   <li key={index} className="step-item">
+                                      {step}
+                                   </li>
+                                ))}
+                             </ol>
                             ) : (
                                 <p>No steps available.</p>
                             )}

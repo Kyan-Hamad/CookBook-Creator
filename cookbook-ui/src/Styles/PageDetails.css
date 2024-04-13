@@ -4,7 +4,6 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    text-align: center;
 }
 
 .page-details h2 {
@@ -13,30 +12,21 @@
     font-weight: bold;
     border-bottom: 1px solid #ccc;
     padding-bottom: 10px;
+    text-align: center;
 }
 
 .page-details p {
     font-size: 16px;
     margin-bottom: 10px;
+    text-align: center;
 }
+
 .page-details .recipe-name,
 .page-details .steps,
 .page-details .ingredient-title {
     font-weight: bold;
     font-size: 20px;
-}
-
-.page-details .step-list li {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
-.page-details .step-list li:before {
-    counter-increment: step-counter;
-    content: counter(step-counter) ". ";
-    margin-right: 10px;
+    text-align: center;
 }
 
 .page-details .ingredient-list {
@@ -52,19 +42,18 @@
 
 .page-details .steps ol {
     counter-reset: step-counter;
-    padding-left: 0;
     list-style: none;
+    text-align: center;
 }
 
-.page-details .steps ol li {
+.page-details .steps ol li::before {
     counter-increment: step-counter;
-    margin-bottom: 10px;
+    content: counter(step-counter) ". ";
+    margin-right: 10px;
+    text-align: right;
 }
 
-.page-details .steps ol li:before {
-    content: counter(step-counter) ". ";
-    font-weight: bold;
-}
+
 
 .page-details .divider {
     border-bottom: 1px solid #ccc;
@@ -73,10 +62,19 @@
 }
 
 .page-details .edit-button {
-    background-color: #007bff;
+    background-color: #ff6600;
     color: #fff;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    text-align: center;
+}
+
+.page-details .edit-button:hover {
+    background-color: #d35501;
+}
+
+.step-list {
+    text-align: center;
 }
