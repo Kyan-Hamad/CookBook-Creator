@@ -92,6 +92,25 @@ app.get('/api/books/:title', async (req, res) => { //Get a specific book from mo
     }
 });
 
+app.put('/api/books/:title', async (req, res) => { 
+    try {
+        const { title } = req.params;
+        const { tableOfContents } = req.body;
+        let book = await Book.findOneAndUpdate(
+            { title },
+            { tableOfContents },
+            { new: true }
+        );
+        if (!book) {
+            return res.status(404).json({ message: 'Book not found' });
+        }
+        res.status(200).json({ message: 'Book updated successfully', book });
+    } catch (err) {
+        console.error('Error updating book:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 app.put('/api/pages/:pageId', async (req, res) => { // Update a specific page in mongodb
     try {
         const { recipeStory, ingredients, steps } = req.body;

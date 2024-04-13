@@ -4,7 +4,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import '../Styles/BookDetails.css';
 import AddToContentsForm from './AddToContentsForm';
-import EditPageForm from './EditPageForm';
 
 const BookDetails = () => {
     const { title } = useParams();
@@ -106,7 +105,6 @@ const BookDetails = () => {
                 <button className="add-button" onClick={() => setShowForm(true)}>Add Content</button>
             </div>
             {showForm && !pageId && <AddToContentsForm title={title} tableOfContents={tableOfContents} setTableOfContents={setTableOfContents} setShowForm={setShowForm} />}
-            {showForm && pageId && <EditPageForm onSave={() => setShowForm(false)} pageId={pageId} />}
         </div>
     );
 };
