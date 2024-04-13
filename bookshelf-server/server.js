@@ -6,13 +6,16 @@ const path = require('path');
 const app = express();
 
 app.use(cors());
+
 //DONT FORGET TO FIGURE OUT HOW TO NOT REVEAL THE PASSWORD
+
 mongoose.connect('mongodb+srv://cookbook:jTyTfD8uLHxpvqD@cluster0.8ekwc6d.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('Error connecting to MongoDB:', err));
+
 
 //Create a schema for the book 
 const bookSchema = new mongoose.Schema({
@@ -40,6 +43,7 @@ const Book = mongoose.model('Book', bookSchema);
 const Page = mongoose.model('Page', pageSchema);
 
 app.use(bodyParser.json());
+
 
 app.post('/api/books', async (req, res) => { //Create a new book and store it into mongodb
     try {
@@ -78,7 +82,9 @@ app.get('/api/books', async (req, res) => { //Get all books from mongodb
     }
 });
 
+
 app.get('/api/books/:title', async (req, res) => { //Get a specific book from mongodb
+
     try {
         const book = await Book.findOne({ title: req.params.title });
         if (book) {
@@ -91,6 +97,7 @@ app.get('/api/books/:title', async (req, res) => { //Get a specific book from mo
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 
 app.put('/api/books/:title', async (req, res) => { 
     try {
@@ -110,6 +117,7 @@ app.put('/api/books/:title', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 
 app.put('/api/pages/:pageId', async (req, res) => { // Update a specific page in mongodb
     try {
@@ -185,6 +193,7 @@ app.delete('/api/pages/:pageId', async (req, res) => {//Delete a specific page f
 });
 
 if (process.env.NODE_ENV === 'production') { 
+
     app.use(express.static('bookshelf-app/build'));
 
     app.get('*', (req, res) => {

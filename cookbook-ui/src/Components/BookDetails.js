@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import '../Styles/BookDetails.css';
 import AddToContentsForm from './AddToContentsForm';
+import '../Styles/BookDetails.css';
 
 const BookDetails = () => {
     const { title } = useParams();
@@ -26,7 +27,7 @@ const BookDetails = () => {
 
         fetchBookDetails();
     }, [title]);
-    
+
     const handleContentClick = (content) => {
         if (content && content.startsWith && content.startsWith('<a href=')) {
             const url = content.split('"')[1];
@@ -34,6 +35,7 @@ const BookDetails = () => {
         } else {
             setPageId(content);
             setShowForm(true);
+
         }
     };
 
@@ -41,6 +43,7 @@ const BookDetails = () => {
         if (content && content.startsWith && content.startsWith('<a href=')) {
             const url = content.split('"')[1];
             const text = content.match(/>([^<]*)<\/a>/)[1];
+
             return (
                 <span className="link" onClick={() => navigate(`/books/${title}/${url}`)}>
                     <span>{text}</span>
@@ -80,6 +83,7 @@ const BookDetails = () => {
                                 {tableOfContents.map((content, index) => (
                                     <Draggable key={index} draggableId={`content-${index}`} index={index}>
                                         {(provided) => (
+
                                             <div
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
@@ -92,6 +96,7 @@ const BookDetails = () => {
                                                     {renderContent(content, index)}
                                                 </span>
                                             </div>
+
                                         )}
                                     </Draggable>
                                 ))}
@@ -105,6 +110,7 @@ const BookDetails = () => {
                 <button className="add-button" onClick={() => setShowForm(true)}>Add Content</button>
             </div>
             {showForm && !pageId && <AddToContentsForm title={title} tableOfContents={tableOfContents} setTableOfContents={setTableOfContents} setShowForm={setShowForm} />}
+
         </div>
     );
 };
