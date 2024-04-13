@@ -19,9 +19,7 @@ const NewBookForm = () => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        // Make a POST request to create a new book
         await axios.post('http://localhost:5000/api/books', { title, tableOfContents: TableOfContents });
-        // Redirect to the dashboard after creating the book
         navigate('/');
       } catch (error) {
         console.error('Error creating book:', error);

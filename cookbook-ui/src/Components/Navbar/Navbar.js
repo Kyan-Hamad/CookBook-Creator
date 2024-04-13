@@ -10,7 +10,7 @@ export default function Navbar() {
 
   const handleNavigation = (route) => {
     navigateTo(route);
-    setIsNavCollapsed(true); // Collapse the navigation menu after navigation
+    setIsNavCollapsed(true); 
   };
 
   const handleLogout = () => {
@@ -26,7 +26,7 @@ export default function Navbar() {
   };
 
   const handleNavToggle = () => {
-    setIsNavCollapsed(!isNavCollapsed); // Toggle the navigation menu
+    setIsNavCollapsed(!isNavCollapsed); 
   };
 
   return (
@@ -37,7 +37,7 @@ export default function Navbar() {
       <button
         className="navbar-toggler"
         type="button"
-        onClick={handleNavToggle} // Call handleNavToggle function on button click
+        onClick={handleNavToggle} 
       >
         <span className="navbar-toggler-icon"></span>
       </button>

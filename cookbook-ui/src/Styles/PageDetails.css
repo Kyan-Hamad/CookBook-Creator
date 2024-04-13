@@ -1,0 +1,80 @@
+.page-details {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.page-details h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.page-details p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.page-details .recipe-name,
+.page-details .steps,
+.page-details .ingredient-title {
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+}
+
+.page-details .ingredient-list {
+    padding-left: 0;
+    text-align: center;
+}
+
+.page-details .ingredient-item {
+    margin-bottom: 5px;
+    position: relative;
+    list-style: none;
+}
+
+.page-details .steps ol {
+    counter-reset: step-counter;
+    list-style: none;
+    text-align: center;
+}
+
+.page-details .steps ol li::before {
+    counter-increment: step-counter;
+    content: counter(step-counter) ". ";
+    margin-right: 10px;
+    text-align: right;
+}
+
+
+
+.page-details .divider {
+    border-bottom: 1px solid #ccc;
+    margin: 20px auto;
+    max-width: 50%;
+}
+
+.page-details .edit-button {
+    background-color: #ff6600;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.page-details .edit-button:hover {
+    background-color: #d35501;
+}
+
+.step-list {
+    text-align: center;
+}

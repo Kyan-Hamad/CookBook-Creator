@@ -1,4 +1,4 @@
-/* BookDetails.css */
+
 .Book-Page {
     margin: 0 auto;
     padding: 20px;
@@ -35,7 +35,19 @@
 
 .Book-Page p {
     font-size: 16px;
-    margin-bottom: 10px;
+
+    margin: 0;
+    padding: 0;
+}
+
+.Book-Page .link {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.Book-Page .link:hover {
+    color: #007bff;
+
 }
 
 .Book-Page button {

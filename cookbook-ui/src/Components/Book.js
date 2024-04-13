@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../Styles/Book.css';
-// import BookCoverImage from Insert_Directory_Path_Here_For_When_User_Uploads_Book_Cover_Image;
 
-const Book = ({ title }) => {
+const Book = ({ title, tableOfContents }) => { 
   return (
     <div className="book">
-      <Link to={`/books/${title}`}> 
+      <Link to={{ pathname: `/books/${title}`, state: { tableOfContents } }}> 
         <div className="book-container">
           <button className="book-button">
             <img className="book-image" src="https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png" alt={title} />
