@@ -1,13 +1,15 @@
+// AddToContentsForm.js
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/AddToContentsForm.css';
 
 const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShowForm }) => {
-    const [newContent, setNewContent] = useState('');
+    const [pageId, setPageId] = useState('');
     const [isLink, setIsLink] = useState(false);
 
     const handleContentChange = (e) => {
-        setNewContent(e.target.value);
+        setPageId(e.target.value);
     };
 
     const handleCheckboxChange = (e) => {
@@ -17,23 +19,23 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            let contentToAdd = newContent;
+            let contentToAdd = pageId;
             if (isLink) {
-                contentToAdd = `<a href="${newContent}">${newContent}</a>`;
-                const bookResponse = await axios.get(`http://localhost:5000/api/books/${title}`);
-                const { _id: bookId, title: bookTitle } = bookResponse.data;
-                await axios.post('http://localhost:5000/api/pages', { bookId, bookTitle, pageId: newContent });
+                contentToAdd = `<a href="${pageId}">${pageId}</a>`;
             }
+            const bookResponse = await axios.get(`http://localhost:5000/api/books/${title}`);
+            const { _id: bookId, title: bookTitle } = bookResponse.data;
+            await axios.post('http://localhost:5000/api/pages', { bookId, bookTitle, pageId: String(pageId), recipeStory: '', ingredients: [], steps: '' });
             const updatedTableOfContents = [...tableOfContents, contentToAdd];
             await axios.put(`http://localhost:5000/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
             setTableOfContents(updatedTableOfContents);
-            setNewContent('');
+            setPageId('');
             setShowForm(false);
         } catch (error) {
             console.error('Error adding content:', error);
         }
-    };    
-    
+    };
+
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === 'Escape') {
@@ -49,11 +51,11 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
 
     return (
         <form onSubmit={handleSubmit}>
-            <label htmlFor='newContent'>Add Content:</label>
+            <label htmlFor='pageId'>Add Content:</label>
             <input
                 type='text'
-                id='newContent'
-                value={newContent}
+                id='pageId'
+                value={pageId}
                 onChange={handleContentChange}
                 required
             />

@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 
 app.use(cors());
-
+//DONT FORGET TO FIGURE OUT HOW TO NOT REVEAL THE PASSWORD
 mongoose.connect('mongodb+srv://cookbook:jTyTfD8uLHxpvqD@cluster0.8ekwc6d.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -14,11 +14,13 @@ mongoose.connect('mongodb+srv://cookbook:jTyTfD8uLHxpvqD@cluster0.8ekwc6d.mongod
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('Error connecting to MongoDB:', err));
 
+//Create a schema for the book 
 const bookSchema = new mongoose.Schema({
     title: String,
     tableOfContents: String
 });
 
+//Create a schema for the page
 const pageSchema = new mongoose.Schema({
     bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
     bookTitle: String,
@@ -39,7 +41,7 @@ const Page = mongoose.model('Page', pageSchema);
 
 app.use(bodyParser.json());
 
-app.post('/api/books', async (req, res) => {
+app.post('/api/books', async (req, res) => { //Create a new book and store it into mongodb
     try {
         const { title, tableOfContents } = req.body;
         const newBook = new Book({ title, tableOfContents });
@@ -51,7 +53,7 @@ app.post('/api/books', async (req, res) => {
     }
 });
 
-app.post('/api/pages', async (req, res) => {
+app.post('/api/pages', async (req, res) => { //Create a new page and store it into mongodb
     try {
         const { bookId, bookTitle, pageId, recipeStory, ingredients, steps } = req.body;
         let page = await Page.findOneAndUpdate(
@@ -66,7 +68,7 @@ app.post('/api/pages', async (req, res) => {
     }
 });
 
-app.get('/api/books', async (req, res) => {
+app.get('/api/books', async (req, res) => { //Get all books from mongodb
     try {
         const books = await Book.find();
         res.status(200).json(books);
@@ -76,7 +78,7 @@ app.get('/api/books', async (req, res) => {
     }
 });
 
-app.get('/api/books/:title', async (req, res) => {
+app.get('/api/books/:title', async (req, res) => { //
     try {
         const book = await Book.findOne({ title: req.params.title });
         if (book) {
@@ -124,16 +126,15 @@ app.put('/api/pages/:pageId', async (req, res) => {
 });
 
 
+// Update the GET endpoint for retrieving page details by pageId
 app.get('/api/pages/:pageId', async (req, res) => {
     try {
         const { pageId } = req.params;
-        if (!mongoose.Types.ObjectId.isValid(pageId)) {
-            return res.status(400).json({ message: 'Invalid pageId' });
-        }
-        
-        const page = await Page.findById(pageId);
+        const page = await Page.findOne({ pageId: pageId });
         if (page) {
-            res.status(200).json(page);
+            // Extract the required fields from the page object
+            const { recipeStory, ingredients, steps } = page;
+            res.status(200).json({ recipeStory, ingredients, steps });
         } else {
             res.status(404).json({ message: 'Page not found' });
         }

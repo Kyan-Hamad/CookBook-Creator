@@ -10,9 +10,22 @@ const PageDetails = () => {
     const [showForm, setShowForm] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    // Add event listener to close form when ESC key is pressed
+    useEffect(() => {
+        const closeForm = (event) => {
+            if (event.keyCode === 27) {
+                setShowForm(false);
+            }
+        };
+
+        window.addEventListener('keydown', closeForm);
+        return () => window.removeEventListener('keydown', closeForm);
+    }, []);
+
     useEffect(() => {
         const fetchPageContent = async () => {
             try {
+                if (!pageId) return; // Check if pageId is undefined
                 const response = await axios.get(`http://localhost:5000/api/pages/${pageId}`);
                 setPageContent(response.data);
                 setLoading(false);
@@ -22,9 +35,10 @@ const PageDetails = () => {
             }
         };
     
-        fetchPageContent();
-    }, [pageId]);    
-
+        fetchPageContent(); // Fetch page content when component mounts
+    
+    }, [pageId]); // Execute effect when pageId changes or on initial mount
+    
     const handleSavePage = (newPageContent) => {
         setPageContent(prevPageContent => ({
             ...prevPageContent,
