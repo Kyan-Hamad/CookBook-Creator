@@ -14,10 +14,6 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
         setIsLink(e.target.checked);
     };
 
-    const handleCheckboxChange = (e) => {
-        setIsLink(e.target.checked);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
