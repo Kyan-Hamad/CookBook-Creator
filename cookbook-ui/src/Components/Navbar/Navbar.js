@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+import { Amplify } from 'aws-amplify';
+import { withAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import config from '../../amplifyconfiguration.json';
 
-export default function Navbar() {
+Amplify.configure(config);
+
+function Navbar({signOut}) {
   const navigateTo = useNavigate();
-  const { isAuthenticated, logout, loginWithRedirect } = useAuth0();
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
   const handleNavigation = (route) => {
@@ -13,17 +17,6 @@ export default function Navbar() {
     setIsNavCollapsed(true); 
   };
 
-  const handleLogout = () => {
-    logout({ returnTo: window.location.origin });
-  };
-
-  const handleLogin = () => {
-    loginWithRedirect();
-  };
-
-  const handleSignup = () => {
-    loginWithRedirect({ screen_hint: "signup" });
-  };
 
   const handleNavToggle = () => {
     setIsNavCollapsed(!isNavCollapsed); 
@@ -45,7 +38,7 @@ export default function Navbar() {
         className={`${isNavCollapsed ? "collapse" : ""} navbar-collapse justify-content-end`}
       >
         <ul className="navbar-nav">
-          {isAuthenticated ? (
+          {withAuthenticator ? (
             <>
               <li className="nav-item">
                 <p className="nav-link" onClick={() => handleNavigation("/")}>
@@ -58,7 +51,7 @@ export default function Navbar() {
                 </p>
               </li>
               <li className="nav-item">
-                <p className="nav-link" onClick={handleLogout}>
+                <p className="nav-link" onClick={signOut}>
                   <span id="logout">Logout</span>
                 </p>
               </li>
@@ -66,12 +59,12 @@ export default function Navbar() {
           ) : (
             <>
               <li className="nav-item">
-                <p className="nav-link" onClick={handleLogin}>
+                <p className="nav-link" onClick={signOut}>
                   <span id="login">Login</span>
                 </p>
               </li>
               <li className="nav-item">
-                <p className="nav-link" onClick={handleSignup}>
+                <p className="nav-link" onClick={signOut}>
                   <span id="register">Register</span>
                 </p>
               </li>
@@ -82,3 +75,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
+export default withAuthenticator(Navbar);

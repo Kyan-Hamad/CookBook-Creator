@@ -40,7 +40,7 @@ const NewBookForm = () => {
               required
               placeholder='Book Title'
             />
-            <label htmlFor='Table of Contents'>Table of Contents:</label>
+            <label htmlFor='Table of Contents'></label>
             <input
               type='text'
               id='TableofContents'
