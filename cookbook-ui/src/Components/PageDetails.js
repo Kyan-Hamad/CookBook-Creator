@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import EditPageForm from './EditPageForm';
 import '../Styles/PageDetails.css';
+import Loading from './Loading/Loading';
 
 const PageDetails = () => {
     const { pageId } = useParams();
@@ -49,9 +50,8 @@ const PageDetails = () => {
 
     return (
         <div className="page-details">
-            <h2>{pageContent.bookTitle}</h2>
             {loading ? (
-                <p>Loading...</p>
+                <Loading />
             ) : (
                 <>
                     {showForm ? (
@@ -63,7 +63,7 @@ const PageDetails = () => {
                         <div>
                             <p className="recipe-name">{pageId}</p>
                             <div className="divider"></div>
-                            <p className="recipe-story">{pageContent.recipeStory}</p>
+                            <p className="recipe-story">About {pageId}: <br></br>{pageContent.recipeStory}</p>
                             <div className="divider"></div> 
                             <p className='ingredient-title'>Ingredients:</p>
                             <ul className="ingredient-list">

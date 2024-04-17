@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const multer = require('multer');
+const fs = require('fs');
 const app = express();
 
 app.use(cors());
-
-//DONT FORGET TO FIGURE OUT HOW TO NOT REVEAL THE PASSWORD
 
 mongoose.connect('mongodb+srv://cookbook:jTyTfD8uLHxpvqD@cluster0.8ekwc6d.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
     useNewUrlParser: true,
@@ -16,14 +16,12 @@ mongoose.connect('mongodb+srv://cookbook:jTyTfD8uLHxpvqD@cluster0.8ekwc6d.mongod
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('Error connecting to MongoDB:', err));
 
-
-//Create a schema for the book 
 const bookSchema = new mongoose.Schema({
     title: String,
-    tableOfContents: String
+    tableOfContents: String,
+    imagePath: String 
 });
 
-//Create a schema for the page
 const pageSchema = new mongoose.Schema({
     bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' },
     bookTitle: String,
@@ -44,11 +42,22 @@ const Page = mongoose.model('Page', pageSchema);
 
 app.use(bodyParser.json());
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
 
-app.post('/api/books', async (req, res) => { //Create a new book and store it into mongodb
+const upload = multer({ storage: storage });
+
+app.post('/api/books', upload.single('image'), async (req, res) => {
     try {
         const { title, tableOfContents } = req.body;
-        const newBook = new Book({ title, tableOfContents });
+        const imagePath = req.file ? req.file.path : null;
+        const newBook = new Book({ title, tableOfContents, imagePath });
         await newBook.save();
         res.status(201).json({ message: 'Book created successfully', book: newBook });
     } catch (err) {
@@ -57,7 +66,7 @@ app.post('/api/books', async (req, res) => { //Create a new book and store it in
     }
 });
 
-app.post('/api/pages', async (req, res) => { //Create a new page and store it into mongodb
+app.post('/api/pages', async (req, res) => {
     try {
         const { bookId, bookTitle, pageId, recipeStory, ingredients, steps } = req.body;
         let page = await Page.findOneAndUpdate(
@@ -72,7 +81,7 @@ app.post('/api/pages', async (req, res) => { //Create a new page and store it in
     }
 });
 
-app.get('/api/books', async (req, res) => { //Get all books from mongodb
+app.get('/api/books', async (req, res) => {
     try {
         const books = await Book.find();
         res.status(200).json(books);
@@ -82,9 +91,7 @@ app.get('/api/books', async (req, res) => { //Get all books from mongodb
     }
 });
 
-
-app.get('/api/books/:title', async (req, res) => { //Get a specific book from mongodb
-
+app.get('/api/books/:title', async (req, res) => {
     try {
         const book = await Book.findOne({ title: req.params.title });
         if (book) {
@@ -98,8 +105,7 @@ app.get('/api/books/:title', async (req, res) => { //Get a specific book from mo
     }
 });
 
-
-app.put('/api/books/:title', async (req, res) => { 
+app.put('/api/books/:title', async (req, res) => {
     try {
         const { title } = req.params;
         const { tableOfContents } = req.body;
@@ -118,8 +124,7 @@ app.put('/api/books/:title', async (req, res) => {
     }
 });
 
-
-app.put('/api/pages/:pageId', async (req, res) => { // Update a specific page in mongodb
+app.put('/api/pages/:pageId', async (req, res) => {
     try {
         const { recipeStory, ingredients, steps } = req.body;
         const { pageId } = req.params;
@@ -135,31 +140,11 @@ app.put('/api/pages/:pageId', async (req, res) => { // Update a specific page in
     }
 });
 
-
-app.put('/api/pages/:pageId', async (req, res) => { //Update a specific page in mongodb
-    try {
-        const { recipeStory, ingredients, steps } = req.body;
-        const { pageId } = req.params;
-        let page = await Page.findOneAndUpdate(
-            { pageId },
-            { recipeStory, ingredients, steps },
-            { new: true }
-        );
-        res.status(200).json({ message: 'Page updated successfully', page });
-    } catch (err) {
-        console.error('Error updating page:', err);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
-
-
-
-app.get('/api/pages/:pageId', async (req, res) => { //Get a specific page from mongodb
+app.get('/api/pages/:pageId', async (req, res) => {
     try {
         const { pageId } = req.params;
         const page = await Page.findOne({ pageId: pageId });
         if (page) {
-            // Extract the required fields from the page object
             const { recipeStory, ingredients, steps } = page;
             res.status(200).json({ recipeStory, ingredients, steps });
         } else {
@@ -171,7 +156,7 @@ app.get('/api/pages/:pageId', async (req, res) => { //Get a specific page from m
     }
 });
 
-app.delete('/api/pages/:pageId', async (req, res) => {//Delete a specific page from mongodb
+app.delete('/api/pages/:pageId', async (req, res) => {
     try {
         const { pageId } = req.params;
         const deletedPage = await Page.findByIdAndDelete(pageId);
@@ -192,10 +177,8 @@ app.delete('/api/pages/:pageId', async (req, res) => {//Delete a specific page f
     }
 });
 
-if (process.env.NODE_ENV === 'production') { 
-
+if (process.env.NODE_ENV === 'production') {
     app.use(express.static('bookshelf-app/build'));
-
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'bookshelf-app', 'build', 'index.html'));
     });
