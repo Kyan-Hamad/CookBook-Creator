@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import "./Login.css";
+import "../Styles/Login.css";
 import Footer from "./../Components/Footer/Footer";
 import { Link } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";

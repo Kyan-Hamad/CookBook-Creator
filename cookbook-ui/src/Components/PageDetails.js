@@ -25,7 +25,7 @@ const PageDetails = () => {
     useEffect(() => {
         const fetchPageContent = async () => {
             try {
-                if (!pageId) return; 
+                if (!pageId) return;
                 const response = await axios.get(`http://localhost:5000/api/pages/${pageId}`);
                 setPageContent(response.data);
                 setLoading(false);
@@ -34,11 +34,10 @@ const PageDetails = () => {
                 setLoading(false);
             }
         };
-    
-        fetchPageContent(); 
-    
-    }, [pageId]); 
-    
+
+        fetchPageContent();
+    }, [pageId]);
+
     const handleSavePage = (newPageContent) => {
         setPageContent(prevPageContent => ({
             ...prevPageContent,
@@ -46,7 +45,6 @@ const PageDetails = () => {
         }));
         setShowForm(false);
     };
-    
 
     return (
         <div className="page-details">
@@ -55,34 +53,34 @@ const PageDetails = () => {
             ) : (
                 <>
                     {showForm ? (
-                        <EditPageForm 
-                            onSave={handleSavePage} 
-                            pageId={pageId} 
+                        <EditPageForm
+                            onSave={handleSavePage}
+                            pageId={pageId}
                         />
                     ) : (
                         <div>
                             <p className="recipe-name">{pageId}</p>
                             <div className="divider"></div>
-                            <p className="recipe-story">About {pageId}: <br></br>{pageContent.recipeStory}</p>
-                            <div className="divider"></div> 
+                            <p className="recipe-story">About {pageId}: <br />{pageContent.recipeStory}</p>
+                            <div className="divider"></div>
                             <p className='ingredient-title'>Ingredients:</p>
                             <ul className="ingredient-list">
                                 {pageContent.ingredients && pageContent.ingredients.map((ingredient, index) => (
                                     <li key={index} className="ingredient-item">
-                                        <code>&bull;</code> {ingredient.quantity} {ingredient.unit} {ingredient.name} 
+                                        <code>&bull;</code> {ingredient.quantity} {ingredient.unit} {ingredient.name}
                                     </li>
                                 ))}
                             </ul>
                             <div className="divider"></div>
-                            <p className="steps" >Steps:</p>
-                            {Array.isArray(pageContent.steps) ? (
+                            <p className="steps">Steps:</p>
+                            {Array.isArray(pageContent.steps) && pageContent.steps.length > 0 ? (
                                 <ol className="step-list">
-                                {pageContent.steps.map((step, index) => (
-                                   <li key={index} className="step-item">
-                                      {step}
-                                   </li>
-                                ))}
-                             </ol>
+                                    {pageContent.steps.map((step, index) => (
+                                        <li key={index} className="step-item">
+                                            {step}
+                                        </li>
+                                    ))}
+                                </ol>
                             ) : (
                                 <p>No steps available.</p>
                             )}
