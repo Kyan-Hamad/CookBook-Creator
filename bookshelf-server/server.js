@@ -44,7 +44,7 @@ app.use(bodyParser.json());
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads');
+        cb(null, '../cookbook-ui/src/uploads'); // Adjust the destination folder to frontend/src/uploads
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname);
@@ -56,7 +56,7 @@ const upload = multer({ storage: storage });
 app.post('/api/books', upload.single('image'), async (req, res) => {
     try {
         const { title, tableOfContents } = req.body;
-        const imagePath = req.file ? req.file.path : null;
+        const imagePath = req.file ? req.file.path.replace('../cookbook-ui/src', '') : null; 
         const newBook = new Book({ title, tableOfContents, imagePath });
         await newBook.save();
         res.status(201).json({ message: 'Book created successfully', book: newBook });
@@ -177,6 +177,9 @@ app.delete('/api/pages/:pageId', async (req, res) => {
     }
 });
 
+app.use('/uploads', express.static(path.join(__dirname, '../cookbook-ui/src/uploads')));
+
+// Serve React app in production
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('bookshelf-app/build'));
     app.get('*', (req, res) => {

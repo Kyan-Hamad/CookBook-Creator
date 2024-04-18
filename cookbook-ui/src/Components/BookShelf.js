@@ -27,7 +27,7 @@ const BookShelf = () => {
           <Link key={book._id} to={`/books/${book.title}`}>
             <Book
               title={book.title}
-              imagePath={book.imagePath ? `http://localhost:5000/${book.imagePath}` : 'https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png'}
+              imagePath={book.imagePath ? `http://localhost:5000${book.imagePath}` : 'https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png'}
             />
           </Link>
         ))
