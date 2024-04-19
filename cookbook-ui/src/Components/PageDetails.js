@@ -12,25 +12,28 @@ const PageDetails = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const closeForm = (event) => {
+        // Event listener for keydown to close the form
+        const closeFormOnEscape = (event) => {
             if (event.keyCode === 27) {
                 setShowForm(false);
             }
         };
 
-        window.addEventListener('keydown', closeForm);
-        return () => window.removeEventListener('keydown', closeForm);
+        window.addEventListener('keydown', closeFormOnEscape);
+        return () => window.removeEventListener('keydown', closeFormOnEscape);
     }, []);
 
     useEffect(() => {
+        // Fetch page content
         const fetchPageContent = async () => {
+            if (!pageId) return;
+
             try {
-                if (!pageId) return;
                 const response = await axios.get(`http://localhost:5000/api/pages/${pageId}`);
                 setPageContent(response.data);
-                setLoading(false);
             } catch (error) {
                 console.error('Error fetching page content:', error);
+            } finally {
                 setLoading(false);
             }
         };
@@ -39,58 +42,83 @@ const PageDetails = () => {
     }, [pageId]);
 
     const handleSavePage = (newPageContent) => {
-        setPageContent(prevPageContent => ({
+        setPageContent((prevPageContent) => ({
             ...prevPageContent,
             ...newPageContent
         }));
         setShowForm(false);
     };
 
-    return (
-        <div className="page-details">
-            {loading ? (
-                <Loading />
-            ) : (
-                <>
-                    {showForm ? (
-                        <EditPageForm
-                            onSave={handleSavePage}
-                            pageId={pageId}
-                        />
-                    ) : (
-                        <div>
-                            <p className="recipe-name">{pageId}</p>
+    const renderContent = () => {
+        if (loading) {
+            return <Loading />;
+        }
+
+        return (
+            <>
+                {showForm ? (
+                    <EditPageForm
+                        onSave={handleSavePage}
+                        pageId={pageId}
+                        recipeStory={pageContent.recipeStory}
+                        ingredients={pageContent.ingredients}
+                        steps={pageContent.steps}
+                    />
+                ) : (
+                    <div>
+                        <p className="recipe-name" id='recipe-name'>{pageId}</p>
+                        {pageContent.recipeStory && (
                             <div className="divider"></div>
-                            <p className="recipe-story">About {pageId}: <br />{pageContent.recipeStory}</p>
-                            <div className="divider"></div>
-                            <p className='ingredient-title'>Ingredients:</p>
-                            <ul className="ingredient-list">
-                                {pageContent.ingredients && pageContent.ingredients.map((ingredient, index) => (
+                        )}
+                        <p className="recipe-story">{pageContent.recipeStory}</p>
+
+                        <div className="divider"></div>
+
+                        <p className="ingredient-title" id='ingredients'>Ingredients:</p>
+                        <ul className="ingredient-list">
+                            {pageContent.ingredients && pageContent.ingredients.map((ingredient, index) => {
+                                const hasContent = ingredient.name || ingredient.quantity || ingredient.unit;
+                                return (
                                     <li key={index} className="ingredient-item">
-                                        <code>&bull;</code> {ingredient.quantity} {ingredient.unit} {ingredient.name}
+                                        {hasContent && <code id='ingbullet'>&bull;</code>} {ingredient.quantity} {ingredient.unit} {ingredient.name}
                                     </li>
-                                ))}
-                            </ul>
-                            <div className="divider"></div>
-                            <p className="steps">Steps:</p>
-                            {Array.isArray(pageContent.steps) && pageContent.steps.length > 0 ? (
+                                );
+                            })}
+                        </ul>
+
+                        <div className="divider"></div>
+
+                        {Array.isArray(pageContent.steps) && pageContent.steps.length > 0 ? (
+                            <div>
+                                <p className="steps" id='steps'>Steps:</p>
                                 <ol className="step-list">
-                                    {pageContent.steps.map((step, index) => (
-                                        <li key={index} className="step-item">
-                                            {step}
-                                        </li>
-                                    ))}
+                                    {pageContent.steps.map((step, index) => {
+                                        const hasStepContent = step.trim() !== '';
+                                        return (
+                                            <li key={index} className="step-item">
+                                                {hasStepContent && (
+                                                    <>
+                                                        <span>Step {index + 1}: </span>
+                                                        {step}
+                                                    </>
+                                                )}
+                                            </li>
+                                        );
+                                    })}
                                 </ol>
-                            ) : (
-                                <p>No steps available.</p>
-                            )}
-                        </div>
-                    )}
-                    {!showForm && <button onClick={() => setShowForm(true)} className="edit-button">Edit Page</button>}
-                </>
-            )}
-        </div>
-    );
+                            </div>
+                        ) : (
+                            <p>No steps available.</p>
+                        )}
+                    </div>
+                )}
+
+                {!showForm && <button onClick={() => setShowForm(true)} className="edit-button">Edit Page</button>}
+            </>
+        );
+    };
+
+    return <div className="page-details">{renderContent()}</div>;
 };
 
 export default PageDetails;

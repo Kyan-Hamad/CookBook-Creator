@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../Styles/EditPageForm.css';
 
-const EditPageForm = ({ onSave, pageId }) => {
-    const [recipeStory, setRecipeStory] = useState('');
-    const [ingredients, setIngredients] = useState([{ name: '', quantity: '', unit: '' }]);
-    const [steps, setSteps] = useState(['']);
+const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: initialIngredients, steps: initialSteps }) => {
+    // Initialize state with existing data from props
+    const [recipeStory, setRecipeStory] = useState(initialStory || '');
+    const [ingredients, setIngredients] = useState(initialIngredients || [{ name: '', quantity: '', unit: '' }]);
+    const [steps, setSteps] = useState(initialSteps || ['']);
 
     const handleIngredientChange = (index, key, value) => {
         const updatedIngredients = [...ingredients];
@@ -91,7 +92,6 @@ const EditPageForm = ({ onSave, pageId }) => {
                                 <option value="kg">kg</option>
                                 <option value="ml">ml</option>
                                 <option value="L">L</option>
-                            
                             </select>
                         </div>
                     ))}
@@ -118,4 +118,3 @@ const EditPageForm = ({ onSave, pageId }) => {
 };
 
 export default EditPageForm;
-
