@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../Styles/EditPageForm.css';
 
-const EditPageForm = ({ onSave, pageId }) => {
-    const [recipeStory, setRecipeStory] = useState('');
-    const [ingredients, setIngredients] = useState([{ name: '', quantity: '', unit: '' }]);
-    const [steps, setSteps] = useState(['']);
+const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: initialIngredients, steps: initialSteps }) => {
+    const [recipeStory, setRecipeStory] = useState(initialStory || '');
+    const [ingredients, setIngredients] = useState(initialIngredients || [{ name: '', quantity: '', unit: '' }]);
+    const [steps, setSteps] = useState(initialSteps || ['']);
 
     const handleIngredientChange = (index, key, value) => {
         const updatedIngredients = [...ingredients];
@@ -40,6 +40,10 @@ const EditPageForm = ({ onSave, pageId }) => {
             console.error('Error updating page:', error);
         }
     };
+
+    // Define metric and US units, including the dry versions
+    const metricUnits = ['L', 'ml', 'g', 'kg'].sort();
+    const usUnits = ['teaspoon', 'dry tablespoon', 'tablespoon', 'dry teaspoon', 'fl oz', 'cup', 'dry cup', 'pints', 'quarts', 'gallons', 'oz', 'lbs'].sort();
 
     return (
         <div className="edit-page-form">
@@ -77,21 +81,17 @@ const EditPageForm = ({ onSave, pageId }) => {
                                 onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}
                                 className="ingredient-unit"
                             >
-                                <option value="">Unit</option>      
-                                <option value="oz">oz</option>
-                                <option value="lbs">lbs</option>
-                                <option value="cups">cups</option>
-                                <option value="fl oz">fl oz</option> 
-                                <option value="pints">pints</option>
-                                <option value="quarts">quarts</option>
-                                <option value="gallons">gallons</option>
-                                <option value="tbsp">tbsp</option>
-                                <option value="tsp">tsp</option>
-                                <option value="g">g</option>
-                                <option value="kg">kg</option>
-                                <option value="ml">ml</option>
-                                <option value="L">L</option>
-                            
+                                <option value="">Unit</option>
+                                <optgroup label="Metric">
+                                    {metricUnits.map((unit) => (
+                                        <option key={unit} value={unit}>{unit}</option>
+                                    ))}
+                                </optgroup>
+                                <optgroup label="US">
+                                    {usUnits.map((unit) => (
+                                        <option key={unit} value={unit}>{unit}</option>
+                                    ))}
+                                </optgroup>
                             </select>
                         </div>
                     ))}
@@ -118,4 +118,3 @@ const EditPageForm = ({ onSave, pageId }) => {
 };
 
 export default EditPageForm;
-

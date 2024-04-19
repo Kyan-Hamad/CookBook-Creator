@@ -25,29 +25,14 @@ const HomePage = () => {
         <div className="gradient-container-cards">
           <div className="card text-center">
             <div className="card-body">
-              <h5 className="card-title">Theme Selection</h5>
-              <div className="gif1-container-text">
-              <img
-                src={require("./gif1.gif")} 
-                alt="cartoon of a book"
-                className="gif1"
-              />
-              </div>
-              <p className="card-text black-text">
-                Choose from a variety of themes and templates for your cookbook.
-              </p>
-            </div>
-          </div>
-          <div className="card text-center">
-            <div className="card-body">
               <h5 className="card-title">Custom Cover</h5>
               <img
                 src={require("./gif1.gif")} 
                 alt="cartoon of a book cover"
                 width="200px"
               />
-              <p className="card-text black-text">
-                Personalize your cookbook by adding custom cover images.
+              <p className="card-text black-text" id="custom-cover">
+                Select a custom cover for your cookbook. <br></br>Pick any jpg/png with a recommended size of 137x152 pixels.
               </p>
             </div>
           </div>

@@ -4,7 +4,6 @@ import Book from './Book';
 import { Link } from 'react-router-dom'; 
 import '../Styles/BookShelf.css';
 
-
 const BookShelf = () => {
   const [books, setBooks] = useState([]);
 
@@ -26,7 +25,10 @@ const BookShelf = () => {
       {books.length === 0 ? <p>No books available</p> :
         books.map((book) => (
           <Link key={book._id} to={`/books/${book.title}`}>
-            <Book title={book.title} />
+            <Book
+              title={book.title}
+              imagePath={book.imagePath ? `http://localhost:5000${book.imagePath}` : 'https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png'}
+            />
           </Link>
         ))
       }

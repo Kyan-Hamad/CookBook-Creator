@@ -1,0 +1,70 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+    margin: 0;
+}
+
+.top-half {
+    padding-top: 5%;
+    height: 600px;
+    background-image: linear-gradient(60deg, rgb(237, 80, 180), rgb(82, 67, 170));
+}
+
+
+  
+  .gradient-text {
+    background-clip: text;
+    background-image: linear-gradient(#0c66e4, #6289ed, #8d9bf2);
+    color: transparent;
+  }
+.container {
+    text-align: center;
+    color: white;
+}
+
+.form-group {
+    text-align: left;
+    color: white;
+    width: 20%;
+    margin-top: 20px;
+}
+
+.form-group:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.form-check-label {
+    color: white;
+    padding-left: 10px;
+    padding-top: 5px;
+
+}
+
+.password-container {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px; 
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+}
+
+.toggle-password i {
+    cursor: pointer;
+}
+
+.login-register-text {
+    color: white;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.registerLink {
+    color: white;
+    text-decoration: underline;
+}

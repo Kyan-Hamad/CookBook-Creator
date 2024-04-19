@@ -30,30 +30,15 @@
 }
 
 .page-details .ingredient-list {
-    padding-left: 0;
-    text-align: center;
+    list-style-type: none;
+    padding-left: 135px; 
+    text-align: left; 
 }
 
-.page-details .ingredient-item {
-    margin-bottom: 5px;
-    position: relative;
-    list-style: none;
+#ingbullet {
+    color: #f86502;
+    font-size: 20px;
 }
-
-.page-details .steps ol {
-    counter-reset: step-counter;
-    list-style: none;
-    text-align: center;
-}
-
-.page-details .steps ol li::before {
-    counter-increment: step-counter;
-    content: counter(step-counter) ". ";
-    margin-right: 10px;
-    text-align: right;
-}
-
-
 
 .page-details .divider {
     border-bottom: 1px solid #ccc;
@@ -62,6 +47,8 @@
 }
 
 .page-details .edit-button {
+    display: block;
+    margin: 20px auto; 
     background-color: #ff6600;
     color: #fff;
     border: none;
@@ -75,6 +62,37 @@
     background-color: #d35501;
 }
 
+
 .step-list {
     text-align: center;
+}
+
+.step-item{
+    list-style-type: none; 
+    text-align: left;
+    margin-bottom: 15px;;
+}
+
+.step-item::marker {
+    color: transparent;
+}
+
+#recipe-name, #story, #ingredients, #steps {
+    color: #f86502;
+}
+
+.ingredient-header {
+    display: flex;
+    justify-content: flex-end; 
+    margin-bottom: -35px; 
+}
+
+.convert-button {
+    margin-left: 10px; 
+
+}
+
+#step-count{
+    font-weight: 800;
+    font-size: medium;
 }

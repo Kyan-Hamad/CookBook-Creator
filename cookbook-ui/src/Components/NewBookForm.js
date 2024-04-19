@@ -5,7 +5,8 @@ import '../Styles/NewBookForm.css';
 
 const NewBookForm = () => {
     const [title, setTitle] = useState('');
-    const [TableOfContents, setTableOfContents] = useState('');
+    const [tableOfContents, setTableOfContents] = useState('');
+    const [image, setImage] = useState(null); 
     const navigate = useNavigate();
   
     const handleTitleChange = (e) => {
@@ -15,11 +16,25 @@ const NewBookForm = () => {
     const handleTableOfContentsChange = (e) => {
       setTableOfContents(e.target.value);
     };
+
+    const handleImageChange = (e) => {
+        const selectedImage = e.target.files[0];
+        setImage(selectedImage);
+    };
   
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        await axios.post('http://localhost:5000/api/books', { title, tableOfContents: TableOfContents });
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('tableOfContents', tableOfContents);
+        formData.append('image', image); 
+ 
+        await axios.post('http://localhost:5000/api/books', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data' 
+            }
+        });
         navigate('/');
       } catch (error) {
         console.error('Error creating book:', error);
@@ -40,13 +55,18 @@ const NewBookForm = () => {
               required
               placeholder='Book Title'
             />
-            <label htmlFor='Table of Contents'>Table of Contents:</label>
+            <label htmlFor='Table of Contents'></label>
             <input
               type='text'
               id='TableofContents'
-              value={TableOfContents}
+              value={tableOfContents}
               onChange={handleTableOfContentsChange}
               placeholder='Table of Contents'
+            />
+            <input
+                type="file"
+                accept=".jpg, .jpeg, .png"
+                onChange={handleImageChange}
             />
           </div>
           <button type="submit">Create Book</button>
