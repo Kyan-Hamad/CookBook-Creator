@@ -27,8 +27,7 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
         setSteps([...steps, '']);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const submitForm = async () => {
         try {
             const response = await axios.put(`http://localhost:5000/api/pages/${pageId}`, {
                 recipeStory,
@@ -40,6 +39,7 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
             console.error('Error updating page:', error);
         }
     };
+    
 
     // Define metric and US units, including the dry versions
     const metricUnits = ['L', 'ml', 'g', 'kg'].sort();
@@ -48,7 +48,7 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
     return (
         <div className="edit-page-form">
             <h3>Edit Page</h3>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <div>
                     <label>Recipe Story (optional):</label>
                     <textarea
@@ -111,7 +111,9 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
                     ))}
                     <button type="button" onClick={handleAddStep} className="add-step-button">Add Step</button>
                 </div>
-                <button type="submit" className="save-button">Save Page</button>
+                <div className='button-container'>
+                <button type="button" onClick={submitForm} className="save-button">Save Page</button>
+                </div>
             </form>
         </div>
     );

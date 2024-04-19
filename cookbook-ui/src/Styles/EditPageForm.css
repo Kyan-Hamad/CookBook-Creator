@@ -27,20 +27,6 @@
     margin-bottom: 10px;
   }
   
-  .edit-page-form button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-  
-  .edit-page-form button[type="button"] {
-    background-color: #28a745;
-  }
-  
   .edit-page-form .ingredient-inputs {
     display: flex;
     align-items: center;
@@ -53,10 +39,7 @@
     flex: 1;
   }
   
-  .edit-page-form .add-ingredient-button {
-    background-color: #ffc107;
-  }
-  
+
   .edit-page-form .step-inputs {
     margin-bottom: 10px;
   }
@@ -69,12 +52,38 @@
     margin-bottom: 5px;
   }
   
-  .edit-page-form .add-step-button {
-    background-color: #007bff;
+  .add-step-button, .add-ingredient-button{
+    background-color: #f86502;
     color: #fff;
+    padding: 10px;
     border: none;
-    padding: 10px 20px;
-    font-size: 16px;
+    border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
+    margin-bottom: 20px;
   }
+
+  .add-step-button:hover {
+    background-color: #c75204;
+  }
+
+  .save-button {
+    text-align: center;
+    background-color: #f86502;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 30%;
+}
+
+.save-button:hover {
+    background-color: #c75204;
+}
+
+.button-container {
+  text-align: center;
+}
