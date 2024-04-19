@@ -4,12 +4,19 @@ import { useParams } from 'react-router-dom';
 import EditPageForm from './EditPageForm';
 import '../Styles/PageDetails.css';
 import Loading from './Loading/Loading';
+import { useNavigate } from "react-router-dom";
 
 const PageDetails = () => {
     const { pageId } = useParams();
     const [pageContent, setPageContent] = useState({});
     const [showForm, setShowForm] = useState(false);
     const [loading, setLoading] = useState(true);
+    const {title} = useParams();
+    const navigateTo = useNavigate();
+
+    const handleNavigation = (route) => {
+        navigateTo(route);
+      };
 
     useEffect(() => {
         const closeFormOnEscape = (event) => {
@@ -234,7 +241,9 @@ const renderContent = () => {
                         steps={pageContent.steps}
                     />
                 ) : (
-                    <div>
+                    <div className='book-header'> 
+                    <p id='rec-book-title' onClick={() => handleNavigation("./..")}>{title}</p>
+                    <div className='recipe-page'>
                         <p className="recipe-name" id='recipe-name'>{pageId}</p>
                         {pageContent.recipeStory && (
                             <div className="divider"></div>
@@ -290,6 +299,7 @@ const renderContent = () => {
                             </>
                         )}
                     </div>
+                    </div> 
                 )}
             </>
         );
