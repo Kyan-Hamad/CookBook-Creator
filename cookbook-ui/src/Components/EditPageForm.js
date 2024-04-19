@@ -43,7 +43,7 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
 
     // Define metric and US units, including the dry versions
     const metricUnits = ['L', 'ml', 'g', 'kg'].sort();
-    const usUnits = ['teaspoon', 'tablespoon', 'dry teaspoon', 'fl oz', 'cup', 'dry cup', 'pints', 'quarts', 'gallons', 'oz', 'lbs'].sort();
+    const usUnits = ['teaspoon', 'dry tablespoon', 'tablespoon', 'dry teaspoon', 'fl oz', 'cup', 'dry cup', 'pints', 'quarts', 'gallons', 'oz', 'lbs'].sort();
 
     return (
         <div className="edit-page-form">

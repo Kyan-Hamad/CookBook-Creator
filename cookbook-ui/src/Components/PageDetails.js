@@ -85,13 +85,13 @@ const convertDryUSToMetric = (ingredients) => {
 
         if (unit === 'dry cup') {
             convertedQuantity = quantity * conversionRates.dry.usToMetric.cup;
-            convertedUnit = 'grams';
+            convertedUnit = 'g';
         } else if (unit === 'dry tablespoon') {
             convertedQuantity = quantity * conversionRates.dry.usToMetric.tablespoon;
-            convertedUnit = 'grams';
+            convertedUnit = 'g';
         } else if (unit === 'dry teaspoon') {
             convertedQuantity = quantity * conversionRates.dry.usToMetric['dry teaspoon'];
-            convertedUnit = 'grams';
+            convertedUnit = 'g';
         }
         
 
@@ -106,13 +106,13 @@ const convertDryMetricToUS = (ingredients) => {
         let convertedQuantity = quantity;
         let convertedUnit = unit;
 
-        if (unit === 'grams') {
+        if (unit === 'g') {
             convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToCup'];
             convertedUnit = 'dry cup';
-        } else if (unit === 'grams') {
+        } else if (unit === 'g') {
             convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToTablespoon'];
             convertedUnit = 'dry tablespoon';
-        } else if (unit === 'grams') {
+        } else if (unit === 'g') {
             convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToTeaspoon'];
             convertedUnit = 'dry teaspoon';
         }
