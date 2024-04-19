@@ -9,8 +9,6 @@ body {
     padding-top: 5%;
     height: 600px;
     background-image: linear-gradient(60deg, rgb(237, 80, 180), rgb(82, 67, 170));
-    /* background-image: url("/white-wave-bg.svg"); */
-    /* background: url("/KanbanFlow-Clone/kanbanflow-ui/public/white-wave-bg.svg") center bottom -0.5px / 100% 14% no-repeat, linear-gradient(60deg, rgb(237, 80, 180), rgb(82, 67, 170)); */
 }
 
 

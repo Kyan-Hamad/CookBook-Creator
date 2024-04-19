@@ -44,7 +44,7 @@ app.use(bodyParser.json());
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '../cookbook-ui/src/uploads'); // Adjust the destination folder to frontend/src/uploads
+        cb(null, '../cookbook-ui/src/uploads'); 
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname);
@@ -179,7 +179,6 @@ app.delete('/api/pages/:pageId', async (req, res) => {
 
 app.use('/uploads', express.static(path.join(__dirname, '../cookbook-ui/src/uploads')));
 
-// Serve React app in production
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('bookshelf-app/build'));
     app.get('*', (req, res) => {

@@ -30,9 +30,9 @@
 }
 
 .page-details .ingredient-list {
-    list-style-type: none; /* Remove default bullet points */
-    padding-left: 135px; /* Remove padding */
-    text-align: left; /* Align to the left */
+    list-style-type: none;
+    padding-left: 135px; 
+    text-align: left; 
 }
 
 #ingbullet {
@@ -48,7 +48,7 @@
 
 .page-details .edit-button {
     display: block;
-    margin: 20px auto; /* Add margin to provide some spacing above and below the button */
+    margin: 20px auto; 
     background-color: #ff6600;
     color: #fff;
     border: none;
@@ -68,9 +68,9 @@
 }
 
 .step-item{
-    list-style-type: none; /* Remove default bullet points */
-    padding-left: 105px; /* Remove padding */
-    text-align: left; /* Align to the left */
+    list-style-type: none; 
+    padding-left: 105px; 
+    text-align: left;
 }
 
 .step-item::marker {
@@ -79,4 +79,15 @@
 
 #recipe-name, #story, #ingredients, #steps {
     color: #f86502;
+}
+
+.ingredient-header {
+    display: flex;
+    justify-content: flex-end; 
+    margin-bottom: -35px; 
+}
+
+.convert-button {
+    margin-left: 10px; 
+
 }

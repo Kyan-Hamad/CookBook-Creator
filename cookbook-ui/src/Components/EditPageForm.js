@@ -3,7 +3,6 @@ import axios from 'axios';
 import '../Styles/EditPageForm.css';
 
 const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: initialIngredients, steps: initialSteps }) => {
-    // Initialize state with existing data from props
     const [recipeStory, setRecipeStory] = useState(initialStory || '');
     const [ingredients, setIngredients] = useState(initialIngredients || [{ name: '', quantity: '', unit: '' }]);
     const [steps, setSteps] = useState(initialSteps || ['']);
@@ -42,6 +41,10 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
         }
     };
 
+    // Define metric and US units, including the dry versions
+    const metricUnits = ['L', 'ml', 'g', 'kg'].sort();
+    const usUnits = ['teaspoon', 'tablespoon', 'dry teaspoon', 'fl oz', 'cup', 'dry cup', 'pints', 'quarts', 'gallons', 'oz', 'lbs'].sort();
+
     return (
         <div className="edit-page-form">
             <h3>Edit Page</h3>
@@ -78,20 +81,17 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
                                 onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}
                                 className="ingredient-unit"
                             >
-                                <option value="">Unit</option>      
-                                <option value="oz">oz</option>
-                                <option value="lbs">lbs</option>
-                                <option value="cups">cups</option>
-                                <option value="fl oz">fl oz</option> 
-                                <option value="pints">pints</option>
-                                <option value="quarts">quarts</option>
-                                <option value="gallons">gallons</option>
-                                <option value="tbsp">tbsp</option>
-                                <option value="tsp">tsp</option>
-                                <option value="g">g</option>
-                                <option value="kg">kg</option>
-                                <option value="ml">ml</option>
-                                <option value="L">L</option>
+                                <option value="">Unit</option>
+                                <optgroup label="Metric">
+                                    {metricUnits.map((unit) => (
+                                        <option key={unit} value={unit}>{unit}</option>
+                                    ))}
+                                </optgroup>
+                                <optgroup label="US">
+                                    {usUnits.map((unit) => (
+                                        <option key={unit} value={unit}>{unit}</option>
+                                    ))}
+                                </optgroup>
                             </select>
                         </div>
                     ))}
