@@ -69,8 +69,8 @@
 
 .step-item{
     list-style-type: none; 
-    padding-left: 105px; 
     text-align: left;
+    margin-bottom: 15px;;
 }
 
 .step-item::marker {
@@ -90,4 +90,9 @@
 .convert-button {
     margin-left: 10px; 
 
+}
+
+#step-count{
+    font-weight: 800;
+    font-size: medium;
 }

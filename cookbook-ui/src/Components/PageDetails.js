@@ -271,7 +271,7 @@ const renderContent = () => {
                                             <li key={index} className="step-item">
                                                 {hasStepContent && (
                                                     <>
-                                                        <span>Step {index + 1}: </span>
+                                                        <span id='step-count'>Step {index + 1}: </span>
                                                         {step}
                                                     </>
                                                 )}
