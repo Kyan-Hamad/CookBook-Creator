@@ -19,7 +19,7 @@ function Dashboard() {
   return (
     <div className='dashboard'>
     <div className="dashboard-container">
-      <h2>Book Shelf</h2>
+      <h2>Bookshelf</h2>
       <BookShelf />
       <NewBookButton onClick={toggleForm} />
     </div>
