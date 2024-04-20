@@ -45,11 +45,11 @@ function Navbar({signOut}) {
                   <span id="dashboard">Dashboard</span>
                 </p>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <p className="nav-link" onClick={() => handleNavigation("/profile")}>
                   <span id="profile">Profile</span>
                 </p>
-              </li>
+              </li> */}
               <li className="nav-item">
                 <p className="nav-link" onClick={signOut}>
                   <span id="logout">Logout</span>
