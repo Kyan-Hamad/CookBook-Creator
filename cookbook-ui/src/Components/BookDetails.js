@@ -11,6 +11,8 @@ const BookDetails = () => {
     const [tableOfContents, setTableOfContents] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [pageId, setPageId] = useState(null);
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectMode, setSelectMode] = useState(false); 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,23 +31,22 @@ const BookDetails = () => {
     }, [title]);
 
     const handleContentClick = (content) => {
+        if (selectMode) return; 
         if (content && content.startsWith && content.startsWith('<a href=')) {
             const url = content.split('"')[1];
             navigate(`/books/${title}/${url}`);
         } else {
             setPageId(content);
             setShowForm(true);
-
         }
     };
 
     const renderContent = (content, index) => {
         if (content && content.startsWith && content.startsWith('<a href=')) {
-            const url = content.split('"')[1];
             const text = content.match(/>([^<]*)<\/a>/)[1];
 
             return (
-                <span className="link" onClick={() => navigate(`/books/${title}/${url}`)}>
+                <span className="link" onClick={() => handleContentClick(content)}>
                     <span>{text}</span>
                 </span>
             );
@@ -71,6 +72,45 @@ const BookDetails = () => {
         }
     };
 
+    const handleDeleteClick = async () => {
+        try {
+            const updatedTableOfContents = tableOfContents.filter((_, index) => !selectedItems.includes(index));
+            await axios.put(`http://localhost:5000/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
+            setTableOfContents(updatedTableOfContents);
+            setSelectedItems([]);
+            setSelectMode(false); 
+        } catch (error) {
+            console.error('Error deleting items:', error);
+        }
+    };
+
+    const handleCheckboxChange = (index) => {
+        setSelectedItems((prevSelected) => {
+            if (prevSelected.includes(index)) {
+                return prevSelected.filter((item) => item !== index);
+            } else {
+                return [...prevSelected, index];
+            }
+        });
+    };
+
+    const handleSelectClick = () => {
+        setSelectMode(true); 
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+            setSelectMode(false);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
     return (
         <div className='Book-Page'>
             <h2>{title}</h2>
@@ -83,12 +123,18 @@ const BookDetails = () => {
                                 {tableOfContents.map((content, index) => (
                                     <Draggable key={index} draggableId={`content-${index}`} index={index}>
                                         {(provided) => (
-
                                             <div
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 className="drag-handle"
                                             >
+                                                {selectMode && (
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedItems.includes(index)}
+                                                        onChange={() => handleCheckboxChange(index)}
+                                                    />
+                                                )}
                                                 <span
                                                     {...provided.dragHandleProps}
                                                     onClick={() => handleContentClick(content)}
@@ -96,7 +142,6 @@ const BookDetails = () => {
                                                     {renderContent(content, index)}
                                                 </span>
                                             </div>
-
                                         )}
                                     </Draggable>
                                 ))}
@@ -106,11 +151,17 @@ const BookDetails = () => {
                     </Droppable>
                 )}
             </DragDropContext>
-            <div className="add-button-container">
+            <div className="button-container">
+                {selectMode ? ( 
+                    <button className="delete-button" onClick={handleDeleteClick}>
+                        {selectedItems.length > 0 ? 'Confirm Delete' : 'Cancel'}
+                    </button>
+                ) : (
+                    <button className="select-button" onClick={handleSelectClick}>Select</button>
+                )}
                 <button className="add-button" onClick={() => setShowForm(true)}>Add Content</button>
             </div>
             {showForm && !pageId && <AddToContentsForm title={title} tableOfContents={tableOfContents} setTableOfContents={setTableOfContents} setShowForm={setShowForm} />}
-
         </div>
     );
 };
