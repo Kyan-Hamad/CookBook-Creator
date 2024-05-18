@@ -30,4 +30,4 @@ Create beautifully formatted recipe pages with ease. Each recipe page includes:
 **Backend**: Node.js with Express<br>
 **Database**: Mongodb
 
-![Alt text]()
+![Alt text](https://github.com/Kyan-Hamad/CookBook-Creator/blob/master/cookbook-ui/public/Sequence%20Diagram.png)
