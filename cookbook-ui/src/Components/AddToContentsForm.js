@@ -58,7 +58,7 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
                 required
             />
             <label>
-                Make Link:
+                Recipe:
                 <input
                     type="checkbox"
                     checked={isLink}
