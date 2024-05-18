@@ -48,3 +48,12 @@
     font-weight: bold;
     margin-bottom: 0.5rem;
 }
+
+#pageId { 
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#isLinkcheckbox {
+    margin-left: 5px;
+}

@@ -61,6 +61,7 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
                 Recipe:
                 <input
                     type="checkbox"
+                    id='isLinkcheckbox'
                     checked={isLink}
                     onChange={handleCheckboxChange}
                 />
