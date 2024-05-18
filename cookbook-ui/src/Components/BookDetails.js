@@ -12,7 +12,7 @@ const BookDetails = () => {
     const [showForm, setShowForm] = useState(false);
     const [pageId, setPageId] = useState(null);
     const [selectedItems, setSelectedItems] = useState([]);
-    const [selectMode, setSelectMode] = useState(false);
+    const [selectMode, setSelectMode] = useState(false); 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,7 +31,7 @@ const BookDetails = () => {
     }, [title]);
 
     const handleContentClick = (content) => {
-        if (selectMode) return;
+        if (selectMode) return; 
         if (content && content.startsWith && content.startsWith('<a href=')) {
             const url = content.split('"')[1];
             navigate(`/books/${title}/${url}`);
@@ -41,7 +41,7 @@ const BookDetails = () => {
         }
     };
 
-    const renderContent = (content) => {
+    const renderContent = (content, index) => {
         if (content && content.startsWith && content.startsWith('<a href=')) {
             const text = content.match(/>([^<]*)<\/a>/)[1];
 
@@ -72,26 +72,13 @@ const BookDetails = () => {
         }
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Escape') {
-            setSelectMode(false);
-        }
-    };
-
-    useEffect(() => {
-        window.addEventListener('keydown', handleKeyDown);
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, []);
-
     const handleDeleteClick = async () => {
         try {
             const updatedTableOfContents = tableOfContents.filter((_, index) => !selectedItems.includes(index));
             await axios.put(`http://localhost:5000/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
             setTableOfContents(updatedTableOfContents);
             setSelectedItems([]);
-            setSelectMode(false);
+            setSelectMode(false); 
         } catch (error) {
             console.error('Error deleting items:', error);
         }
@@ -108,8 +95,21 @@ const BookDetails = () => {
     };
 
     const handleSelectClick = () => {
-        setSelectMode(true);
+        setSelectMode(true); 
     };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+            setSelectMode(false);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
 
     return (
         <div className='Book-Page'>
@@ -152,7 +152,7 @@ const BookDetails = () => {
                 )}
             </DragDropContext>
             <div className="button-container">
-                {selectMode ? (
+                {selectMode ? ( 
                     <button className="delete-button" onClick={handleDeleteClick}>
                         {selectedItems.length > 0 ? 'Confirm Delete' : 'Cancel'}
                     </button>
