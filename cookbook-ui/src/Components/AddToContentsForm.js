@@ -21,11 +21,11 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
             if (isLink) {
                 contentToAdd = `<a href="${pageId}">${pageId}</a>`;
             }
-            const bookResponse = await axios.get(`https://65zk9v8soi.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`);
+            const bookResponse = await axios.get(`http://localhost:5000/api/books/${title}`);
             const { _id: bookId, title: bookTitle } = bookResponse.data;
-            await axios.post('https://65zk9v8soi.execute-api.us-east-1.amazonaws.com/Prod/api/pages', { bookId, bookTitle, pageId: String(pageId), recipeStory: '', ingredients: [], steps: '' });
+            await axios.post('http://localhost:5000/api/pages', { bookId, bookTitle, pageId: String(pageId), recipeStory: '', ingredients: [], steps: '' });
             const updatedTableOfContents = [...tableOfContents, contentToAdd];
-            await axios.put(`https://65zk9v8soi.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
+            await axios.put(`http://localhost:5000/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
             setTableOfContents(updatedTableOfContents);
             setPageId('');
             setShowForm(false);
