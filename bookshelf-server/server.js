@@ -156,6 +156,26 @@ app.get('/api/pages/:pageId', async (req, res) => {
     }
 });
 
+app.delete('/api/books/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const book = await Book.findById(id);
+        if (!book) {
+            return res.status(404).json({ message: 'Book not found' });
+        }
+
+        await Page.deleteMany({ bookId: id });
+
+        await Book.deleteOne({ _id: id }); // Use deleteOne to remove the book
+
+        res.status(200).json({ message: 'Book and associated pages deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting book and associated pages:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 app.delete('/api/pages/:pageId', async (req, res) => {
     try {
         const { pageId } = req.params;
