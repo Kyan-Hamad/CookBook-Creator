@@ -30,7 +30,7 @@ const NewBookForm = () => {
         formData.append('tableOfContents', tableOfContents);
         formData.append('image', image); 
  
-        await axios.post('http://localhost:5000/api/books', formData, {
+        await axios.post('https://65zk9v8soi.execute-api.us-east-1.amazonaws.com/Prod/api/books', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data' 
             }

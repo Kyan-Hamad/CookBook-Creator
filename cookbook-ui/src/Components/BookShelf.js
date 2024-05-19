@@ -9,7 +9,7 @@ const BookShelf = () => {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/books'); 
+      const response = await axios.get('https://65zk9v8soi.execute-api.us-east-1.amazonaws.com/Prod/api/books'); 
       setBooks(response.data);
     } catch (error) {
       console.error('Error fetching books:', error);
@@ -19,7 +19,7 @@ const BookShelf = () => {
   const handleDeleteBook = async (bookId) => {
     try {
       console.log('Deleting book with ID:', bookId);
-      await axios.delete(`http://localhost:5000/api/books/${bookId}`);
+      await axios.delete(`https://65zk9v8soi.execute-api.us-east-1.amazonaws.com/Prod/api/books/${bookId}`);
       fetchBooks();
     } catch (error) {
       console.error('Error deleting book:', error);
@@ -38,7 +38,7 @@ const BookShelf = () => {
             <Link to={`/books/${book.title}`}>
               <Book
                 title={book.title}
-                imagePath={book.imagePath ? `http://localhost:5000/${book.imagePath}` : 'https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png'}
+                imagePath={book.imagePath ? `https://65zk9v8soi.execute-api.us-east-1.amazonaws.com/Prod/${book.imagePath}` : 'https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png'}
               />
             </Link>
             <br></br>
