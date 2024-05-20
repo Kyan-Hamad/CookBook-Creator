@@ -24,10 +24,10 @@ function App() {
         <BrowserRouter>
           <Navbar />
           <Routes>
-            <Route 
+            {/* <Route 
             path="/" 
             element={withAuthenticator ? <DashBoard/> : <HomePage/>}/>
-            <Route path="/dashboard" element={<DashBoard />} />
+            <Route path="/dashboard" element={<DashBoard />} /> */}
             {/* <Route 
             path="/profile" 
             element={withAuthenticator ? <Profile /> : <HomePage/>} /> */}
