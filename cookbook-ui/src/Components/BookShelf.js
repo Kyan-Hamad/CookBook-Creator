@@ -41,7 +41,6 @@ const BookShelf = () => {
                 imagePath={book.imagePath ? `https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/${book.imagePath}` : 'https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png'}
               />
             </Link>
-            <br></br>
             <div>
               <button className="delete-button" onClick={() => handleDeleteBook(book._id)}>Delete</button>
             </div>

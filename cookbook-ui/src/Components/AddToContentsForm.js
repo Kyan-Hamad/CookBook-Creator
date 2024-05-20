@@ -57,7 +57,7 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
                 onChange={handleContentChange}
                 required
             />
-            <label>
+            <label id='recipe_cbox'>
                 Recipe:
                 <input
                     type="checkbox"

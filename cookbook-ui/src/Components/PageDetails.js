@@ -253,7 +253,7 @@ const renderContent = () => {
                         <div className="divider"></div>
 
                         <p className="ingredient-title" id='ingredients'>Ingredients:</p>
-                        <div className="ingredient-header">
+                        <div className="converter-buttons">
                             <button onClick={handleConvertToMetric} className="convert-button">Metric</button>
                             <button onClick={handleConvertToUS} className="convert-button">US</button>
                         </div>

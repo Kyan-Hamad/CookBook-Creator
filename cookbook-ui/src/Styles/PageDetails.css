@@ -89,7 +89,7 @@ text-align: center;
     color: #f86502;
 }
 
-.ingredient-header {
+.converter-buttons {
     display: flex;
     justify-content: flex-end; 
     margin-bottom: -35px; 
@@ -107,4 +107,10 @@ text-align: center;
 
 #rec-book-title{
     cursor: pointer;
+}
+
+@media screen and (max-width: 500px){
+    .ingredient-list {
+       margin-left: -120px;
+    }
 }

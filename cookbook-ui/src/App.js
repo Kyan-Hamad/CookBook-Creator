@@ -9,7 +9,6 @@ import Login from "./WebPages/Login";
 import Register from "./WebPages/Register";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import DashBoard from './WebPages/DashBoard';
-import Profile from './WebPages/Profile';
 import NewBookForm from '../src/Components/NewBookForm';
 import BookDetails from '../src/Components/BookDetails'; 
 import PageDetails from '../src/Components/PageDetails'; 
@@ -28,9 +27,6 @@ function App() {
             path="/" 
             element={withAuthenticator ? <DashBoard/> : <HomePage/>}/>
             <Route path="/dashboard" element={<DashBoard />} />
-            {/* <Route 
-            path="/profile" 
-            element={withAuthenticator ? <Profile /> : <HomePage/>} /> */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/new-book" element={<NewBookForm />} />

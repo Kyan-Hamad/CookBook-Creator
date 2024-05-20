@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/EditPageForm.css';
 
@@ -6,6 +6,26 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
     const [recipeStory, setRecipeStory] = useState(initialStory || '');
     const [ingredients, setIngredients] = useState(initialIngredients || [{ name: '', quantity: '', unit: '' }]);
     const [steps, setSteps] = useState(initialSteps || ['']);
+    const [selectIngredientMode, setSelectIngredientMode] = useState(false);
+    const [selectedIngredients, setSelectedIngredients] = useState([]);
+    const [selectStepMode, setSelectStepMode] = useState(false);
+    const [selectedSteps, setSelectedSteps] = useState([]);
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                setSelectIngredientMode(false);
+                setSelectedIngredients([]);
+                setSelectStepMode(false);
+                setSelectedSteps([]);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
 
     const handleIngredientChange = (index, key, value) => {
         const updatedIngredients = [...ingredients];
@@ -27,6 +47,56 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
         setSteps([...steps, '']);
     };
 
+    const handleSelectIngredientClick = () => {
+        setSelectIngredientMode(true);
+    };
+
+    const handleCheckboxIngredientChange = (index) => {
+        setSelectedIngredients((prevSelected) => {
+            if (prevSelected.includes(index)) {
+                return prevSelected.filter((item) => item !== index);
+            } else {
+                return [...prevSelected, index];
+            }
+        });
+    };
+
+    const handleDeleteIngredientClick = async () => {
+        try {
+            const updatedIngredients = ingredients.filter((_, index) => !selectedIngredients.includes(index));
+            setIngredients(updatedIngredients);
+            setSelectedIngredients([]);
+            setSelectIngredientMode(false);
+        } catch (error) {
+            console.error('Error deleting items:', error);
+        }
+    };
+
+    const handleSelectStepClick = () => {
+        setSelectStepMode(true);
+    };
+
+    const handleCheckboxStepChange = (index) => {
+        setSelectedSteps((prevSelected) => {
+            if (prevSelected.includes(index)) {
+                return prevSelected.filter((item) => item !== index);
+            } else {
+                return [...prevSelected, index];
+            }
+        });
+    };
+
+    const handleDeleteStepClick = async () => {
+        try {
+            const updatedSteps = steps.filter((_, index) => !selectedSteps.includes(index));
+            setSteps(updatedSteps);
+            setSelectedSteps([]);
+            setSelectStepMode(false);
+        } catch (error) {
+            console.error('Error deleting items:', error);
+        }
+    };
+
     const submitForm = async () => {
         try {
             const response = await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/pages/${pageId}`, {
@@ -39,7 +109,6 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
             console.error('Error updating page:', error);
         }
     };
-    
 
     // Define metric and US units, including the dry versions
     const metricUnits = ['L', 'ml', 'g', 'kg'].sort();
@@ -93,9 +162,24 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
                                     ))}
                                 </optgroup>
                             </select>
+                            {selectIngredientMode && (
+                                <input
+                                    type="checkbox"
+                                    checked={selectedIngredients.includes(index)}
+                                    onChange={() => handleCheckboxIngredientChange(index)}
+                                    className="ingredient-select-checkbox"
+                                />
+                            )}
                         </div>
                     ))}
                     <button type="button" onClick={handleAddIngredient} className="add-ingredient-button">Add Ingredient</button>
+                    {selectIngredientMode ? (
+                        <button type="button" onClick={selectedIngredients.length > 0 ? handleDeleteIngredientClick : () => setSelectIngredientMode(false)} className="delete-selected-button">
+                            {selectedIngredients.length > 0 ? 'Delete' : 'Cancel'}
+                        </button>
+                    ) : (
+                        <button type="button" onClick={handleSelectIngredientClick} className="select-ingredient-button">Select</button>
+                    )}
                 </div>
                 <div>
                     <label>Steps:</label>
@@ -107,12 +191,27 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
                                 placeholder={`Step ${index + 1}`}
                                 className="step"
                             ></textarea>
+                            {selectStepMode && (
+                                <input
+                                    type="checkbox"
+                                    checked={selectedSteps.includes(index)}
+                                    onChange={() => handleCheckboxStepChange(index)}
+                                    className="step-select-checkbox"
+                                />
+                            )}
                         </div>
                     ))}
                     <button type="button" onClick={handleAddStep} className="add-step-button">Add Step</button>
+                    {selectStepMode ? (
+                        <button type="button" onClick={selectedSteps.length > 0 ? handleDeleteStepClick : () => setSelectStepMode(false)} className="delete-selected-button">
+                            {selectedSteps.length > 0 ? 'Delete' : 'Cancel'}
+                        </button>
+                    ) : (
+                        <button type="button" onClick={handleSelectStepClick} className="select-step-button">Select</button>
+                    )}
                 </div>
                 <div className='button-container'>
-                <button type="button" onClick={submitForm} className="save-button">Save Page</button>
+                    <button type="button" onClick={submitForm} className="save-button">Save Page</button>
                 </div>
             </form>
         </div>

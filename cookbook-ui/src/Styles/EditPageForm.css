@@ -52,7 +52,7 @@
     margin-bottom: 5px;
   }
   
-  .add-step-button, .add-ingredient-button{
+  .select-step-button, .select-ingredient-button, .delete-selected-button, .add-step-button, .add-ingredient-button{
     background-color: #f86502;
     color: #fff;
     padding: 10px;
@@ -86,4 +86,26 @@
 
 .button-container {
   text-align: center;
+}
+
+.ingredient-inputs,
+.step-inputs {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.ingredient-inputs input,
+.ingredient-inputs select,
+.step-inputs textarea {
+    margin-right: 10px;
+}
+
+.ingredient-select-checkbox,
+.step-select-checkbox {
+    margin-left: 10px;
+}
+
+.select-step-button, .select-ingredient-button, .delete-selected-button {
+  margin-left: 20px;
 }
