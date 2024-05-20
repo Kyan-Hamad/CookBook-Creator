@@ -34,7 +34,7 @@ const PageDetails = () => {
             if (!pageId) return;
 
             try {
-                const response = await axios.get(`https://65zk9v8soi.execute-api.us-east-1.amazonaws.com/Prod/api/pages/${pageId}`);
+                const response = await axios.get(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/pages/${pageId}`);
                 setPageContent(response.data);
             } catch (error) {
                 console.error('Error fetching page content:', error);

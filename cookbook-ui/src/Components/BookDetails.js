@@ -18,7 +18,7 @@ const BookDetails = () => {
     useEffect(() => {
         const fetchBookDetails = async () => {
             try {
-                const response = await axios.get(`https://65zk9v8soi.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`);
+                const response = await axios.get(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`);
                 if (response.data && response.data.tableOfContents) {
                     setTableOfContents(response.data.tableOfContents.split('\n'));
                 }
@@ -65,7 +65,7 @@ const BookDetails = () => {
         setTableOfContents(items);
 
         try {
-            const response = await axios.put(`https://65zk9v8soi.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`, { tableOfContents: items.join('\n') });
+            const response = await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`, { tableOfContents: items.join('\n') });
             console.log('Table of contents updated:', response.data);
         } catch (error) {
             console.error('Error updating table of contents:', error);
@@ -75,7 +75,7 @@ const BookDetails = () => {
     const handleDeleteClick = async () => {
         try {
             const updatedTableOfContents = tableOfContents.filter((_, index) => !selectedItems.includes(index));
-            await axios.put(`https://65zk9v8soi.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
+            await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
             setTableOfContents(updatedTableOfContents);
             setSelectedItems([]);
             setSelectMode(false); 
