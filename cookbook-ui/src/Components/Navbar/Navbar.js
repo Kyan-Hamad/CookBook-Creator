@@ -23,7 +23,7 @@ function Navbar({signOut}) {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
-      <p className="navbar-brand" onClick={() => handleNavigation("/")}>
+      <p className="navbar-brand" onClick={() => handleNavigation("/dashboard")}>
         <code className="logo-symbol"> 🥘 CookBook Maker</code>
       </p>
       <button
@@ -40,7 +40,7 @@ function Navbar({signOut}) {
           {withAuthenticator ? (
             <>
               <li className="nav-item">
-                <p className="nav-link" onClick={() => handleNavigation("/")}>
+                <p className="nav-link" onClick={() => handleNavigation("/dashboard")}>
                   <span id="dashboard">Dashboard</span>
                 </p>
               </li>
