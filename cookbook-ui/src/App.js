@@ -26,6 +26,7 @@ function App() {
             <Route 
             path="/" 
             element={withAuthenticator ? <DashBoard/> : <HomePage/>}/>
+            <Route path="/home" element={<HomePage />} />
             <Route path="/dashboard" element={<DashBoard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
