@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
 import { Amplify } from 'aws-amplify';
-import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import config from '../../amplifyconfiguration.json';
 
 Amplify.configure(config);
 
-function Navbar({signOut}) {
+function Navbar({ signOut, user }) {
   const navigateTo = useNavigate();
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
@@ -23,7 +22,7 @@ function Navbar({signOut}) {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
-      <p className="navbar-brand" onClick={() => handleNavigation("/dashboard")}>
+      <p className="navbar-brand" onClick={() => handleNavigation(user ? "/dashboard" : "/home")}>
         <code className="logo-symbol"> 🥘 CookBook Maker</code>
       </p>
       <button
@@ -37,14 +36,13 @@ function Navbar({signOut}) {
         className={`${isNavCollapsed ? "collapse" : ""} navbar-collapse justify-content-end`}
       >
         <ul className="navbar-nav">
-          {withAuthenticator ? (
+          {user ? (
             <>
               <li className="nav-item">
                 <p className="nav-link" onClick={() => handleNavigation("/dashboard")}>
                   <span id="dashboard">Dashboard</span>
                 </p>
               </li>
-              
               <li className="nav-item">
                 <p className="nav-link" onClick={signOut}>
                   <span id="logout">Logout</span>
@@ -54,12 +52,12 @@ function Navbar({signOut}) {
           ) : (
             <>
               <li className="nav-item">
-                <p className="nav-link" onClick={signOut}>
+                <p className="nav-link" onClick={() => handleNavigation("/login")}>
                   <span id="login">Login</span>
                 </p>
               </li>
               <li className="nav-item">
-                <p className="nav-link" onClick={signOut}>
+                <p className="nav-link" onClick={() => handleNavigation("/register")}>
                   <span id="register">Register</span>
                 </p>
               </li>
@@ -71,4 +69,4 @@ function Navbar({signOut}) {
   );
 }
 
-export default withAuthenticator(Navbar);
+export default Navbar;
