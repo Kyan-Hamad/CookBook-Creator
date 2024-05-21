@@ -114,14 +114,17 @@ const convertDryMetricToUS = (ingredients) => {
         let convertedUnit = unit;
 
         if (unit === 'g') {
-            convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToCup'].toFixed(2);
+            convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToCup'];
             convertedUnit = 'dry cup';
         } else if (unit === 'g') {
-            convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToTablespoon'].toFixed(2);
+            convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToTablespoon'];
             convertedUnit = 'dry tablespoon';
         } else if (unit === 'g') {
             convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToTeaspoon'];
             convertedUnit = 'dry teaspoon';
+        }
+        if (typeof convertedQuantity === 'number') {
+            convertedQuantity = convertedQuantity.toFixed(2);
         }
         
 
@@ -195,17 +198,20 @@ const convertMetricToUS = (ingredients) => {
         let convertedUnit = unit;
 
         if (unit === 'ml') {
-            convertedQuantity = (quantity * conversionRates.volume.ml).toFixed(2);
+            convertedQuantity = (quantity * conversionRates.volume.ml);
             convertedUnit = 'fl oz';
         } else if (unit === 'l') {
-            convertedQuantity = (quantity * conversionRates.volume.l).toFixed(2);
+            convertedQuantity = (quantity * conversionRates.volume.l);
             convertedUnit = 'quarts';
         } else if (unit === 'g') {
-            convertedQuantity = (quantity * conversionRates.weight.g).toFixed(2);
+            convertedQuantity = (quantity * conversionRates.weight.g);
             convertedUnit = 'oz';
         } else if (unit === 'kg') {
-            convertedQuantity = (quantity * conversionRates.weight.kg).toFixed(2);
+            convertedQuantity = (quantity * conversionRates.weight.kg);
             convertedUnit = 'lbs';
+        }
+        if (typeof convertedQuantity === 'number') {
+            convertedQuantity = convertedQuantity.toFixed(2);
         }
 
         return { name, quantity: convertedQuantity, unit: convertedUnit };
