@@ -1,50 +1,87 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../Styles/EditPageForm.css';
+import { useParams, useNavigate } from 'react-router-dom';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import '../Styles/BookDetails.css';
+import AddToContentsForm from './AddToContentsForm';
+import '../Styles/BookDetails.css';
 
-const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: initialIngredients, steps: initialSteps }) => {
-    const [recipeStory, setRecipeStory] = useState(initialStory || '');
-    const [ingredients, setIngredients] = useState(initialIngredients || [{ name: '', quantity: '', unit: '' }]);
-    const [steps, setSteps] = useState(initialSteps || ['']);
-    const [selectMode, setSelectMode] = useState(false);
+const BookDetails = () => {
+    const { title } = useParams();
+    const [tableOfContents, setTableOfContents] = useState([]);
+    const [showForm, setShowForm] = useState(false);
+    const [pageId, setPageId] = useState(null);
     const [selectedItems, setSelectedItems] = useState([]);
+    const [selectMode, setSelectMode] = useState(false); 
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === 'Escape') {
-                setSelectMode(false);
-                setSelectedItems([]);
+        const fetchBookDetails = async () => {
+            try {
+                const response = await axios.get(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`);
+                if (response.data && response.data.tableOfContents) {
+                    setTableOfContents(response.data.tableOfContents.split('\n'));
+                }
+            } catch (error) {
+                console.error('Error fetching book details:', error);
             }
         };
 
-        window.addEventListener('keydown', handleKeyDown);
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, []);
+        fetchBookDetails();
+    }, [title]);
 
-    const handleIngredientChange = (index, key, value) => {
-        const updatedIngredients = [...ingredients];
-        updatedIngredients[index][key] = value;
-        setIngredients(updatedIngredients);
+    const handleContentClick = (content) => {
+        if (selectMode) return; 
+        if (content && content.startsWith && content.startsWith('<a href=')) {
+            const url = content.split('"')[1];
+            navigate(`/books/${title}/${url}`);
+        } else {
+            setPageId(content);
+            setShowForm(true);
+        }
     };
 
-    const handleAddIngredient = () => {
-        setIngredients([...ingredients, { name: '', quantity: '', unit: '' }]);
+    const renderContent = (content, index) => {
+        if (content && content.startsWith && content.startsWith('<a href=')) {
+            const text = content.match(/>([^<]*)<\/a>/)[1];
+
+            return (
+                <span className="link" onClick={() => handleContentClick(content)}>
+                    <span>{text}</span>
+                </span>
+            );
+        } else {
+            return <span className="header-3">{content}</span>;
+        }
     };
 
-    const handleStepChange = (index, value) => {
-        const updatedSteps = [...steps];
-        updatedSteps[index] = value;
-        setSteps(updatedSteps);
+    const onDragEnd = async (result) => {
+        if (!result.destination) return;
+
+        const items = Array.from(tableOfContents);
+        const [reorderedItem] = items.splice(result.source.index, 1);
+        items.splice(result.destination.index, 0, reorderedItem);
+
+        setTableOfContents(items);
+
+        try {
+            const response = await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`, { tableOfContents: items.join('\n') });
+            console.log('Table of contents updated:', response.data);
+        } catch (error) {
+            console.error('Error updating table of contents:', error);
+        }
     };
 
-    const handleAddStep = () => {
-        setSteps([...steps, '']);
-    };
-
-    const handleSelectClick = () => {
-        setSelectMode(true);
+    const handleDeleteClick = async () => {
+        try {
+            const updatedTableOfContents = tableOfContents.filter((_, index) => !selectedItems.includes(index));
+            await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
+            setTableOfContents(updatedTableOfContents);
+            setSelectedItems([]);
+            setSelectMode(false); 
+        } catch (error) {
+            console.error('Error deleting items:', error);
+        }
     };
 
     const handleCheckboxChange = (index) => {
@@ -57,121 +94,76 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
         });
     };
 
-    const handleDeleteClick = async () => {
-        try {
-            const updatedIngredients = ingredients.filter((_, index) => !selectedItems.includes(index));
-            setIngredients(updatedIngredients);
-            setSelectedItems([]);
+    const handleSelectClick = () => {
+        setSelectMode(true); 
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
             setSelectMode(false);
-        } catch (error) {
-            console.error('Error deleting items:', error);
         }
     };
 
-    const submitForm = async () => {
-        try {
-            const response = await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/pages/${pageId}`, {
-                recipeStory,
-                ingredients,
-                steps
-            });
-            onSave(response.data.page);
-        } catch (error) {
-            console.error('Error updating page:', error);
-        }
-    };
-
-    // Define metric and US units, including the dry versions
-    const metricUnits = ['L', 'ml', 'g', 'kg'].sort();
-    const usUnits = ['teaspoon', 'dry tablespoon', 'tablespoon', 'dry teaspoon', 'fl oz', 'cup', 'dry cup', 'pints', 'quarts', 'gallons', 'oz', 'lbs'].sort();
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
 
     return (
-        <div className="edit-page-form">
-            <h3>Edit Page</h3>
-            <form>
-                <div>
-                    <label>Recipe Story (optional):</label>
-                    <textarea
-                        value={recipeStory}
-                        onChange={(e) => setRecipeStory(e.target.value)}
-                        placeholder="Enter recipe story"
-                        className="recipe-story"
-                    ></textarea>
-                </div>
-                <div>
-                    <label>Ingredients:</label>
-                    {ingredients.map((ingredient, index) => (
-                        <div key={index} className="ingredient-inputs">
-                            <input
-                                type="text"
-                                value={ingredient.name}
-                                onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
-                                placeholder="Ingredient"
-                                className="ingredient-name"
-                            />
-                            <input
-                                type="number"
-                                value={ingredient.quantity}
-                                onChange={(e) => handleIngredientChange(index, 'quantity', e.target.value)}
-                                placeholder="Quantity"
-                                className="ingredient-quantity"
-                            />
-                            <select
-                                value={ingredient.unit}
-                                onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}
-                                className="ingredient-unit"
-                            >
-                                <option value="">Unit</option>
-                                <optgroup label="Metric">
-                                    {metricUnits.map((unit) => (
-                                        <option key={unit} value={unit}>{unit}</option>
-                                    ))}
-                                </optgroup>
-                                <optgroup label="US">
-                                    {usUnits.map((unit) => (
-                                        <option key={unit} value={unit}>{unit}</option>
-                                    ))}
-                                </optgroup>
-                            </select>
-                            {selectMode && (
-                                <input
-                                    type="checkbox"
-                                    checked={selectedItems.includes(index)}
-                                    onChange={() => handleCheckboxChange(index)}
-                                    className="ingredient-select-checkbox"
-                                />
-                            )}
-                        </div>
-                    ))}
-                    <button type="button" onClick={handleAddIngredient} className="add-ingredient-button">Add Ingredient</button>
-                    {selectMode ? (
-                        <button type="button" onClick={selectedItems.length > 0 ? handleDeleteClick : () => setSelectMode(false)} className="delete-selected-button">
-                            {selectedItems.length > 0 ? 'Delete' : 'Cancel'}
-                        </button>
-                    ) : (
-                        <button type="button" onClick={handleSelectClick} className="select-ingredient-button">Select</button>
-                    )}
-                </div>
-                <div>
-                    <label>Steps:</label>
-                    {steps.map((step, index) => (
-                        <div key={index} className="step-inputs">
-                            <textarea
-                                value={step}
-                                onChange={(e) => handleStepChange(index, e.target.value)}
-                                placeholder={`Step ${index + 1}`}
-                                className="step"
-                            ></textarea>
-                        </div>
-                    ))}
-                    <button type="button" onClick={handleAddStep} className="add-step-button">Add Step</button>
-                </div>
-                <div className='button-container'>
-                    <button type="button" onClick={submitForm} className="save-button">Save Page</button>
-                </div>
-            </form>
+        <div className='Book-Page'>
+            <h2>{title}</h2>
+            <h5>Table of Contents:</h5>
+            <DragDropContext onDragEnd={onDragEnd}>
+                {tableOfContents.length > 0 && (
+                    <Droppable droppableId="table-of-contents-list">
+                        {(provided) => (
+                            <div {...provided.droppableProps} ref={provided.innerRef}>
+                                {tableOfContents.map((content, index) => (
+                                    <Draggable key={index} draggableId={`content-${index}`} index={index}>
+                                        {(provided) => (
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                className="drag-handle"
+                                            >
+                                                {selectMode && (
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedItems.includes(index)}
+                                                        onChange={() => handleCheckboxChange(index)}
+                                                    />
+                                                )}
+                                                <span
+                                                    {...provided.dragHandleProps}
+                                                    onClick={() => handleContentClick(content)}
+                                                >
+                                                    {renderContent(content, index)}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                ))}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                )}
+            </DragDropContext>
+            <div className="button-container">
+                {selectMode ? ( 
+                    <button className="delete-button" onClick={handleDeleteClick}>
+                        {selectedItems.length > 0 ? 'Delete' : 'Cancel'}
+                    </button>
+                ) : (
+                    <button className="select-button" onClick={handleSelectClick}>Select</button>
+                )}
+                <button className="add-button" onClick={() => setShowForm(true)}>Add Content</button>
+            </div>
+            {showForm && !pageId && <AddToContentsForm title={title} tableOfContents={tableOfContents} setTableOfContents={setTableOfContents} setShowForm={setShowForm} />}
         </div>
     );
 };
 
-export default EditPageForm;
+export default BookDetails;

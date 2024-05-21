@@ -114,10 +114,10 @@ const convertDryMetricToUS = (ingredients) => {
         let convertedUnit = unit;
 
         if (unit === 'g') {
-            convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToCup'];
+            convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToCup'].toFixed(2);
             convertedUnit = 'dry cup';
         } else if (unit === 'g') {
-            convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToTablespoon'];
+            convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToTablespoon'].toFixed(2);
             convertedUnit = 'dry tablespoon';
         } else if (unit === 'g') {
             convertedQuantity = quantity * conversionRates.dry.metricToUS['gramsToTeaspoon'];

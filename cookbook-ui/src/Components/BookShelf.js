@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Book from './Book';
 import { Link } from 'react-router-dom'; 
+import Modal from 'react-modal';
 import '../Styles/BookShelf.css';
 
 const BookShelf = () => {
   const [books, setBooks] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bookToDelete, setBookToDelete] = useState(null);
 
   const fetchBooks = async () => {
     try {
@@ -16,14 +19,27 @@ const BookShelf = () => {
     }
   };
 
-  const handleDeleteBook = async (bookId) => {
-    try {
-      console.log('Deleting book with ID:', bookId);
-      await axios.delete(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${bookId}`);
-      fetchBooks();
-    } catch (error) {
-      console.error('Error deleting book:', error);
+  const handleDeleteBook = async () => {
+    if (bookToDelete) {
+      try {
+        console.log('Deleting book with ID:', bookToDelete);
+        await axios.delete(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${bookToDelete}`);
+        fetchBooks();
+        closeModal();
+      } catch (error) {
+        console.error('Error deleting book:', error);
+      }
     }
+  };
+
+  const openModal = (bookId) => {
+    setBookToDelete(bookId);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setBookToDelete(null);
   };
 
   useEffect(() => {
@@ -34,7 +50,7 @@ const BookShelf = () => {
     <div className="book-shelf">
       {books.length === 0 ? <p>No books available</p> :
         books.map((book) => (
-          <div key={book._id}>
+          <div id="book-and-delete" key={book._id}>
             <Link to={`/books/${book.title}`}>
               <Book
                 title={book.title}
@@ -42,11 +58,25 @@ const BookShelf = () => {
               />
             </Link>
             <div>
-              <button className="delete-button" onClick={() => handleDeleteBook(book._id)}>Delete</button>
+              <button className="delete-button" onClick={() => openModal(book._id)}>Delete</button>
             </div>
           </div>
         ))
       }
+
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Confirm Delete"
+        ariaHideApp={false}
+        className="Modal"
+        overlayClassName="Overlay"
+      >
+        <h2>Confirm Delete</h2>
+        <p>Are you sure you want to delete this book?</p>
+        <button className="modal-button confirm" onClick={handleDeleteBook}>Yes, Delete</button>
+        <button className="modal-button cancel" onClick={closeModal}>Cancel</button>
+      </Modal>
     </div>
   );
 }

@@ -6,12 +6,12 @@
   .new-book-button a {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #36b6ad;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
   }
   
   .new-book-button a:hover {
-    background-color: #0056b3;
+    background-color: #21726d;
   }

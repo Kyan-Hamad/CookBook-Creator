@@ -11,16 +11,82 @@
 
 .delete-button {
   margin-top: 20px;
+  background-color: #f58439;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.delete-button:hover {
+  background-color: #db681b;
 }
 
 @media screen and (max-width: 768px) {
   .delete-button {
     margin-left: 25px;
+    margin-top: -1px;
   }
 
-  .delete-button {
-    margin-top: -20px;
+  #book-and-delete {
+    margin-left: -25px;
   }
 
+}
+
+.Modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  border-radius: 8px;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 999;
+}
+
+.modal-button {
+  margin: 5px;
+  padding: 10px 20px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.modal-button.confirm {
+  background-color: #f86502;
+}
+
+.modal-button.confirm:hover {
+  background-color: #c75204;
+}
+
+.modal-button.cancel {
+  background-color: #9e9e9e;
+}
+
+.modal-button.cancel:hover {
+  background-color: #7e7e7e; 
 }
 
