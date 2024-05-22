@@ -28,7 +28,9 @@ const NewBookForm = () => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('tableOfContents', tableOfContents);
-        formData.append('image', image); 
+        if (image) {
+          formData.append('image', image);
+        }
  
         await axios.post('https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books', formData, {
             headers: {
@@ -50,7 +52,7 @@ const NewBookForm = () => {
             <input
               type="text"
               id="title"
-              value={title}
+              value={title}  
               onChange={handleTitleChange}
               required
               placeholder='Book Title'

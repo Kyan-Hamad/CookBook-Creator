@@ -9,6 +9,7 @@ const BookShelf = () => {
   const [books, setBooks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookToDelete, setBookToDelete] = useState(null);
+  const [bookTitleToDelete, setBookTitleToDelete] = useState('');
 
   const fetchBooks = async () => {
     try {
@@ -32,14 +33,16 @@ const BookShelf = () => {
     }
   };
 
-  const openModal = (bookId) => {
+  const openModal = (bookId, bookTitle) => {
     setBookToDelete(bookId);
+    setBookTitleToDelete(bookTitle);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setBookToDelete(null);
+    setBookTitleToDelete('');
   };
 
   useEffect(() => {
@@ -54,11 +57,11 @@ const BookShelf = () => {
             <Link to={`/books/${book.title}`}>
               <Book
                 title={book.title}
-                imagePath={book.imagePath ? `https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/${book.imagePath}` : 'https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png'}
+                imagePath={book.imagePath ? `${book.imagePath}` : 'https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png'}
               />
             </Link>
             <div>
-              <button className="delete-button" onClick={() => openModal(book._id)}>Delete</button>
+              <button className="delete-button" onClick={() => openModal(book._id, book.title)}>Delete</button>
             </div>
           </div>
         ))
@@ -73,7 +76,7 @@ const BookShelf = () => {
         overlayClassName="Overlay"
       >
         <h2>Confirm Delete</h2>
-        <p>Are you sure you want to delete this book?</p>
+        <p>Are you sure you want to delete "{bookTitleToDelete}"?</p>
         <button className="modal-button confirm" onClick={handleDeleteBook}>Yes, Delete</button>
         <button className="modal-button cancel" onClick={closeModal}>Cancel</button>
       </Modal>
