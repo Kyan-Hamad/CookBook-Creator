@@ -17,11 +17,12 @@
     color: #a3a3a3;
   }
 
-#TableofContents::placeholder {
+#tableOfContents::placeholder {
     color: #a3a3a3;
+    visibility: hidden;
   }
 
-#TableofContents {
+#tableOfContents {
     visibility: hidden;
   }
 
