@@ -4,12 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import AWS from 'aws-sdk';
 import '../Styles/NewBookForm.css';
 
-const S3_BUCKET = 'cookbookbucket2';
-const REGION = 'us-east-1';
+const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
+const REGION = process.env.REACT_APP_REGION;
+const accessKeyId = process.env.REACT_APP_AWS_ACCESS_KEY_ID;
+const secretAccessKey = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY;
+
 
 AWS.config.update({
-  accessKeyId: 'AKIA3FLDYIEFJAT4KSOB',
-  secretAccessKey: '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'
+  accessKeyId: accessKeyId,
+  secretAccessKey: secretAccessKey,
 });
 
 const myBucket = new AWS.S3({
@@ -105,7 +108,7 @@ const NewBookForm = () => {
           required
           placeholder='Book Title'
         />
-        <label htmlFor="tableOfContents">Table of Contents:</label>
+        <label htmlFor="tableOfContents"></label>
         <input
           type="text"
           id="tableOfContents"
@@ -113,8 +116,9 @@ const NewBookForm = () => {
           onChange={handleTableOfContentsChange}
           placeholder='Table of Contents'
         />
-        <label htmlFor="image">Upload Image:</label>
-        <input
+        <label id='container-for-image-button' htmlFor="image">Upload Image:</label>
+        <input 
+          id="image-uploader"
           type="file"
           accept=".jpg, .jpeg, .png"
           onChange={handleImageChange}

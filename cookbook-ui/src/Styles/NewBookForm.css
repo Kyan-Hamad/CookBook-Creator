@@ -1,59 +1,88 @@
-
 .new-book-form {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .new-book-form h2 {
-    margin-bottom: 30px;
-    text-align: center;
-  }
-  
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.new-book-form h2 {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
 #title::placeholder {
-    color: #a3a3a3;
-  }
+  color: #a3a3a3;
+}
 
 #tableOfContents::placeholder {
-    color: #a3a3a3;
-    visibility: hidden;
-  }
+  color: #a3a3a3;
+  visibility: hidden;
+}
 
 #tableOfContents {
-    visibility: hidden;
-  }
+  visibility: hidden;
+}
 
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  button[type="submit"] {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-  
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+
+#container-for-image-button {
+  display: flex;
+  justify-content: center;
+}
+
+.form-group input[type="file"]:required {
+  padding-left: 1000px;
+}
+
+#container-for-image-button {
+  color: black;
+  margin-bottom: -6px;
+  margin-top: -20px;
+}
+
+#image-uploader {
+  border: none;
+  color: transparent;
+  padding-right: 5px;
+}
+
+#title {
+  margin-top: -40px;
+  margin-bottom: -80px;
+}
+
+h2 {
+  margin-bottom: -20px;
+}
