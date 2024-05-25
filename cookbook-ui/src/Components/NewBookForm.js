@@ -88,7 +88,7 @@ const NewBookForm = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error creating book:', error);
     }
