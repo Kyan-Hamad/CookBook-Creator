@@ -73,16 +73,16 @@ const NewBookForm = () => {
       if (image) {
         imagePath = await uploadImageToS3(image);
       }
-      console.log('Final image path:', imagePath); // Log the final image path
+      console.log('Final image path:', imagePath); 
       const formData = new FormData();
       formData.append('title', title);
       formData.append('tableOfContents', tableOfContents);
-      formData.append('imagePath', imagePath); // Ensure the imagePath is appended correctly
+      formData.append('imagePath', imagePath);
       console.log('Sending book data:', {
         title,
         tableOfContents,
         imagePath,
-      }); // Log the book data before sending to the server
+      }); 
       await axios.post('https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
