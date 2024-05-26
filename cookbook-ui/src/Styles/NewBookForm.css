@@ -76,6 +76,7 @@ button[type="submit"]:hover {
   border: none;
   color: transparent;
   padding-right: 5px;
+  margin-left: 125px;
 }
 
 #title {
@@ -85,4 +86,15 @@ button[type="submit"]:hover {
 
 h2 {
   margin-bottom: -20px;
+}
+
+@media screen and (max-width: 420px) {
+  #image-uploader {
+    border: none;
+    color: transparent;
+    padding-right: 5px;
+    margin-left: 30%;
+    margin-right: 25%;
+  }
+  
 }

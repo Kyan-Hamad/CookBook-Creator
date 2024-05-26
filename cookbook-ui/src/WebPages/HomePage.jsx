@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../Components/Footer/Footer";
 import "./HomePage.css";
 
-
 const HomePage = () => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 1.5; 
+    }
+  }, []);
+
   return (
     <>
       <div className="home-container-1">
@@ -26,13 +33,19 @@ const HomePage = () => {
           <div className="card text-center">
             <div className="card-body">
               <h5 className="card-title">Custom Cover</h5>
-              <img
-                src={require("./gif1.gif")} 
-                alt="cartoon of a book cover"
+              <video 
+                ref={videoRef}
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                src={require("./customCover.mp4")} 
+                id="custom-cover-gif"
+                alt="Demo of book cover selection"
                 width="200px"
               />
               <p className="card-text black-text" id="custom-cover">
-                Select a custom cover for your cookbook. <br></br>Pick any jpg/png with a recommended size of 137x152 pixels.
+                Select a custom cover for your cookbook.
               </p>
             </div>
           </div>
@@ -40,9 +53,15 @@ const HomePage = () => {
           <div className="card text-center">
             <div className="card-body">
               <h5 className="card-title">Recipe Pages</h5>
-              <img
-                src={require("./gif1.gif")} 
-                alt="cartoon of a recipe book"
+              <video 
+                ref={videoRef}
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                src={require("./createRecipe.mp4")} 
+                id="custom-cover-gif"
+                alt="Demo of book cover selection"
                 width="200px"
               />
               <p className="card-text black-text">
@@ -61,7 +80,6 @@ const HomePage = () => {
         </h2>
 
         <div className="gif1-container-text">
-          <img src={require("./gif1.gif")}  alt="gif of a book opening" className="gif1" />
           <div className="gif1-text">
             <p className="gif-title gradient-text-2">
               Create Your Cookbook in Minutes
@@ -85,11 +103,7 @@ const HomePage = () => {
               others to create the perfect recipe collection.
             </p>
           </div>
-          <img
-            src={require("./gif1.gif")} 
-            alt="gif of a cookbook being shared"
-            className="gif2"
-          />
+
         </div>
       </div>
 
