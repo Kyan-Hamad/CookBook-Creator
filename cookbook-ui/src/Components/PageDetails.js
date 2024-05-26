@@ -5,13 +5,14 @@ import EditPageForm from './EditPageForm';
 import '../Styles/PageDetails.css';
 import Loading from './Loading/Loading';
 import { useNavigate } from "react-router-dom";
+import useDecodedParams from '../contexts/decodedparams';
 
 const PageDetails = () => {
     const { pageId } = useParams();
     const [pageContent, setPageContent] = useState({});
     const [showForm, setShowForm] = useState(false);
     const [loading, setLoading] = useState(true);
-    const {title} = useParams();
+    const { title } = useDecodedParams(); // Use the custom hook here
     const navigateTo = useNavigate();
 
     const handleNavigation = (route) => {

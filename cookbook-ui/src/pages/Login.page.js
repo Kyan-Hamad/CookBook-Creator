@@ -27,9 +27,9 @@ const Login = () => {
  // This function will redirect the user to the
  // appropriate page once the authentication is done.
  const redirectNow = () => {
-   const redirectTo = location.search.replace("?redirectTo=", "");
-   navigate(redirectTo ? redirectTo : "/dashboard");
- }
+  const redirectTo = new URLSearchParams(location.search).get('redirectTo');
+  navigate(redirectTo ? decodeURIComponent(redirectTo) : "/dashboard");
+}
  
  // Once a user logs in to our app, we don’t want to ask them for their
  // credentials again every time the user refreshes or revisits our app, 

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import '../Styles/BookDetails.css';
 import AddToContentsForm from './AddToContentsForm';
-import '../Styles/BookDetails.css';
+import useDecodedParams from '../contexts/decodedparams'; 
 
 const BookDetails = () => {
-    const { title } = useParams();
+    const { title } = useDecodedParams(); // Use the custom hook here
     const [tableOfContents, setTableOfContents] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [pageId, setPageId] = useState(null);
