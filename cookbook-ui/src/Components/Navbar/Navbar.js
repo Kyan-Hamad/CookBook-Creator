@@ -11,12 +11,13 @@ function Navbar() {
   const navigateTo = useNavigate();
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   const { user } = useContext(UserContext);
+
   const handleNavigation = (route) => {
     navigateTo(route);
     setIsNavCollapsed(true); 
   };
 
-  const handleNavigationLogo = () => {
+  const handleNavigationLogo = () => { // This function is called when the user clicks the logo. Logged in = dashboard, not logged in = home.
     if (user) {
       navigateTo("/dashboard");
     } else {
@@ -59,8 +60,8 @@ const logOut = async () => {
       <div
         className={`${isNavCollapsed ? "collapse" : ""} navbar-collapse justify-content-end`}
       >
-        <ul className="navbar-nav">
-          {user ? (
+        <ul className="navbar-nav"> 
+          {user ? ( // If the user is logged in then show the dashboard and logout buttons.
             <>
               <li className="nav-item">
                 <p className="nav-link" onClick={() => handleNavigation("/dashboard")}>
@@ -73,7 +74,7 @@ const logOut = async () => {
                 </p>
               </li>
             </>
-          ) : (
+          ) : ( // If the user is not logged in then show the login and register buttons.
             <>
               <li className="nav-item">
                 <p className="nav-link" onClick={() => handleNavigation("/login")}>

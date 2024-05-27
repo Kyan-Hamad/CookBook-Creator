@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import '../Styles/BookShelf.css';
 
-const BookShelf = () => {
+const BookShelf = () => { // This component is the bookshelf that holds all the books
   const [books, setBooks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookToDelete, setBookToDelete] = useState(null);
@@ -20,7 +20,7 @@ const BookShelf = () => {
     }
   };
 
-  const handleDeleteBook = async () => {
+  const handleDeleteBook = async () => { // This part handles the delete book button
     if (bookToDelete) {
       try {
         console.log('Deleting book with ID:', bookToDelete);
@@ -33,7 +33,7 @@ const BookShelf = () => {
     }
   };
 
-  const openModal = (bookId, bookTitle) => {
+  const openModal = (bookId, bookTitle) => { // This part handles the modal to confirm the deletion of the book
     setBookToDelete(bookId);
     setBookTitleToDelete(bookTitle);
     setIsModalOpen(true);
@@ -57,7 +57,7 @@ const BookShelf = () => {
             <Link to={`/books/${book.title}`}>
               <Book
                 title={book.title}
-                imagePath={book.imagePath ? `${book.imagePath}` : 'https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png'}
+                imagePath={book.imagePath ? `${book.imagePath}` : 'https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png'} // If an image was uploaded, use imagePath of S3 link. Otherwise, use default image
               />
             </Link>
             <div>

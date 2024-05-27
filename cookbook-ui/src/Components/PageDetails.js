@@ -7,19 +7,19 @@ import Loading from './Loading/Loading';
 import { useNavigate } from "react-router-dom";
 import useDecodedParams from '../contexts/decodedparams';
 
-const PageDetails = () => {
+const PageDetails = () => { // This component is the page details of the book
     const { pageId } = useParams();
     const [pageContent, setPageContent] = useState({});
     const [showForm, setShowForm] = useState(false);
     const [loading, setLoading] = useState(true);
-    const { title } = useDecodedParams(); // Use the custom hook here
+    const { title } = useDecodedParams(); 
     const navigateTo = useNavigate();
 
     const handleNavigation = (route) => {
         navigateTo(route);
       };
 
-    useEffect(() => {
+    useEffect(() => { // This part handles the escape key to close the form
         const closeFormOnEscape = (event) => {
             if (event.keyCode === 27) {
                 setShowForm(false);
@@ -30,7 +30,7 @@ const PageDetails = () => {
         return () => window.removeEventListener('keydown', closeFormOnEscape);
     }, []);
 
-    useEffect(() => {
+    useEffect(() => { 
         const fetchPageContent = async () => {
             if (!pageId) return;
 

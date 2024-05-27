@@ -6,7 +6,7 @@ import '../Styles/BookDetails.css';
 import AddToContentsForm from './AddToContentsForm';
 import useDecodedParams from '../contexts/decodedparams'; 
 
-const BookDetails = () => {
+const BookDetails = () => { // This component displays the details of a book, aka the table of contents.
     const { title } = useDecodedParams(); 
     const [tableOfContents, setTableOfContents] = useState([]);
     const [showForm, setShowForm] = useState(false);
@@ -32,10 +32,10 @@ const BookDetails = () => {
 
     const handleContentClick = (content) => {
         if (selectMode) return; 
-        if (content && content.startsWith && content.startsWith('<a href=')) {
+        if (content && content.startsWith && content.startsWith('<a href=')) { // This part handles the link to the recipe pages
             const url = content.split('"')[1];
             navigate(`/books/${title}/${url}`);
-        } else {
+        } else { // This part handles the divider of the recipe pages aka categories
             setPageId(content);
             setShowForm(true);
         }
@@ -43,7 +43,7 @@ const BookDetails = () => {
 
     const renderContent = (content, index) => {
         if (content && content.startsWith && content.startsWith('<a href=')) {
-            const text = content.match(/>([^<]*)<\/a>/)[1];
+            const text = content.match(/>([^<]*)<\/a>/)[1]; // This part handles the text of the link
 
             return (
                 <span className="link" onClick={() => handleContentClick(content)}>
@@ -55,7 +55,7 @@ const BookDetails = () => {
         }
     };
 
-    const onDragEnd = async (result) => {
+    const onDragEnd = async (result) => { // This part handles the drag and drop of the table of contents
         if (!result.destination) return;
 
         const items = Array.from(tableOfContents);
@@ -72,7 +72,7 @@ const BookDetails = () => {
         }
     };
 
-    const handleDeleteClick = async () => {
+    const handleDeleteClick = async () => { // This part handles the delete button for the table of contents
         try {
             const updatedTableOfContents = tableOfContents.filter((_, index) => !selectedItems.includes(index));
             await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
@@ -84,7 +84,7 @@ const BookDetails = () => {
         }
     };
 
-    const handleCheckboxChange = (index) => {
+    const handleCheckboxChange = (index) => { // This part handles the checkbox for the table of contents delete button
         setSelectedItems((prevSelected) => {
             if (prevSelected.includes(index)) {
                 return prevSelected.filter((item) => item !== index);
@@ -98,7 +98,7 @@ const BookDetails = () => {
         setSelectMode(true); 
     };
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e) => { // This part handles the escape key to exit the select mode
         if (e.key === 'Escape') {
             setSelectMode(false);
         }
