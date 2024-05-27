@@ -16,6 +16,15 @@ function Navbar() {
     setIsNavCollapsed(true); 
   };
 
+  const handleNavigationLogo = () => {
+    if (user) {
+      navigateTo("/dashboard");
+    } else {
+      navigateTo("/");
+    }
+    setIsNavCollapsed(true); 
+  };
+  
 // This function is called when the user clicks the "Logout" button.
 const logOut = async () => {
   try {
@@ -37,7 +46,7 @@ const logOut = async () => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
-      <p className="navbar-brand" onClick={() => handleNavigation("/dashboard")}>
+      <p className="navbar-brand" onClick={() => handleNavigationLogo("/dashboard")}>
         <code className="logo-symbol"> 🥘 CookBook Maker</code>
       </p>
       <button

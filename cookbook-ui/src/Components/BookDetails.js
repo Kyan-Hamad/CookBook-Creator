@@ -7,7 +7,7 @@ import AddToContentsForm from './AddToContentsForm';
 import useDecodedParams from '../contexts/decodedparams'; 
 
 const BookDetails = () => {
-    const { title } = useDecodedParams(); // Use the custom hook here
+    const { title } = useDecodedParams(); 
     const [tableOfContents, setTableOfContents] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [pageId, setPageId] = useState(null);

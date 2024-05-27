@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../Components/Footer/Footer";
-import "./HomePage.css";
+import "../Styles/HomePage.css";
 
 const HomePage = () => {
   const videoRef = useRef(null);
@@ -109,7 +109,7 @@ const HomePage = () => {
 
       <div className="gradient-container-2">
         <h2>Start Creating Your Cookbook Today</h2>
-        <Link to="/register">
+        <Link to="/signup">
           <button className="home-btn">Get Started</button>
         </Link>
       </div>
