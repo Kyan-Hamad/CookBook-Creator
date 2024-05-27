@@ -16,16 +16,20 @@ const BookDetails = () => { // This component displays the details of a book, ak
     const navigate = useNavigate();
 
     useEffect(() => {
+        // Update the fetchBookDetails function to pass title as a query parameter instead of in the URL path
         const fetchBookDetails = async () => {
             try {
-                const response = await axios.get(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`);
+                const response = await axios.get(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books`, {
+                    params: { title }
+                });
                 if (response.data && response.data.tableOfContents) {
                     setTableOfContents(response.data.tableOfContents.split('\n'));
                 }
             } catch (error) {
-                console.error('Error fetching book details:', error);
+                console.error('Error fetching book details:', error.response); // Log the error response for more details
             }
         };
+        
 
         fetchBookDetails();
     }, [title]);

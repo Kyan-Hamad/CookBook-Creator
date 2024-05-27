@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AWS from 'aws-sdk';
+import { UserContext } from '../contexts/user.context';
 import '../Styles/NewBookForm.css';
 
 const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
 const REGION = process.env.REACT_APP_REGION;
 const accessKeyId = process.env.REACT_APP_AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY; // AWS S3 credentials to allow for immage upload
-
+const secretAccessKey = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY;
 
 AWS.config.update({
   accessKeyId: accessKeyId,
@@ -20,12 +20,15 @@ const myBucket = new AWS.S3({
   region: REGION,
 });
 
-const NewBookForm = () => { // This component is the form to add a new book
+const NewBookForm = () => {
   const [title, setTitle] = useState('');
   const [tableOfContents, setTableOfContents] = useState('');
   const [image, setImage] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const navigate = useNavigate();
+
+  const { user } = useContext(UserContext);
+  const userID = user ? user.id : null; // Get the userID from the user context
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -39,7 +42,7 @@ const NewBookForm = () => { // This component is the form to add a new book
     setImage(e.target.files[0]);
   };
 
-  const uploadImageToS3 = (file) => { // This part handles the image upload to S3
+  const uploadImageToS3 = (file) => {
     return new Promise((resolve, reject) => {
       const params = {
         ACL: 'public-read',
@@ -73,16 +76,12 @@ const NewBookForm = () => { // This component is the form to add a new book
       if (image) {
         imagePath = await uploadImageToS3(image);
       }
-      console.log('Final image path:', imagePath); 
       const formData = new FormData();
       formData.append('title', title);
       formData.append('tableOfContents', tableOfContents);
       formData.append('imagePath', imagePath);
-      console.log('Sending book data:', {
-        title,
-        tableOfContents,
-        imagePath,
-      }); 
+      formData.append('userID', userID); // Include userID in the form data
+
       await axios.post('https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -96,40 +95,39 @@ const NewBookForm = () => { // This component is the form to add a new book
 
   return (
     <div className="new-book-form">
-    <h2>Create New Book</h2>
-    <form onSubmit={handleSubmit} encType="multipart/form-data">
-      <div className="form-group">
-        <label htmlFor="title">Title:</label>
-        <input
-          type="text"
-          id="title"
-          value={title}
-          onChange={handleTitleChange}
-          required
-          placeholder='Book Title'
-        />
-        <label htmlFor="tableOfContents"></label>
-        <input
-          type="text"
-          id="tableOfContents"
-          value={tableOfContents}
-          onChange={handleTableOfContentsChange}
-          placeholder='Table of Contents'
-        />
-        <label id='container-for-image-button' htmlFor="image">Upload Image:</label>
-        <input 
-          id="image-uploader"
-          type="file"
-          accept=".jpg, .jpeg, .png"
-          onChange={handleImageChange}
-        />
-      </div>
-      {uploadProgress > 0 && <div>Upload Progress: {uploadProgress}%</div>}
-      <button type="submit">Create Book</button>
-    </form>
-  </div>
-);
+      <h2>Create New Book</h2>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <div className="form-group">
+          <label htmlFor="title">Title:</label>
+          <input
+            type="text"
+            id="title"
+            value={title}
+            onChange={handleTitleChange}
+            required
+            placeholder='Book Title'
+          />
+          <label htmlFor="tableOfContents">Table of Contents:</label>
+          <input
+            type="text"
+            id="tableOfContents"
+            value={tableOfContents}
+            onChange={handleTableOfContentsChange}
+            placeholder='Table of Contents'
+          />
+          <label id='container-for-image-button' htmlFor="image">Upload Image:</label>
+          <input 
+            id="image-uploader"
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            onChange={handleImageChange}
+          />
+        </div>
+        {uploadProgress > 0 && <div>Upload Progress: {uploadProgress}%</div>}
+        <button type="submit">Create Book</button>
+      </form>
+    </div>
+  );
 };
 
 export default NewBookForm;
-

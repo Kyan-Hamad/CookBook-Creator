@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { UserContext } from '../contexts/user.context';
 import '../Styles/AddToContentsForm.css';
 
-const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShowForm }) => { // This component is the form to add content to a book aka create a new page
+const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShowForm }) => {
+    const { user } = useContext(UserContext);
+    const userID = user ? user.id : null;
     const [pageId, setPageId] = useState('');
     const [isLink, setIsLink] = useState(false);
 
@@ -19,13 +22,29 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
         try {
             let contentToAdd = pageId;
             if (isLink) {
-                contentToAdd = `<a href="${pageId}">${pageId}</a>`; // This part handles making the recipe pages links
+                contentToAdd = `<a href="${pageId}">${pageId}</a>`;
             }
-            const bookResponse = await axios.get(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`);
-            const { _id: bookId, title: bookTitle } = bookResponse.data;
-            await axios.post('https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/pages', { bookId, bookTitle, pageId: String(pageId), recipeStory: '', ingredients: [], steps: '' });
+            // Include userID as a header
+            const response = await axios.post('https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/pages', {
+                bookTitle: title,
+                pageId,
+                recipeStory: '',
+                ingredients: [],
+                steps: '',
+            }, {
+                params: {
+                    'userID': userID,
+                },
+            });
+            const { bookId } = response.data;
             const updatedTableOfContents = [...tableOfContents, contentToAdd];
-            await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
+            await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${encodeURIComponent(title)}`, {
+                tableOfContents: updatedTableOfContents.join('\n'),
+            }, {
+                headers: {
+                    'userID': userID,
+                },
+            });
             setTableOfContents(updatedTableOfContents);
             setPageId('');
             setShowForm(false);
@@ -34,13 +53,12 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
         }
     };
 
-    useEffect(() => { // This part handles the escape key to close the form
+    useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === 'Escape') {
                 setShowForm(false);
             }
         };
-
         document.addEventListener('keydown', handleKeyDown);
         return () => {
             document.removeEventListener('keydown', handleKeyDown);

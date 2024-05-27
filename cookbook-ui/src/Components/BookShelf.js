@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Book from './Book';
 import { Link } from 'react-router-dom'; 
 import Modal from 'react-modal';
+import { UserContext } from '../contexts/user.context';
 import '../Styles/BookShelf.css';
 
 const BookShelf = () => { // This component is the bookshelf that holds all the books
@@ -10,28 +11,35 @@ const BookShelf = () => { // This component is the bookshelf that holds all the 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookToDelete, setBookToDelete] = useState(null);
   const [bookTitleToDelete, setBookTitleToDelete] = useState('');
+  const { user } = useContext(UserContext);
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get('https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books'); 
+      const response = await axios.get('https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books', {
+        params: { userID: user.id } 
+      });
       setBooks(response.data);
     } catch (error) {
       console.error('Error fetching books:', error);
     }
   };
 
-  const handleDeleteBook = async () => { // This part handles the delete book button
-    if (bookToDelete) {
-      try {
-        console.log('Deleting book with ID:', bookToDelete);
-        await axios.delete(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${bookToDelete}`);
-        fetchBooks();
-        closeModal();
-      } catch (error) {
-        console.error('Error deleting book:', error);
-      }
+  // Change the handleDeleteBook function to pass userID in the params instead of headers
+const handleDeleteBook = async () => {
+  if (bookToDelete) {
+    try {
+      console.log('Deleting book with ID:', bookToDelete);
+      await axios.delete(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${bookToDelete}`, {
+        params: { userID: user.id } // Pass userID in params
+      });
+      fetchBooks();
+      closeModal();
+    } catch (error) {
+      console.error('Error deleting book:', error);
     }
-  };
+  }
+};
+
 
   const openModal = (bookId, bookTitle) => { // This part handles the modal to confirm the deletion of the book
     setBookToDelete(bookId);
@@ -46,8 +54,10 @@ const BookShelf = () => { // This component is the bookshelf that holds all the 
   };
 
   useEffect(() => {
-    fetchBooks();
-  }, []);
+    if (user) {
+      fetchBooks();
+    }
+  }, [user]);
 
   return (
     <div className="book-shelf">
