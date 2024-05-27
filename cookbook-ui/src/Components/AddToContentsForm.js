@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/AddToContentsForm.css';
 
-const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShowForm }) => {
+const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShowForm }) => { // This component is the form to add content to a book aka create a new page
     const [pageId, setPageId] = useState('');
     const [isLink, setIsLink] = useState(false);
 
@@ -19,7 +19,7 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
         try {
             let contentToAdd = pageId;
             if (isLink) {
-                contentToAdd = `<a href="${pageId}">${pageId}</a>`;
+                contentToAdd = `<a href="${pageId}">${pageId}</a>`; // This part handles making the recipe pages links
             }
             const bookResponse = await axios.get(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`);
             const { _id: bookId, title: bookTitle } = bookResponse.data;
@@ -34,7 +34,7 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
         }
     };
 
-    useEffect(() => {
+    useEffect(() => { // This part handles the escape key to close the form
         const handleKeyDown = (e) => {
             if (e.key === 'Escape') {
                 setShowForm(false);

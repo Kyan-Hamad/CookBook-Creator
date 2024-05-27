@@ -1,53 +1,38 @@
-import { Amplify } from 'aws-amplify';
-import { withAuthenticator, Authenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
-import config from './amplifyconfiguration.json';
 import './App.css';
 import Navbar from './Components/Navbar/Navbar';
-import HomePage from './WebPages/HomePage';
-import Login from "./WebPages/Login";
-import Register from "./WebPages/Register";
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import DashBoard from './WebPages/DashBoard';
 import NewBookForm from '../src/Components/NewBookForm';
 import BookDetails from '../src/Components/BookDetails'; 
 import PageDetails from '../src/Components/PageDetails'; 
-
-Amplify.configure(config);
+import { UserProvider } from "./contexts/user.context";
+import Home from "./WebPages/HomePage";
+import Login from "./pages/Login.page";
+import PrivateRoute from "./pages/PrivateRoute.page";
+import Signup from "./pages/Signup.page";
 
 function App() {
   return (
-    <Authenticator>
-      {({ signOut, user }) => (
         <>
           <div>
             <BrowserRouter>
-              <Navbar signOut={signOut} user={user} />
-              <Routes>
-                <Route 
-                  path="/" 
-                  element={user ? <Navigate to="/dashboard" /> : <HomePage />} 
-                />
-                <Route 
-                  path="/home" 
-                  element={user ? <Navigate to="/dashboard" /> : <HomePage />} 
-                />
-                <Route 
-                  path="/dashboard" 
-                  element={user ? <DashBoard /> : <Navigate to="/home" />} 
-                />
+            <UserProvider> {/* This is the user context provider. */}
+              <Navbar />
+              <Routes>                  
+                <Route exact path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/new-book" element={<NewBookForm />} />
-                <Route path="/books/:title" element={<BookDetails />} /> 
-                <Route path="/books/:title/:pageId" element={<PageDetails />} /> 
+                <Route path="/signup" element={<Signup />} />
+                <Route element={<PrivateRoute />}> {/* Routes within here are only accessible when logged in */}
+                  <Route path="/dashboard" element={<DashBoard/>} />
+                  <Route path="/new-book" element={<NewBookForm />} />
+                  <Route path="/books/:title" element={<BookDetails />} /> 
+                  <Route path="/books/:title/:pageId" element={<PageDetails />} /> 
+                </Route>  
               </Routes>
+            </UserProvider>
             </BrowserRouter>
           </div>
         </>
       )}
-    </Authenticator>
-  );
-}
 
-export default withAuthenticator(App);
+export default App;

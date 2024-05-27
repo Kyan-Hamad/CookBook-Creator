@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/EditPageForm.css';
 
-const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: initialIngredients, steps: initialSteps }) => {
+const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: initialIngredients, steps: initialSteps }) => { // This component is the form to edit a recipe
     const [recipeStory, setRecipeStory] = useState(initialStory || '');
     const [ingredients, setIngredients] = useState(initialIngredients || [{ name: '', quantity: '', unit: '' }]);
     const [steps, setSteps] = useState(initialSteps || ['']);
@@ -27,31 +27,31 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
         };
     }, []);
 
-    const handleIngredientChange = (index, key, value) => {
+    const handleIngredientChange = (index, key, value) => { // This part handles changing the ingredient values
         const updatedIngredients = [...ingredients];
         updatedIngredients[index][key] = value;
         setIngredients(updatedIngredients);
     };
 
-    const handleAddIngredient = () => {
+    const handleAddIngredient = () => { // This part handles adding a new ingredient
         setIngredients([...ingredients, { name: '', quantity: '', unit: '' }]);
     };
 
-    const handleStepChange = (index, value) => {
+    const handleStepChange = (index, value) => { // This part handles changing the step values
         const updatedSteps = [...steps];
         updatedSteps[index] = value;
         setSteps(updatedSteps);
     };
 
-    const handleAddStep = () => {
+    const handleAddStep = () => { // This part handles adding a new step
         setSteps([...steps, '']);
     };
 
-    const handleSelectIngredientClick = () => {
+    const handleSelectIngredientClick = () => { // This part handles selecting an ingredient
         setSelectIngredientMode(true);
     };
 
-    const handleCheckboxIngredientChange = (index) => {
+    const handleCheckboxIngredientChange = (index) => { // This part handles the checkbox for selecting an ingredient
         setSelectedIngredients((prevSelected) => {
             if (prevSelected.includes(index)) {
                 return prevSelected.filter((item) => item !== index);
@@ -72,11 +72,11 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
         }
     };
 
-    const handleSelectStepClick = () => {
+    const handleSelectStepClick = () => { // This part handles selecting a step
         setSelectStepMode(true);
     };
 
-    const handleCheckboxStepChange = (index) => {
+    const handleCheckboxStepChange = (index) => { // This part handles the checkbox for selecting a step
         setSelectedSteps((prevSelected) => {
             if (prevSelected.includes(index)) {
                 return prevSelected.filter((item) => item !== index);

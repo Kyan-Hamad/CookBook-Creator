@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../Styles/Book.css';
 
-const Book = ({ title, tableOfContents, imagePath}) => { 
+const Book = ({ title, tableOfContents, imagePath}) => {  // This component is the book itself lcated in the bookshelf
   return (
     <div className="book">
       <Link to={{ pathname: `/books/${title}`, state: { tableOfContents } }}> 

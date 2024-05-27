@@ -7,7 +7,7 @@ import '../Styles/NewBookForm.css';
 const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
 const REGION = process.env.REACT_APP_REGION;
 const accessKeyId = process.env.REACT_APP_AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY;
+const secretAccessKey = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY; // AWS S3 credentials to allow for immage upload
 
 
 AWS.config.update({
@@ -20,7 +20,7 @@ const myBucket = new AWS.S3({
   region: REGION,
 });
 
-const NewBookForm = () => {
+const NewBookForm = () => { // This component is the form to add a new book
   const [title, setTitle] = useState('');
   const [tableOfContents, setTableOfContents] = useState('');
   const [image, setImage] = useState(null);
@@ -39,7 +39,7 @@ const NewBookForm = () => {
     setImage(e.target.files[0]);
   };
 
-  const uploadImageToS3 = (file) => {
+  const uploadImageToS3 = (file) => { // This part handles the image upload to S3
     return new Promise((resolve, reject) => {
       const params = {
         ACL: 'public-read',
@@ -88,7 +88,7 @@ const NewBookForm = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error creating book:', error);
     }

@@ -62,11 +62,6 @@ h2 {
   background-color: #048b87;
 }
 
-.home-img, .gif1, .gif2 {
-  width: 60%; /* Set width to 80% of its container */
-  max-width: 500px; /* Set maximum width to 500 pixels */
-  height: auto; /* Maintain aspect ratio */
-}
 
 .home-container-2 {
   padding-top: 5%;
@@ -81,6 +76,23 @@ h2 {
   text-align: center;
   font-size: 1.5em;
   font-weight: bold;
+}
+
+#custom-cover-gif {
+  width: 80%;
+  height: auto;
+}
+
+#recipe-page-gif {
+  width: 80%;
+  height: auto;
+}
+
+.card-body{
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .gif1-container-text {
@@ -148,6 +160,8 @@ h2 {
 .gradient-container-2 h2 {
   color: white;
 }
+
+
 
 /* media queries go here */
 @media screen and (max-width: 800px) {
