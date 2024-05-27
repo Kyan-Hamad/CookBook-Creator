@@ -19,10 +19,11 @@ function App() {
             <UserProvider> {/* This is the user context provider. */}
               <Navbar />
               <Routes>                  
-                <Route exact path="/" element={<Home />} />
+                <Route exact path="/home" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route element={<PrivateRoute />}> {/* Routes within here are only accessible when logged in */}
+                  <Route path="/" element={<DashBoard />} />
                   <Route path="/dashboard" element={<DashBoard/>} />
                   <Route path="/new-book" element={<NewBookForm />} />
                   <Route path="/books/:title" element={<BookDetails />} /> 

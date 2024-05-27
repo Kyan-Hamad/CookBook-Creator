@@ -66,7 +66,7 @@ export const UserProvider = ({ children }) => {
       await app.currentUser.logOut();
       // Setting the user to null once loggedOut.
       setUser(null);
-      navigate('/'); // Redirect to homepage after logging out
+      navigate('/home'); // Redirect to homepage after logging out
       return true;
     } catch (error) {
       throw error;

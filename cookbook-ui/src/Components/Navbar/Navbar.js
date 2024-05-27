@@ -21,7 +21,7 @@ function Navbar() {
     if (user) {
       navigateTo("/dashboard");
     } else {
-      navigateTo("/");
+      navigateTo("/home");
     }
     setIsNavCollapsed(true); 
   };
