@@ -6,7 +6,7 @@ import '../Styles/BookDetails.css';
 import AddToContentsForm from './AddToContentsForm';
 import useDecodedParams from '../contexts/decodedparams'; 
 
-const BookDetails = () => { // This component displays the details of a book, aka the table of contents.
+const BookDetails = () => {
     const { title } = useDecodedParams(); 
     const [tableOfContents, setTableOfContents] = useState([]);
     const [showForm, setShowForm] = useState(false);
@@ -16,39 +16,36 @@ const BookDetails = () => { // This component displays the details of a book, ak
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Update the fetchBookDetails function to pass title as a query parameter instead of in the URL path
         const fetchBookDetails = async () => {
             try {
-                const response = await axios.get(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books`, {
+                const response = await axios.get('http://localhost:5000/api/books', {
                     params: { title }
                 });
                 if (response.data && response.data.tableOfContents) {
                     setTableOfContents(response.data.tableOfContents.split('\n'));
                 }
             } catch (error) {
-                console.error('Error fetching book details:', error.response); // Log the error response for more details
+                console.error('Error fetching book details:', error.response);
             }
         };
-        
 
         fetchBookDetails();
     }, [title]);
 
     const handleContentClick = (content) => {
         if (selectMode) return; 
-        if (content && content.startsWith && content.startsWith('<a href=')) { // This part handles the link to the recipe pages
+        if (content && content.startsWith('<a href=')) {
             const url = content.split('"')[1];
             navigate(`/books/${title}/${url}`);
-        } else { // This part handles the divider of the recipe pages aka categories
+        } else {
             setPageId(content);
             setShowForm(true);
         }
     };
 
     const renderContent = (content, index) => {
-        if (content && content.startsWith && content.startsWith('<a href=')) {
-            const text = content.match(/>([^<]*)<\/a>/)[1]; // This part handles the text of the link
-
+        if (content && content.startsWith('<a href=')) {
+            const text = content.match(/>([^<]*)<\/a>/)[1];
             return (
                 <span className="link" onClick={() => handleContentClick(content)}>
                     <span>{text}</span>
@@ -59,7 +56,7 @@ const BookDetails = () => { // This component displays the details of a book, ak
         }
     };
 
-    const onDragEnd = async (result) => { // This part handles the drag and drop of the table of contents
+    const onDragEnd = async (result) => {
         if (!result.destination) return;
 
         const items = Array.from(tableOfContents);
@@ -69,17 +66,21 @@ const BookDetails = () => { // This component displays the details of a book, ak
         setTableOfContents(items);
 
         try {
-            const response = await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`, { tableOfContents: items.join('\n') });
-            console.log('Table of contents updated:', response.data);
+            await axios.put(`http://localhost:5000/api/books/${encodeURIComponent(title)}`, {
+                tableOfContents: items.join('\n')
+            });
+            console.log('Table of contents updated');
         } catch (error) {
             console.error('Error updating table of contents:', error);
         }
     };
 
-    const handleDeleteClick = async () => { // This part handles the delete button for the table of contents
+    const handleDeleteClick = async () => {
         try {
             const updatedTableOfContents = tableOfContents.filter((_, index) => !selectedItems.includes(index));
-            await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${title}`, { tableOfContents: updatedTableOfContents.join('\n') });
+            await axios.put(`http://localhost:5000/api/books/${encodeURIComponent(title)}`, {
+                tableOfContents: updatedTableOfContents.join('\n')
+            });
             setTableOfContents(updatedTableOfContents);
             setSelectedItems([]);
             setSelectMode(false); 
@@ -88,7 +89,7 @@ const BookDetails = () => { // This component displays the details of a book, ak
         }
     };
 
-    const handleCheckboxChange = (index) => { // This part handles the checkbox for the table of contents delete button
+    const handleCheckboxChange = (index) => {
         setSelectedItems((prevSelected) => {
             if (prevSelected.includes(index)) {
                 return prevSelected.filter((item) => item !== index);
@@ -102,7 +103,7 @@ const BookDetails = () => { // This component displays the details of a book, ak
         setSelectMode(true); 
     };
 
-    const handleKeyDown = (e) => { // This part handles the escape key to exit the select mode
+    const handleKeyDown = (e) => {
         if (e.key === 'Escape') {
             setSelectMode(false);
         }

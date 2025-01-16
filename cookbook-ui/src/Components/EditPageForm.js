@@ -99,7 +99,7 @@ const EditPageForm = ({ onSave, pageId, recipeStory: initialStory, ingredients: 
 
     const submitForm = async () => {
         try {
-            const response = await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/pages/${pageId}`, {
+            const response = await axios.put(`http://localhost:5000/api/pages/${pageId}`, {
                 recipeStory,
                 ingredients,
                 steps

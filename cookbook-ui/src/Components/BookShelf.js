@@ -6,7 +6,7 @@ import Modal from 'react-modal';
 import { UserContext } from '../contexts/user.context';
 import '../Styles/BookShelf.css';
 
-const BookShelf = () => { // This component is the bookshelf that holds all the books
+const BookShelf = () => {
   const [books, setBooks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookToDelete, setBookToDelete] = useState(null);
@@ -15,8 +15,8 @@ const BookShelf = () => { // This component is the bookshelf that holds all the 
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get('https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books', {
-        params: { userID: user.id } 
+      const response = await axios.get('http://localhost:5000/api/books', {
+        params: { userID: user.id }
       });
       setBooks(response.data);
     } catch (error) {
@@ -24,24 +24,21 @@ const BookShelf = () => { // This component is the bookshelf that holds all the 
     }
   };
 
-  // Change the handleDeleteBook function to pass userID in the params instead of headers
-const handleDeleteBook = async () => {
-  if (bookToDelete) {
-    try {
-      console.log('Deleting book with ID:', bookToDelete);
-      await axios.delete(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${bookToDelete}`, {
-        params: { userID: user.id } // Pass userID in params
-      });
-      fetchBooks();
-      closeModal();
-    } catch (error) {
-      console.error('Error deleting book:', error);
+  const handleDeleteBook = async () => {
+    if (bookToDelete) {
+      try {
+        await axios.delete(`http://localhost:5000/api/books/${bookToDelete}`, {
+          params: { userID: user.id }
+        });
+        fetchBooks();
+        closeModal();
+      } catch (error) {
+        console.error('Error deleting book:', error);
+      }
     }
-  }
-};
+  };
 
-
-  const openModal = (bookId, bookTitle) => { // This part handles the modal to confirm the deletion of the book
+  const openModal = (bookId, bookTitle) => {
     setBookToDelete(bookId);
     setBookTitleToDelete(bookTitle);
     setIsModalOpen(true);
@@ -67,7 +64,7 @@ const handleDeleteBook = async () => {
             <Link to={`/books/${book.title}`}>
               <Book
                 title={book.title}
-                imagePath={book.imagePath ? `${book.imagePath}` : 'https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png'} // If an image was uploaded, use imagePath of S3 link. Otherwise, use default image
+                imagePath={book.imagePath ? `${book.imagePath}` : 'https://kyan-hamad.github.io/RPG-Game/CookBook-Maker-Logo.png'}
               />
             </Link>
             <div>

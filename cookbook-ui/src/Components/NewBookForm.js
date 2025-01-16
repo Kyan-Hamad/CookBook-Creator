@@ -82,7 +82,7 @@ const NewBookForm = () => {
       formData.append('imagePath', imagePath);
       formData.append('userID', userID); // Include userID in the form data
 
-      await axios.post('https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books', formData, {
+      await axios.post('http://localhost:5000/api/books', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -107,7 +107,7 @@ const NewBookForm = () => {
             required
             placeholder='Book Title'
           />
-          <label htmlFor="tableOfContents">Table of Contents:</label>
+          <label htmlFor="tableOfContents"></label>
           <input
             type="text"
             id="tableOfContents"

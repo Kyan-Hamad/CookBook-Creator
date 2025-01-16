@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext} from 'react';
 import axios from 'axios';
 import { UserContext } from '../contexts/user.context';
 import '../Styles/AddToContentsForm.css';
@@ -20,31 +20,44 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            if (!userID) {
+                throw new Error('User ID is required');
+            }
+    
             let contentToAdd = pageId;
             if (isLink) {
                 contentToAdd = `<a href="${pageId}">${pageId}</a>`;
             }
-            // Include userID as a header
-            const response = await axios.post('https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/pages', {
+    
+            const requestBody = {
                 bookTitle: title,
                 pageId,
                 recipeStory: '',
-                ingredients: [],
-                steps: '',
-            }, {
-                params: {
-                    'userID': userID,
-                },
+                ingredients: [], // Ensure ingredients is an array
+                steps: [] // Ensure steps is an array
+            };
+    
+            const headers = {
+                'userid': userID // Ensure the header key matches the backend extraction
+            };
+    
+            console.log('Request Body:', requestBody);
+            console.log('Headers:', headers);
+    
+            // Create a new page associated with the book
+            await axios.post('http://localhost:5000/api/pages', requestBody, {
+                headers: headers,
             });
-            const { bookId } = response.data;
+    
+            // Update the table of contents for the book
             const updatedTableOfContents = [...tableOfContents, contentToAdd];
-            await axios.put(`https://s6sdmgik6l.execute-api.us-east-1.amazonaws.com/Prod/api/books/${encodeURIComponent(title)}`, {
-                tableOfContents: updatedTableOfContents.join('\n'),
+            await axios.put(`http://localhost:5000/api/books/${encodeURIComponent(title)}`, {
+                tableOfContents: updatedTableOfContents.join('\n')
             }, {
-                headers: {
-                    'userID': userID,
-                },
+                headers: headers
             });
+    
+            // Update local state and reset form
             setTableOfContents(updatedTableOfContents);
             setPageId('');
             setShowForm(false);
@@ -52,18 +65,6 @@ const AddToContentsForm = ({ title, tableOfContents, setTableOfContents, setShow
             console.error('Error adding content:', error);
         }
     };
-
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === 'Escape') {
-                setShowForm(false);
-            }
-        };
-        document.addEventListener('keydown', handleKeyDown);
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [setShowForm]);
 
     return (
         <form onSubmit={handleSubmit}>

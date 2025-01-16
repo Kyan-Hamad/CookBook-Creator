@@ -4,18 +4,17 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
-const fs = require('fs');
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.json());
 
-mongoose.connect('mongodb+srv://cookbook:jTyTfD8uLHxpvqD@cluster0.8ekwc6d.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
-
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('Error connecting to MongoDB:', err));
+mongoose.connect('mongodb+srv://cookbook:jTyTfD8uLHxpvqD@cluster0.8ekwc6d.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {})
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('Error connecting to MongoDB:', err));
 
 const bookSchema = new mongoose.Schema({
+    userID: String,
     title: String,
     tableOfContents: String,
     imagePath: String 
@@ -39,11 +38,9 @@ const pageSchema = new mongoose.Schema({
 const Book = mongoose.model('Book', bookSchema);
 const Page = mongoose.model('Page', pageSchema);
 
-app.use(bodyParser.json());
-
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '../cookbook-ui/src/uploads'); 
+        cb(null, path.join(__dirname, '../cookbook-ui/src/uploads')); 
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname);
@@ -54,9 +51,8 @@ const upload = multer({ storage: storage });
 
 app.post('/api/books', upload.single('image'), async (req, res) => {
     try {
-        const { title, tableOfContents } = req.body;
-        const imagePath = req.file ? req.file.path.replace('../cookbook-ui/src', '') : null; 
-        const newBook = new Book({ title, tableOfContents, imagePath });
+        const { title, tableOfContents, imagePath, userID } = req.body;
+        const newBook = new Book({ title, tableOfContents, imagePath, userID });
         await newBook.save();
         res.status(201).json({ message: 'Book created successfully', book: newBook });
     } catch (err) {
@@ -67,22 +63,50 @@ app.post('/api/books', upload.single('image'), async (req, res) => {
 
 app.post('/api/pages', async (req, res) => {
     try {
-        const { bookId, bookTitle, pageId, recipeStory, ingredients, steps } = req.body;
-        let page = await Page.findOneAndUpdate(
-            { pageId },
-            { bookId, bookTitle, pageId, recipeStory, ingredients, steps },
-            { upsert: true, new: true }
-        );
-        res.status(201).json({ message: 'Page created/updated successfully', page });
-    } catch (err) {
-        console.error('Error creating/updating page:', err);
-        res.status(500).json({ message: 'Internal server error' });
+        const { bookTitle, pageId, recipeStory, ingredients, steps } = req.body;
+        const userID = req.headers['userid']; // Correctly extracting userID from headers
+
+        console.log('Received Headers:', req.headers);
+        console.log('Received Body:', req.body);
+        console.log('Extracted userID:', userID);
+
+        if (!userID) {
+            console.log('User ID is missing');
+            return res.status(400).json({ message: 'User ID is required' });
+        }
+
+        const book = await Book.findOne({ title: bookTitle, userID });
+        if (!book) {
+            console.log('Book not found or user does not have permission:', { bookTitle, userID });
+            return res.status(404).json({ message: 'Book not found' });
+        }
+
+        const newPage = new Page({ bookId: book._id, bookTitle, pageId, recipeStory, ingredients, steps });
+        await newPage.save();
+
+        res.status(201).json({ message: 'Page created successfully', bookId: book._id });
+    } catch (error) {
+        if (error.name === 'ValidationError') {
+            console.error('Validation Error:', error.message);
+            res.status(400).json({ message: error.message });
+        } else {
+            console.error('Error creating page:', error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
     }
 });
 
 app.get('/api/books', async (req, res) => {
     try {
-        const books = await Book.find();
+        const userID = req.query.userID; 
+        let books;
+
+        if (userID) {
+            books = await Book.find({ userID: userID });
+        } else {
+            books = await Book.find();
+        }
+
         res.status(200).json(books);
     } catch (err) {
         console.error('Error fetching books:', err);
@@ -92,7 +116,11 @@ app.get('/api/books', async (req, res) => {
 
 app.get('/api/books/:title', async (req, res) => {
     try {
-        const book = await Book.findOne({ title: req.params.title });
+        const { userID } = req.headers;
+        if (!userID) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
+        const book = await Book.findOne({ title: req.params.title, userID });
         if (book) {
             res.status(200).json(book);
         } else {
@@ -106,16 +134,28 @@ app.get('/api/books/:title', async (req, res) => {
 
 app.put('/api/books/:title', async (req, res) => {
     try {
+        const userID = req.headers['userid']; // Correctly extracting userID from headers
         const { title } = req.params;
         const { tableOfContents } = req.body;
-        let book = await Book.findOneAndUpdate(
-            { title },
+
+        console.log('Extracted userID:', userID); // Log userID
+        console.log('Received title:', title);   // Log title
+        console.log('Received tableOfContents:', tableOfContents); // Log tableOfContents
+
+        if (!userID) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
+
+        const book = await Book.findOneAndUpdate(
+            { title, userID },
             { tableOfContents },
             { new: true }
         );
+
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
+
         res.status(200).json({ message: 'Book updated successfully', book });
     } catch (err) {
         console.error('Error updating book:', err);
@@ -123,15 +163,34 @@ app.put('/api/books/:title', async (req, res) => {
     }
 });
 
+
 app.put('/api/pages/:pageId', async (req, res) => {
     try {
+        const { userID } = req.headers;
+        if (!userID) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
         const { recipeStory, ingredients, steps } = req.body;
         const { pageId } = req.params;
-        let page = await Page.findOneAndUpdate(
-            { pageId },
-            { recipeStory, ingredients, steps },
-            { new: true }
-        );
+
+        // Find the page by pageId
+        let page = await Page.findOne({ pageId });
+        if (!page) {
+            return res.status(404).json({ message: 'Page not found' });
+        }
+
+        // Verify the userID against the book associated with the page
+        const book = await Book.findById(page.bookId);
+        if (!book || book.userID !== userID) {
+            return res.status(403).json({ message: 'Forbidden: You do not have permission to update this page' });
+        }
+
+        // Update the page details
+        page.recipeStory = recipeStory;
+        page.ingredients = ingredients;
+        page.steps = steps;
+        await page.save();
+
         res.status(200).json({ message: 'Page updated successfully', page });
     } catch (err) {
         console.error('Error updating page:', err);
@@ -141,8 +200,12 @@ app.put('/api/pages/:pageId', async (req, res) => {
 
 app.get('/api/pages/:pageId', async (req, res) => {
     try {
+        const { userID } = req.headers;
+        if (!userID) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
         const { pageId } = req.params;
-        const page = await Page.findOne({ pageId: pageId });
+        const page = await Page.findOne({ pageId });
         if (page) {
             const { recipeStory, ingredients, steps } = page;
             res.status(200).json({ recipeStory, ingredients, steps });
@@ -155,18 +218,23 @@ app.get('/api/pages/:pageId', async (req, res) => {
     }
 });
 
+// Update the delete route to accept userID in params instead of headers
 app.delete('/api/books/:id', async (req, res) => {
     try {
         const { id } = req.params;
+        const { userID } = req.query;
 
-        const book = await Book.findById(id);
+        if (!userID) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
+
+        const book = await Book.findOne({ _id: id, userID });
         if (!book) {
-            return res.status(404).json({ message: 'Book not found' });
+            return res.status(404).json({ message: 'Book not found or you do not have permission to delete this book' });
         }
 
         await Page.deleteMany({ bookId: id });
-
-        await Book.deleteOne({ _id: id }); // Use deleteOne to remove the book
+        await Book.deleteOne({ _id: id });
 
         res.status(200).json({ message: 'Book and associated pages deleted successfully' });
     } catch (err) {
@@ -178,13 +246,18 @@ app.delete('/api/books/:id', async (req, res) => {
 app.delete('/api/pages/:pageId', async (req, res) => {
     try {
         const { pageId } = req.params;
+        const { userID } = req.query;
+
+        if (!userID) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
         const deletedPage = await Page.findByIdAndDelete(pageId);
         if (!deletedPage) {
             return res.status(404).json({ message: 'Page not found' });
         }
         const book = await Book.findById(deletedPage.bookId);
-        if (!book) {
-            return res.status(404).json({ message: 'Book not found' });
+        if (!book || book.userID !== userID) {
+            return res.status(403).json({ message: 'Forbidden: You do not have permission to delete this page' });
         }
         const updatedTableOfContents = book.tableOfContents.filter(content => content !== deletedPage.pageId);
         book.tableOfContents = updatedTableOfContents.join('\n');
